@@ -1,0 +1,5 @@
+<%  if params[:display]=='name' or session[:display]=='name' then %>
+	<%= link_to_remote(@ts.sourcename5stellig(@ts.bediengeraet.normalquellen_kv_id, @system.id), :update => "s_" + @ts.id.to_s, :url =>{ :controller=>:sources, :action => :dropdowns, :id=>@ts.id, :kv=>@ts.bediengeraet.normalquellen_kv_id, :bdtype_id=>@ts.bediengeraet.bdtype_id, :display=>"name" }) %>
+<%    else %>
+	<%= link_to_remote(@ts.source_id, :update => "s_" + @ts.id.to_s, :url =>{ :controller=>:sources, :action => :dropdowns, :id=>@ts.id, :kv=>@ts.bediengeraet.normalquellen_kv_id, :bdtype_id=>@ts.bediengeraet.bdtype_id, :display=>"id" }) %>
+<%    end  %>

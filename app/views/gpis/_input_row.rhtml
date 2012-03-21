@@ -1,0 +1,73 @@
+<% form_remote_tag :url => {:controller=>'gpis', :action =>'update_input', :id => @input}, :html => {:id => @input.id} do %>
+	<div class="ibtSourceTableHeader">
+		<div class="ibtSourceTableCol1" class="clean" id="input<%= @input.intnummer %>">
+			<%= @input.intnummer %>
+		</div>
+		<div class="ibtSourceTableCol7">
+			<%= text_field :input, :name, {:onchange=>"$('submitchangeitem#{@input.id}').click();",  :style => "width:95%;", :class => "left", :onkeypress => "return nospace(event)"} %>
+		</div>
+		<div class="ibtSourceTableCol4">
+			<%= select :input, :i_type, @in_type.sort_on("value"), {:include_blank => true}, {:onchange => "$('submitchangeitem#{@input.id}').click();",  :style => "width:95%;"} %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<% if @input.i_type == 1 %>
+				<%= select :input, :unit, @units, {:include_blank => true, :selected => @input.unit}, {:style => "width:95%;", :onchange => "new Ajax.Request('/systems/get_ports?curr_port=#{@input.port}&curr_unit='+this.value+'&s_id=#{@input.id}&opt=6', {asynchronous:true, evalScripts:true}); return false;"} %>
+			<% else %>
+				<%= select :input, :unit, @panels, {:include_blank => true, :selected => @input.unit}, {:onchange=>"$('submitchangeitem#{@input.id}').click();",  :style => "width:95%;"} %>
+			<% end %>
+		</div>
+		<div class="ibtSourceTableCol2 cloneinput_bg" id="port6_<%=@input.id%>">
+			<% if @input.i_type == 1 %>
+				<center>
+				<% if @input.unit %>
+					<%= link_to_remote (@input.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @input.unit, :curr_port => @input.port, :s_id => @input.id, :opt => 6 }, :style => "width:95%;" %>
+				<% end %>
+				</center>
+			<%else%>
+				<%= text_field :input, :port, :value => @input.port, :style => "width:99%;", :readonly => true %>
+			<%end%>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<% if @input.i_type == 1 %>
+				<%= select :input, :byte, @byte, {:include_blank => true, :selected => @input.byte}, {:onchange=>"$('submitchangeitem#{@input.id}').click();",  :style => "width:95%;"} %>
+			<% else %>
+				<% if @input.byte.nil? || @input.byte.blank? %>
+					<%= select :input, :byte, @blank, {:selected => @input.byte}, {:style => "width:95%;"} %>
+				<% else %>
+					<%= select :input, :byte, @single, {:selected => @input.byte}, {:style => "width:95%;"} %>
+				<% end %>
+			<% end %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<% if @input.i_type == 1 %>
+				<%= select :input, :bit, @bit, {:include_blank => true, :selected => @input.bit}, {:onchange=>"$('submitchangeitem#{@input.id}').click();",  :style => "width:95%;"} %>
+			<% else %>
+				<% if @input.bit.nil? || @input.bit.blank? %>
+					<%= select :input, :bit, @blank, {:selected => @input.bit}, {:style => "width:95%;"} %>
+				<% else %>
+					<%= select :input, :bit, @single, {:selected => @input.bit}, {:style => "width:95%;"} %>
+				<% end %>
+			<% end %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<%= select :input, :invert, @invert.sort_on("value"), {:include_blank => true}, {:onchange=>"$('submitchangeitem#{@input.id}').click();",  :style => "width:95%;"} %>
+		</div>
+
+		<div class="ibtSourceTableCol6">
+			<%= select :input, :radio, @rbtn.sort_on("value"), {}, {:onchange => "$('submitchangeitem#{@input.id}').click();", :style => "width:95%;"} %>
+		</div>
+
+		<div class="ibtSourceTableCol6">
+			<%= text_field :input, :comment, {:onchange=>"$('submitchangeitem#{@input.id}').click();",  :style => "width:95%;", :maxlength => 16, :class => "left"} %>
+
+			<input type="image" src="/images/blank.png" width="0" height="0" id="submitchangeitem<%=@input.id%>" />
+		</div>
+
+		<div style="width:7%; float:left;">&nbsp;
+			<%=link_to image_tag("cross.png",:style=>"border:none", :title => "Entfernen"), '/gpis/delete_input/'+@input.intnummer.to_s, :onclick => "if (confirm('Sie sind sicher, dass Sie Zeile entfernen ?')){$('div-loader-in').show();}else{return false;}" %>
+		</div>
+	</div>
+	<% end %>
+
+	<div class="clear"></div>
+

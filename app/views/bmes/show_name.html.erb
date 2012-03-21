@@ -1,0 +1,46 @@
+<h1>BME Tastenzuordnung</h1>
+
+<br/>
+<table width="300" cellspacing="0">
+  <tr>
+    <td>
+      
+      <table width="300" cellspacing="0">
+        <tr bgcolor="white">
+          <th align="center" width="200">Nummer</th>
+          <th align="center" width="200">Taste KV1</th>
+          <th align="center" width="200">Preview Monitor</th>
+        </tr>
+      </table>
+
+      <% @bmes.each do |@bme| %>
+  
+        <div id="div_<%= @bme.id.to_s %>">
+
+          <table width="300" border="0" cellpadding="0" cellspacing="0">
+  
+            <tr>        
+              <td align="center" width="150"><%= @bme.taste %></td> 
+              <td align="center" width="150">
+                <% form_remote_tag :url => url_for( :controller=>'bmes', :action =>'update', :id => @bme) do %>
+                    <%= select('bme', 'source_id', @kv, {:include_blank=>true}, :onchange=>"document.getElementById('submit" + @bme.id.to_s + "').click();") %>
+                    <input type="image" src="/images/blank.png" id="submit<%= @bme.id.to_s %>" width="0" height=0>
+                <% end %>
+              </td>
+              <td>
+                <% form_remote_tag :url => url_for( :controller=>'bmes', :action =>'update', :id => @bme) do %>
+                  <%= select('bme', 'peview_monitor', @sn, {:include_blank=>true, :selected=> @bme.peview_monitor}, :onchange=>"document.getElementById('pm" + @bme.id.to_s + "').click();") %>
+                  <input type="image" src="/images/blank.png" id="pm<%= @bme.id.to_s %>" width="0" height=0>
+                <% end %>
+              </td>
+            </tr>
+
+          </table>
+    
+        </div>
+      <% end %>
+
+
+     </td>
+</tr>
+</table>

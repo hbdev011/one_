@@ -1,0 +1,135 @@
+<%= error_messages_for :kreuzschiene %>
+<%= stylesheet_link_tag 'ibt' %>
+<legend><b>Kreuzschienen</b></legend>
+<style type="text/css">
+	div {word-wrap: break-word; padding-right:1px;}
+</style>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="clean">
+	<tr>
+		<td width="30%" class="clean" valign="top">
+			<fieldset style="margin:5px;">
+			<div class="ibtDropShadow">
+				<table width="300" border="0" cellpadding="0" cellspacing="0" class= "ibtHeaderTable">
+					<tr>
+						<td class="clean"><strong>Nummer</strong></td>
+						<td class="clean">KV_0<%= @kreuzschiene.intnummer %></td>
+					</tr>
+					<tr>
+						<td class="clean"><strong>Name</strong></td>
+						<td class="clean"><%= @kreuzschiene.name %></td>
+					</tr>
+				</table>
+			</div>
+			</fieldset>
+		</td>
+		<td width="34%" valign="top" class="clean">&nbsp;&nbsp;
+			<%= link_to "Quellen", "/kreuzschienes/edit/#{params[:id]}?page=quellen" %> |
+			<%= link_to "Senken", "/kreuzschienes/edit/#{params[:id]}?page=senken" %> <br />
+
+			<% if (@page!="senken" && @kreuzschiene.kr_type == "MIXER") || @kreuzschiene.kr_type == "MATRIX" %>
+				<%if @kreuzschiene.kr_type == "MATRIX" && !@kreuzschiene.matrix_type.nil? && @kreuzschiene.matrix_type.title  == "Stagetec"%>
+					&nbsp;<br />
+					<div id="csv_container_stagetek">
+						<%= link_to "Import Stagetec file", "javascript:void(0);", :onclick => "new Ajax.Request ('/kreuzschienes/loadcsv_stagetek', {asynchronous: true, evalScripts: true, methos: 'post', parameters: {kv_id: #{@kreuzschiene.id}}});"%><br />
+					</div><br />
+					<div>
+						<%#= link_to "Set all to default", "javascript:void(0);", :onclick => "$('div-loader').show(); new Ajax.Request ('/kreuzschienes/set_to_default', {asynchronous: true, evalScripts: true, methos: 'post', parameters: {kv_id: #{@kreuzschiene.id}, page: '#{@page}' }});" %><br />
+					</div>
+				<%else%>
+					&nbsp;<br />
+					<div id="csv_container">
+						<% if !@kreuzschiene.matrix_type.nil? && @kreuzschiene.matrix_type.title == "Lawo MONPL" %>
+							<%= link_to "Import Names with .csv file <span> <center><b> Help .csv import </b></center> <br /> Create Excel Table with that format :<br /> Row_Nr;Signalclass;Subclass;Component;Subcomponent;Name_4_char;Name_5_char;Name_6_char;Name_10_char;Comment_16_char <br />and save as *.csv <br /> <br /> Example: <br /> 1;OUT;1;1;1;KA 1;KAM 1;KAM 1;KAMERA 1;CCU Rack 3   <br /> 2;LST;2;2;2;KA 2;KAM 2;KAM 2;KAMERA 2;CCU Rack 4 </span>", "javascript:void(0);", :class => "tooltip", :onclick => "new Ajax.Request ('/kreuzschienes/loadCSV', {asynchronous: true, evalScripts: true, methos: 'post', parameters: {kv_id: #{@kreuzschiene.id}, page: '#{@page}' }});" %><br />
+						<% else %>
+							<%= link_to "Import Names with .csv file <span> <center><b> Help .csv import </b></center> <br /> Create Excel Table with that format :<br /> Row_Nr;Name_4_char;Name_5_char;Name_6_char;Name_10_char;Comment_16_char <br />and save as *.csv <br /> <br /> Example: <br /> 1;KA 1;KAM 1;KAM 1;KAMERA 1;CCU Rack 3   <br /> 2;KA 2;KAM 2;KAM 2;KAMERA 2  ;CCU Rack 4 </span>", "javascript:void(0);", :class => "tooltip", :onclick => "new Ajax.Request ('/kreuzschienes/loadCSV', {asynchronous: true, evalScripts: true, methos: 'post', parameters: {kv_id: #{@kreuzschiene.id}, page: '#{@page}' }});" %><br />
+						<% end %>
+					</div><br />
+					<div id="csv_container">
+						<%= link_to "Set all to default", "javascript:void(0);", :onclick => "$('div-loader').show(); new Ajax.Request ('/kreuzschienes/set_to_default', {asynchronous: true, evalScripts: true, methos: 'post', parameters: {kv_id: #{@kreuzschiene.id}, page: '#{@page}' }});" %><br />
+					</div>
+				<%end%>
+			<% end %>
+		</td>
+		<td width="34%" valign="top" class="clean">&nbsp;&nbsp;
+			<div id="add_row_msg" style="float:left; color:green; font-weight:bold;"> &nbsp; </div>
+			<%= flash[:message] ? flash[:message] : nil%>
+			<table width="100%" cellpadding="0" cellspacing="2">
+				<tr>
+					<td width="65%" align="right">
+						Label autofill &nbsp;
+					</td>
+					<td width="35%"> 
+						<input type="checkbox" id="change_all" onclick="setChangeAll('<%=params[:page]%>');" />
+					</td>
+				</tr>
+				<tr>
+					<td align="right"> 
+						Add new row here &nbsp;
+					</td>
+					<td>
+						<% form_remote_tag :url => {:controller=>'kreuzschienes', :action =>'add_row', :page => @page, :inputs => @kreuzschiene.input, :outputs => @kreuzschiene.output, :kv_id => @kreuzschiene.id }, :html => {:id => "frm_add_row"} do %>
+							<input type="text" id="row_nr" name="row_nr" size="3" />
+							<input type="submit" id="submit" name="submit" value="Add" onclick="$('div-loader').show();" />
+						<% end %>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<table width="100%" border="0">
+	<tr>
+		<td width="100%" valign="top" style="border:1px solid #000;">
+			<div id="dv_main">
+				<% if @page == "quellen" %>
+					<%if @kreuzschiene.kr_type == "MIXER"%>
+						<%=render :partial => "mixer_quellentexte"%>
+					<%elsif @kreuzschiene.kr_type == "MATRIX" && !@kreuzschiene.matrix_type.nil? && @kreuzschiene.matrix_type.title == "Lawo MONPL" %>
+						<%=render :partial => "hlsd_quellentexte"%>
+					<%elsif @kreuzschiene.kr_type == "MATRIX" && !@kreuzschiene.matrix_type.nil? && @kreuzschiene.matrix_type.title == "Stagetec"%>
+						<%=render :partial => "stagetek_quellentexte"%>
+					<%else%>
+						<%=render :partial => "quellentexte"%>
+					<%end%>
+				<% else %>
+					<%if @kreuzschiene.kr_type == "MIXER"%>
+						<%=render :partial => "mixer_senkentexte"%>
+					<%elsif @kreuzschiene.kr_type == "MATRIX" && !@kreuzschiene.matrix_type.nil? && @kreuzschiene.matrix_type.title == "Lawo MONPL" %>
+						<%=render :partial => "hlsd_senkentexte"%>
+					<%elsif @kreuzschiene.kr_type == "MATRIX" && !@kreuzschiene.matrix_type.nil? && @kreuzschiene.matrix_type.title == "Stagetec"%>
+						<%=render :partial => "stagetek_senkentexte"%>
+					<%else%>
+						<%=render :partial => "senkentexte"%>
+					<%end%>
+				<% end %>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+	//<![CDATA[
+	document.getElementById('change_all').checked = false;
+	function setChangeAll(page){
+		var chk = document.getElementById('change_all');
+		var opt = ""
+		if (chk.checked == true){
+			opt = "yes"
+		} else {
+			opt = "no"
+		}
+
+		if (page == "quellen" || page == ""){
+			new Ajax.Request('/sources/setChangeAll', {asynchronous:true, evalScripts:true, method:'post',parameters: {opt: opt}});
+		} else {
+			new Ajax.Request('/targets/setChangeAll', {asynchronous:true, evalScripts:true, method:'post',parameters: {opt: opt}});
+		}
+	}
+
+	function getCloneInput(source_id, display){
+		var id = <%=params[:id]%>;
+		var source_id = source_id;
+		new Ajax.Request('/sources/updateCloneInput', {asynchronous:true, evalscripts:true, method:'post',parameters: {id: id, source_id: source_id, display: display}});
+	}
+	//]]>
+</script>

@@ -1,0 +1,56 @@
+<script>
+function displayoption(id)
+{
+	if($('type_'+id).value=='0')
+	{
+		$('ip_address_'+id).style.display='none';
+		$('panel_'+id).style.display='none';
+		$('vts_input_'+id).style.display='none';
+		$('ip_address_nor_'+id).style.display='';
+		$('panel_nor_'+id).style.display='';
+		$('vts_input_nor_'+id).style.display='';
+	}
+	else
+	{
+		$('ip_address_nor_'+id).style.display='none';
+		$('panel_nor_'+id).style.display='none';
+		$('vts_input_nor_'+id).style.display='none';
+		$('ip_address_'+id).style.display='';
+		$('panel_'+id).style.display='';
+		$('vts_input_'+id).style.display='';
+	}
+}
+</script>
+<h1>UMD-Konfiguration</h1>
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr bgcolor="white">
+    <td align="center" width="6%" class="clean">UMD Nr</td>
+    <td align="center" width="5%" class="clean">KV</td>
+    <td align="center" width="7%" class="clean">Quelle / <br>Senke</td>
+    <td align="center" width="5%" class="clean">Source</td>
+    <td align="center" width="9%" class="clean">Type</td>
+    <td align="center" width="4%" class="clean">Panel Nr.</td>
+    <td align="center" width="4%" class="clean">Input Nr.</td>
+    <td align="center" width="11%" class="clean">IP Adress/<br/>Master IMD</td>
+    <td align="center" width="7%" class="clean">Festtext<br>5-stellig</td>
+    <td align="center" width="4%" class="clean">Force RED</td>
+    <td align="center" width="5%" class="clean">Monitor-US<br>5-stellig</td>
+    <td align="center" width="5%" class="clean">GPI<br>I/P</td>
+    <td align="center" width="5%" class="clean">BME-Havarie<br>5-stellig</td>
+    <td align="center" width="5%" class="clean">KV Havarie<br>5-stellig</td>
+    <td align="center" width="5%" class="clean">Konfiguration<br>6-stellig</td>
+  </tr>
+  <tr>
+	<td colspan="15">
+<% @umds.each do |@umd| %>
+
+  <div id="kv_<%= @umd.id.to_s %>">
+    <%= render_partial("line.rhtml", :locals=>{:umd=>@umd}) %>
+  </div>
+
+<% end %>
+	</td>
+  </tr>
+</table>
+

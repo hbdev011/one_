@@ -1,0 +1,75 @@
+<h1>Setup Panel </h1>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="300px">
+		  <fieldset>
+		  <div class="ibtDropShadow">
+			<table width="300px;" border="0" cellpadding="0" cellspacing="0" class="ibtHeaderTable">
+			  <tr>
+				<td width="100px;"><strong>Nummer</strong></td>
+				<td width="200px;"><%= @panel.nummer %></td>
+			  </tr>
+			  <tr>
+				<td><strong>Name</strong></td>
+				<td><%= @panel.name8stellig %></td>
+			  </tr>
+			  <tr>
+				<td><strong>Typ</strong></td>
+				<td><%= @panel.bdtype.id %> &nbsp;<b>:</b>&nbsp; <%= @panel.bdtype.name %></td>
+			  </tr>
+			  <tr>
+				<td><strong>Default Matrix</strong></td>
+				<td>
+				  <% form_tag :controller=>'bediengeraets', :action =>'update_normalquelle', :id => @panel do %>
+					<%= select('bediengeraets', 'normalquellen_kv_id', @kv_1, {:selected=>@panel.normalquellen_kv_id, :include_blank=>true}, {:onchange=>"submit();"}) %>
+					<%#= submit_tag %>
+				  <% end %>
+				</td>
+			  </tr>
+			</table>
+		  </div>
+		  </fieldset><br />
+		</td>
+		<% if @panel.bdtype.id==3 %>
+		<td width="200px" valign="top">
+		  <fieldset>
+		  <div class="ibtDropShadow">
+			<table width="200px" border="0" cellpadding="0" cellspacing="0" class="ibtHeaderTable">
+			  <tr>
+				<td colspan="2"> 
+				  <center> <b> Preview </b> </center>
+				</td>
+			  </tr>
+			  <tr>
+				<td width="70px"><strong>Matrix</strong></td>
+				<td width="130px">
+				  <% form_remote_tag :update => "div_senke", :url => {:controller=>'bediengeraets', :action =>'update_senke', :id => @panel} do %>
+					<%= select('bediengeraets', 'sende_matrix_id', @kv_2, {:selected=>@panel.sende_matrix_id, :include_blank=>true}, {:onchange=>"document.getElementById('submit_matrix').click();"}) %>
+					<input type="image" src="/images/blank.png" id="submit_matrix" width="0" height=0>
+				  <% end %>
+				</td>
+			  </tr>
+			  <tr>
+				<td><strong>Senke</strong></td>
+				<td>
+				  <div id="div_senke">
+					<% form_remote_tag :update => "div_senke", :url => {:controller=>'bediengeraets', :action =>'update_sende_values', :id => @panel} do %>
+					  <% if @sn.nil? %>
+						____
+					  <% else %>
+						<%= select('bediengeraets', 'sende_senke_id', @sn, {:selected=>@panel.sende_senke_id, :include_blank=>true}, {:onchange=>"document.getElementById('submit_senke').click();"}) %>
+					  <% end %>
+					  <input type="hidden" id="bediengeraets_sende_matrix_id" name="bediengeraets[sende_matrix_id]" value="<%=@panel.sende_matrix_id%>">
+					  <input type="image" src="/images/blank.png" id="submit_senke" width="0" height=0>
+					<% end %>
+				  </div>
+				</td>
+			  </tr>
+			</table>
+
+		  </div>
+		</td>
+		<%end%>
+		<td valign="middle">&nbsp;</td>
+	</tr>
+</table>

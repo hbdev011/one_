@@ -1,0 +1,91 @@
+  <% @sources = @kreuzschiene.getSources %>
+	<% height = (@sources.size*20)+30 %>
+	
+	<div style="display:none;" id="div-loader" class="relative">
+		<div class="loader-home" style="height:<%=height%>px;">
+			<img alt="Loading..." src="/images/ajax-loader.gif">
+		</div>
+	</div>
+  <center><h3>Quellen</h3></center>
+  <div class="ibtSourceTableMain">
+    <div class="ibtSourceTableSubTitle1" style="width:31%">Label</div>
+	  <div class="ibtSourceTableSubTitle2" style="width:30%;padding-left:0">
+		  <div class="ibtSourceTableSubTitle3" style="padding:0px;width:35%;">Tally</div>
+		  <% if session[:mode]!="user" then %>
+		    <div class="ibtSourceTableSubTitle3" style="padding:0px;width:64%; border-left:1px solid #fff;">Audio follow Video</div>
+	    <% end %>
+    </div>
+    <% kv_nr = @kreuzschiene.id %>
+    <% if @kreuzschiene.kr_type == "MIXER" %>
+      <% if session[:mode]!="user" then %>
+        <div class="ibtSourceTableSubTitle4" style="border-right:1px solid #fff;width:16%">Crosspoint Label update/ Feed From</div>
+        <div class="ibtSourceTableSubTitle4" style="border-right:1px solid #fff;width:10%;padding-left:7px">Parallel To</div>
+      <% end %>
+    <% end %>
+    <div class="ibtSourceTableSubTitle4" style="width: 2%;">&nbsp;</div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="ibtSourceTableMain">
+    <div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+    <div class="ibtSourceTableCol3">Char 4</div>
+    <div class="ibtSourceTableCol3">Char 5</div>
+    <div class="ibtSourceTableCol4">Char 6</div>
+    <div class="ibtSourceTableCol5">Char 10</div>
+    <div class="ibtSourceTableCol2">Clone Input</div>
+    <div class="ibtSourceTableCol11">Tally Bit</div>
+    <% if session[:mode]!="user" then %>
+      <div class="ibtSourceTableCol11">Matrix</div> <!-- kreuzschienes tbl :: nummer col val :: use id (729) -->
+      <div class="ibtSourceTableCol11">Quelle</div> <!-- Source tbl :: char6 col val :: related to matrix val -->
+      <div class="ibtSourceTableCol11" style="padding-right:0px;">Channel</div>
+      <div class="ibtSourceTableCol1" style="padding-right:0px;">Family</div>
+      <% if @kreuzschiene.kr_type == "MIXER" %>
+        <div class="ibtSourceTableCol11" style="width:4%;margin-left:25px;">Enable</div>
+        <div class="ibtSourceTableCol2">Matrix</div>
+        <div class="ibtSourceTableCol11">Senke</div>
+        <div class="ibtSourceTableCol2">Matrix</div>
+        <div class="ibtSourceTableCol2">Quelle</div>
+      <% end %>
+    <%end%>
+    
+    <div class="ibtSourceTableCol6">Comment</div>
+    <div style="width:1%; float:left;">&nbsp; </div>
+  </div>
+  
+  <div class="clear"></div>
+  <% kr_type = @kreuzschiene.kr_type %>
+  <% @sources.each do |source| %>
+    <div id="source_row_<%= source.id%>">
+      <% if source.par_matrix.nil? || source.par_quelle.nil?%>
+        <%= render :partial => "kreuzschienes/source_row_editable", :locals => { :kv_nr => kv_nr, :source => source}%>
+      <% else %>
+        <%= render :partial => "kreuzschienes/source_row_non_editable", :locals => { :kv_nr => kv_nr, :source => source}%>
+      <% end %>
+    </div>
+  <% end %>
+
+<script type="text/javascript">
+	//<![CDATA[
+	function getQuelle(source_id){
+		document.getElementById('submitchangeitem'+source_id).click();
+	}
+
+	function getSenke(source_id){
+		document.getElementById('submitchangeitem'+source_id).click();
+	}
+
+	function delete_row(row_nr, page, inputs, outputs, kv_id) {
+		if (confirm('Sie sind sicher, dass Sie Zeile entfernen ?')) {
+			$('div-loader').show();
+			new Ajax.Request('/kreuzschienes/remove_row?inputs='+inputs+'&kv_id='+kv_id+'&outputs='+outputs+'&page='+page+'&row_nr='+row_nr, {asynchronous:true, evalScripts:true});
+		};
+		return false;
+	}
+	//]]>
+</script>
+<style>
+select, input{
+  margin-top : 0;
+  
+}
+</style>

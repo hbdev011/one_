@@ -1,0 +1,8 @@
+<% @tables.each do |t| %>
+	<%= t.intnummer %> : <%= t.function %> <br/>
+	_____________________________________________<br />
+	
+	<% t.split(",").each do |l| %>
+		<%=l%> <br />
+	<% end %>
+<% end %>

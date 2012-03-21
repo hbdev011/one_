@@ -1,0 +1,15 @@
+<%form_for :system, :url => {:action => 'setibt_admin'} do%>
+<table>
+<tr>
+	<td colspan="2" align="center"><%=flash[:notice]%></td>
+</tr>
+<tr>
+	<td>Password : </td>
+	<td><%=password_field_tag :password, '', :size => '15', :style=> 'text-align:left !important; '%></td>
+</tr>
+<tr>
+	<td></td>
+	<td><%=submit_tag 'Submit'%></td>
+</tr>
+</table>
+<%end%>

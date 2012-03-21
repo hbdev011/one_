@@ -1,0 +1,9 @@
+<%if !params[:mon_havarie].nil? && !params[:mon_havarie].blank?%>
+<%=select :umd, :mon_havarie,@quelle.collect {|p| [ p.name4stellig, p.intnummer ] }, {:selected => params[:mon_havarie].to_i, :include_blank => true},{:onchange => "document.getElementById('s_l_#{params[:id]}').click()",:style=>"width:65px;"} %>
+<%else%>
+<%=select :umd, :mon_havarie,@quelle.collect {|p| [ p.name4stellig, p.intnummer ] }, {:include_blank => true},{:onchange => "document.getElementById('s_l_#{params[:id]}').click()",:style=>"width:65px;"} %>
+<%end%>
+<script>
+document.getElementById('s_l_<%= params[:id] %>').click()
+</script>
+

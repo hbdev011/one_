@@ -1,0 +1,77 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="clean">
+	<tr>
+		<td width="320px" class="clean">
+			<div class="ibtDropShadow">
+				<% form_remote_tag :url => {:controller => "bmes", :action => "update_template_io", :id => @tpl.id}, :html => {:id => @tpl.id} do  %>
+				<table width="300" border="0" cellpadding="0" cellspacing="0" class= "ibtHeaderTable">
+					<tr>
+						<td class="clean"><strong>Nummer</strong></td>
+						<td class="clean"><%= @tpl.intnummer %></td>
+					</tr>
+					<tr>
+						<td class="clean"><strong>Name</strong></td>
+						<td class="clean"><%= @tpl.name %></td>
+					</tr>
+					<tr>
+						<td class="clean"><strong>Input</strong></td>
+						<td class="clean"><%=text_field :mixer_template, :input, :value => @tpl.input, :size => 3, :onchange => "document.getElementById('sb_tpl').click();" %></td>
+					</tr>
+					<tr>
+						<td class="clean"><strong>Output</strong></td>
+						<td class="clean">
+							<%=text_field :mixer_template, :output, :value => @tpl.output, :size => 3, :onchange => "document.getElementById('sb_tpl').click();" %>
+							<input type="image" src="/images/blank.png" width="0" height="0" id="sb_tpl" /> 
+						</td>
+					</tr>
+				</table>
+				<% end %>
+			</div>
+		</td>
+		<td valign="top" class="clean">&nbsp;&nbsp;
+			<input type="checkbox" id="change_all" onclick="setChangeAll();" /> Change All
+			<!-- onclick="setChangeAll('<%#=@page%>');" -->
+		</td>
+	</tr>
+</table>
+<table width="100%" border="0">
+	<tr>
+		<td width="100%" valign="top" style="border:1px solid #000;">
+			<center><h3>MIXER Template setup</h3></center>
+			<div class="ibtSourceTableMain">
+				<div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+				<div class="ibtSourceTableCol3">Char 4</div>
+				<div class="ibtSourceTableCol3">Char 5</div>
+				<div class="ibtSourceTableCol4">Char 6</div>
+				<div class="ibtSourceTableCol5">Char 10</div>
+				<div class="ibtSourceTableCol2">Simulated Destination</div>
+				<div class="ibtSourceTableCol6">Comment</div>
+			</div>
+			<div class="clear"></div>
+			<div id="setup_list">
+				<%=render :partial => "template_setup"%>
+			</div>
+
+		</td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+	//<![CDATA[
+	document.getElementById('change_all').checked = false;
+	function setChangeAll(){
+		var chk = document.getElementById('change_all');
+		var opt = ""
+		if (chk.checked == true){
+			opt = "yes"
+		} else {
+			opt = "no"
+		}
+
+		new Ajax.Request('/bmes/setChangeAll', {asynchronous:true, evalScripts:true, method:'post',parameters: {opt: opt}});
+	}
+
+
+
+
+	//]]>
+</script>

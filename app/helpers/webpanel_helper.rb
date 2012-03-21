@@ -1,0 +1,2 @@
+module WebpanelHelper
+end

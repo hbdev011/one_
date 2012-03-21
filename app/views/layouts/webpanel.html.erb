@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html class="ui-mobile-rendering">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery Mobile: Demos and Documentation</title>
+
+    <%= javascript_include_tag 'prototype', 'juggernaut/swfobject', 'juggernaut/juggernaut' %>
+    <%= juggernaut %>
+
+    <%= stylesheet_link_tag "jquery.mobile.css" %>
+    <%= javascript_include_tag "jquery.min.js" %>
+    <script>
+      jQuery.noConflict();
+    </script>
+    <%= javascript_include_tag "jquery.mobile.min.js" %>
+
+  </head>
+
+  <body>
+    <div data-role="page" class="type-home">
+      <div data-role="content">
+        <form action="webpanel_submit" method="get" accept-charset="utf-8">
+          <div data-role="fieldcontain">
+            <label for="slider-2">Input slider:</label>
+            <input type="range" name="slider-2" id="slider-2" value="25" min="0" max="100" data-theme="a" data-track-theme="b" />
+          </div>
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript">
+/*
+      var client = new Faye.Client('http://localhost:8000/faye');
+
+      var subscription = client.subscribe('/fader', function(message) {
+        console.log(message);
+        jQuery("#slider-2").val(parseInt(message.val)).slider("refresh");
+      });
+*/
+    function moveSlider(val){
+      jQuery("#slider-2").val(parseInt(val)).slider("refresh");
+    }
+    </script>
+<!--    <script type="text/javascript" charset="utf-8">
+          function debug(str) { console.log(str)};
+
+          ws = new WebSocket("ws://192.168.35.25:8000/");
+
+          ws.onopen = function() {
+            name = "Guest" + Math.floor ( Math.random ( ) * 1000 );
+            debug(name+ " entered the room");
+          };
+
+          ws.onmessage = function(evt) {
+            console.log(evt.data);
+            $("#slider-2").val(parseInt(evt.data)).slider("refresh");
+          };
+
+          ws.onclose = function() { alert("WebSocket server is down"); };
+
+    </script>-->
+  </body>
+</html>

@@ -1,0 +1,1 @@
+<%= select('source', :green, @tally, {:selected=>@source.green.to_i}, {:class => "ibtTableSelectBox", :onchange => "document.getElementById('submitchangeitem#{@source.id.to_s}').click();", :title => @source.green.to_s}) %> 

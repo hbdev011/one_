@@ -1,0 +1,14 @@
+Fixed UMD section problem of "KV Havarie 5-stellig"
+
+Fixed Mixer Template Setup problem
+
+1) Matrix and Mixer Type Quellen add new section Family in each row Listbox in each row
+
+2) Matrix Mixer Type Quellen page add enable checkbox for Crosspoint Label update section
+
+3) System auslesen does not work any more !!! IMPORTANT FUNCTION !!! (Worked with gpio.conf and gpio.txt)
+
+4) Creat a clean gpio.txt and a clean gpio.conf file in file structure when creating a new configuration
+
+5) Datei per FTP ins system übertragen buggy !!! IMPORTANT TO SOLVE !!!
+

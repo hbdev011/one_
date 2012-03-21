@@ -1,0 +1,34 @@
+<legend><b>MIXER Templates</b></legend>
+
+<table>
+<tr>
+<th>Nummer</th>
+<th>Name</th>
+<tr>
+
+<% @tpls.each do |@tpl| %>
+<tr>
+  <td>
+  	<% form_tag :controller=>'bmes', :action =>'update_mixer_template', :id => @tpl do %>  
+		<%= text_field :mixer_template, :intnummer, :size=>5, :value => @tpl.intnummer %>
+  </td>
+  <td><%= text_field :mixer_template, :name, :size=>20, :value => @tpl.name %></td>
+  <td><%= submit_tag %><% end %></td>
+  <td><%= button_to "loschen", "/bmes/delete_mixer_template/#{@tpl.id}", :confirm => "Sie sind sicher, dass Sie loschen Vorlage ?" %></td>
+  <td><%= link_to image_tag("edit.png",:style=>"border:none", :title => "editieren"), "/bmes/mixer_template_setup/#{@tpl.intnummer}" %> </td>
+  
+<tr>
+<% end %>
+</table>
+
+Neu:<br/>
+<table>
+  <tr>
+	<td><% form_tag :controller=>'bmes', :action =>'create_mixer_template' do %>  
+		<%= text_field :mixer_template, :intnummer, :size=>5 %>
+		<%= hidden_field :mixer_template, :system_id, :value => @system_id %>
+	</td>
+	<td><%= text_field :mixer_template, :name, :size=>20 %></td>
+	<td><%= submit_tag %><% end %></td>
+  </tr>
+</table>

@@ -1,0 +1,36 @@
+<% @families.each_with_index do |family, index| %>
+	<% content_tag_for :li, family do %>
+		<% form_remote_tag :url => {:controller=>'family', :action =>'update', :id => family} do %>
+		<input type="hidden" id="family_id">
+		<table width="100%">
+		<tr>
+			<td width="25%" align="center"><%=index+1%></td>
+			<td width="25%">
+				<%= text_field :family, :name, :size=>10, :value => family.name, :onchange => "$('submit#{family.id.to_s}').click();" %>
+			</td>
+			<td width="25%">
+				<%#= select(:family, :system_color_id, @system_colors.collect {|s| [ s.name, s.nummer ]}, {:selected => !family.system_color_id.nil? && family.system_color_id == 0 ? "":family.system_color_id, :include_blank => true}, {:onchange => "$('submit#{family.id.to_s}').click();"})%>
+				<select id="family_system_color_id" name="family[system_color_id]" onchange="$('submit<%=family.id.to_s%>').click();" onclick="jQuery('#family_id').val(<%=family.id%>)">
+					<option value=""></option>
+					<%@system_colors.collect.each do |s|%>
+						<option value="<%=s.nummer%>" <%if s.nummer == family.system_color_id%>selected<%end%> name="<%=family.id%>"><%=s.name%></option>
+					<%end%>
+				</select>
+				<input type="image" src="/images/blank.png" width="0" height="0" id="submit<%=family.id %>" />
+			</td>
+			<td width="10%">
+				<%if family.system_color_id!=0 && !family.system_color_id.nil?%>
+					<%system_color = SystemColor.new().getcolor(family.system_color_id)%>
+					<%=text_field_tag "color_#{family.id}","", :style=>"background-color:rgb(#{system_color.red},#{system_color.green},#{system_color.blue}); width:20px;"%>
+				<%else%>
+					<%system_color = SystemColor.new().getcolor(family.system_color_id)%>
+					<%=text_field_tag "color_#{family.id}","", :style=>"width:20px;"%>
+				<%end%>
+			</td>
+			<td width="25%"><%=link_to_function image_tag("cross.png",:style=>"border:none", :title => "loschen"), "deleteFamily(#{family.nummer})" %></td>
+		<tr>
+		</table>
+		<%end%>
+	<%end%>
+<% end %>
+<%= sortable_element("family", :url => "/family/sort", :handle => "handle") %>

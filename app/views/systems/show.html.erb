@@ -1,0 +1,394 @@
+<div style="display:none;" id="div-loader" class="relative">
+    <div class="loader-home" style="height:1000px;">
+        <img alt="Loading..." src="/images/ajax-loader.gif">
+    </div>
+</div>
+<%#  @system = System.find(params[:id]) %>
+<table width="100%">
+  <tr>
+	<td valign="top">
+	  <fieldset>
+		<h2>System - Unit</h2>
+		<table cellspacing="0">
+		  <tr bgcolor="white">
+			<th width="80">Name<br/>&nbsp;</th>
+			<th width="120">IP-Adresse<br/>&nbsp;</th>
+		  </tr>
+		</table>
+		<div style="width:100%; height:220px; overflow:auto;">
+			<% @system.frames.each do |@frame| %>
+			  <% form_remote_tag :url => {:controller=>'frames', :action =>'update'} do %>
+				<table cellspacing="0">
+				  <tr>
+					<td width="80" align="center" valign="top">
+						<%= hidden_field 'frame', :id, :id => @frame %>
+						UNIT <%= @frame.intnummer %>
+					</td>
+					<td width="120" align="center" valign="top">
+						<%= text_field('frame', :ipadresse, {:size=>12, :onchange=>"document.getElementById('s" + @frame.id.to_s + "').click();"}) %>
+						<input type="image" src="/images/blank.png" id="s<%= @frame.id.to_s %>" />
+					</td>
+					<td>
+						<table cellspacing="2" cellpadding='0' border='0' style="border:1px solid #000;">
+
+							<tr>
+								<td width="20px" align="center" style="border-right:1px solid #fff;" > <b class="small-lable">TL&nbsp;</b> </td>
+								<% evens = (1..Global::MAX_PORT).to_a.mod_val(2, 0) %>
+								<% evens.each do |p|%>
+									<td width="60px" valign="top" align="center" style="border-right:1px solid #fff;" >
+										<b style="color:#777;"> Port <%=p%> </b>
+										<p style="margin:0px; padding:0px;"> <%=get_port_user(@frame.intnummer, p)%> </p>
+									</td>
+								<% end %>
+								<td width="20px" align="center"> <b class="small-lable">TR&nbsp;</b> </td>
+							</tr>
+							<tr>
+								<td width="20px" align="center" style="border-right:1px solid #fff;" > <b class="small-lable">BL&nbsp;</b> </td>
+								<% odds = (1..Global::MAX_PORT).to_a.mod_val(2, 1) %>
+								<% odds.each do |p|%>
+									<td width="60px" valign="top" align="center" style="border-right:1px solid #fff;">
+										<b style="color:#777;"> Port <%=p%> </b>
+										<p style="margin:0px; padding:0px;"> <%=get_port_user(@frame.intnummer, p)%> </p>
+									</td>
+								<% end %>
+								<td width="20px" align="center"> <b class="small-lable">BR&nbsp;</b> </td>
+							</tr>
+
+						</table>
+					</td>
+				  </tr>
+				</table>
+			  <% end  %>
+			<% end %>
+		</div>
+	  </fieldset>
+	  <br/>
+	</td>
+  </tr>
+</table>
+
+<div id="kv_usernotice"> &nbsp; </div>
+  <table width="100%">
+  <tr>
+
+	<td valign="top" >
+	  <fieldset>
+		<h2>System - Kreuzschienen</h2>
+		<table cellspacing="0" width="100%" border="0">
+		  <tr bgcolor="white">
+			<th width="6%" align="center">Nr</th>
+			<th width="8%" align="center">Name</th>
+			<th width="8%" align="center">Function</th>
+			<th width="7%" align="center">Type</th>
+			<th width="9%" align="center">Protokoll</th>
+			<th width="5%" align="center">Input</th>
+			<th width="5%" align="center">Output</th>
+			<th width="7%" align="center">Master-Unit</th>
+			<th width="8%" align="center">Master-Port</th>
+			<th width="10%" align="center">Master-IP</th>
+			<th width="6%" align="center">Slave-Unit</th>
+			<th width="6%" align="center">Slave-Port</th>
+			<th width="10%" align="center">Slave-IP</th>
+			<th width="3%" align="center">bearbeiten</th>
+		  </tr>
+		</table>
+
+      <% @system.kreuzschienes.each do |@kreuzschiene| %>
+        <% form_remote_tag :url => {:controller=>'kreuzschienes', :action =>'update'}, :html => {:id => @kreuzschiene.id} do %>
+          <table cellspacing="0" width="100%" border="0">
+            <tr>
+              <td width="60px" align="center">
+                <%= hidden_field 'kreuzschiene', :id, :id => @kreuzschiene %>
+                KV_0<%= @kreuzschiene.intnummer %>
+              </td>
+              <td width="70px" align="center">
+                <%= text_field 'kreuzschiene',:name, {:size=>8, :onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();"} %>
+              </td>
+              <td width="80px" align="center">
+                <%= select('kreuzschiene', 'kr_type', @kr_type, { :include_blank => true, :selected => @kreuzschiene.kr_type.to_s}, :onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();" ) %>
+              </td>
+              <td width="80px" align="center"><!-- ||||| -->
+                <div id="tpl_<%=@kreuzschiene.id%>" style="width:70px; background: none repeat scroll 0 0 #FFFFFF; height: 19px;">
+                  <%=render :partial => "templates"%>
+                </div>
+              </td>
+              <td width="95px" align="center">
+                <%= select('kreuzschiene', 'protocol_id', @protocols, { :include_blank => true}, :onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();" ) %>
+              </td>
+              <td width="55px" align="center">
+                <%= text_field 'kreuzschiene', :input, {:size=>3, :onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();"} %>
+              </td>
+              <td width="55px" align="center">
+                <%= text_field 'kreuzschiene', :output, {:size=>3, :onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();"} %>
+              </td>
+              <td width="80px" align="center">
+                <%= select('kreuzschiene', :unit, @units, { :include_blank => true}, :onchange=>"new Ajax.Request('/systems/get_ports?curr_port=#{nil}&curr_unit='+this.value+'&s_id=#{@kreuzschiene.id}&opt=1', {asynchronous:true, evalScripts:true}); return false;" ) %>
+              </td>
+              <td width="60px" align="center">
+                <div class="cloneinput_bg" id="port1_<%=@kreuzschiene.id%>">
+                  <% if @kreuzschiene.unit %>
+                    <%= link_to_remote (@kreuzschiene.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @kreuzschiene.unit, :curr_port => @kreuzschiene.port, :s_id => @kreuzschiene.id, :opt => 1 } %>
+                  <% end %>
+                </div>
+              </td>
+              <td width="95px" align="center">
+                <%= text_field 'kreuzschiene', :ip , {:size=>16, :onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();", :onKeyPress => "return validateIP(event)", :maxlength => '15'} %>
+              </td>
+              <td width="55px" align="center">
+                <%= select('kreuzschiene', :unit2, @units, { :include_blank => true}, :onchange=>"new Ajax.Request('/systems/get_ports?curr_port=#{nil}&curr_unit='+this.value+'&s_id=#{@kreuzschiene.id}&opt=2', {asynchronous:true, evalScripts:true}); return false;" ) %>
+              </td>
+              <td width="55px" align="center">
+                <div class="cloneinput_bg" id="port2_<%=@kreuzschiene.id%>">
+                  <% if @kreuzschiene.unit2 %>
+                    <%= link_to_remote (@kreuzschiene.port2 || '--' ), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @kreuzschiene.unit2, :curr_port => @kreuzschiene.port2, :s_id => @kreuzschiene.id, :opt => 2 } %>
+                  <% end %>
+                </div>
+                <input type="image" src="/images/blank.png" id="k<%=@kreuzschiene.id.to_s%>" />
+              </td>
+              <td width="95px" align="center">
+                <%= text_field 'kreuzschiene', :ip2 , {:size=>16, :onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();", :onKeyPress => "return validateIP(event)", :maxlength => '15'} %>
+                <!--<input type="image" src="/images/blank.png" id="k<%=@kreuzschiene.id.to_s%>" />-->
+              </td>
+              <td width="30px">
+                <%= link_to image_tag("edit.png",:style=>"border:none", :title => "bearbeiten"), :controller=>'kreuzschienes', :action=>'edit', :id => @kreuzschiene %>
+              </td>
+            </tr>
+           </table>
+        <% end %>
+      <% end %>
+        <br/>  <br/>  <br/>
+      </fieldset>
+    </td>
+  </tr>
+</table>
+<div id="dv_usernotice"> &nbsp; </div>
+<table width="100%">
+  <tr>
+
+	  <td valign="top" width="70%">  <br />
+		<fieldset>
+			<h2>Devices</h2>
+			<table cellspacing="0" width="100%" border="0">
+			  <tr bgcolor="white">
+				<th width="50px" align="center">Nr</th>
+				<th width="65px" align="center">Name</th>
+				<th width="80px" align="center">Protokoll</th>
+				<th width="37px" align="center">Unit</th>
+				<th width="60px" align="center">Port</th>
+				<th width="95px" align="center">IP</th>
+				<th width="30px" align="center"></th>
+			  </tr>
+			</table>
+
+		  <% @system.devices.each do |@device| %>
+			<% form_remote_tag :url => {:controller=>'kreuzschienes', :action =>'update_device'}, :html => {:id => @device.id} do %>
+			  <table cellspacing="0" width="100%">
+				<tr>
+				  <td width="60px" align="center">
+					<%= hidden_field 'device', :id, :id => @device %>
+					<%= @device.nummer %>
+				  </td>
+				  <td width="70px" align="center">
+					<%= text_field 'device',:name, {:size=>8, :onchange=>"document.getElementById('d" + @device.id.to_s + "').click();"} %>
+				  </td>
+				  <td width="80px" align="center">
+					<%= select('device', 'protocol_id', @protocols, { :include_blank => true}, :onchange=>"document.getElementById('d" + @device.id.to_s + "').click();" ) %>
+				  </td>
+				  <td width="60px" align="center">
+					<%= select('device', :unit, @units, { :include_blank => true}, :onchange=>"new Ajax.Request('/systems/get_ports?curr_port=#{nil}&curr_unit='+this.value+'&s_id=#{@device.id}&opt=3', {asynchronous:true, evalScripts:true}); return false;" ) %>
+				  </td>
+				  <td width="60px" align="center">
+					<div class="cloneinput_bg" id="port3_<%=@device.id%>">
+					  <% if @device.unit %>
+						<%= link_to_remote (@device.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @device.unit, :curr_port => @device.port, :s_id => @device.id, :opt => 3 } %>
+					  <% end %>
+					</div>
+				  </td>
+				  <td width="95px" align="center">
+					<%= text_field 'device', :ip , {:size=>16, :onchange=>"document.getElementById('d" + @device.id.to_s + "').click();", :onKeyPress => "return validateIP(event)", :maxlength => '15'} %>
+					<input type="image" src="/images/blank.png" id="d<%=@device.id.to_s%>" />
+				  </td>
+				  <td width="30px">
+					&nbsp;<%#= link_to "bearbeiten", :controller=>'devices', :action=>'edit', :id => @device %>
+				  </td>
+				</tr>
+			   </table>
+			<% end %>
+		  <% end %>
+			<br/>  <br/>  <br/>
+		  </fieldset>
+			<br/>
+	  </td>
+  </tr>
+</table>
+
+<table width="50%">
+  <tr>
+	  <td valign="top" > <br />
+		<fieldset>
+			<h2>Tally HAV Section</h2>
+			<%if !@opt_tally.nil? && !@opt_tally.blank?%>
+			<input type="checkbox" id="tally_option" <%=@opt_tally.value=="yes"? "checked='true'" : nil%> onclick="update_tally();" /> Force Mode Havarie<br />&nbsp;
+			<%else%>
+			<input type="checkbox" id="tally_option" onclick="update_tally();" /> Force Mode Havarie<br />&nbsp;
+			<%end%>
+			<table cellspacing="0" width="100%">
+				<tr bgcolor="white">
+					<th width="80" align="center">Name</th>
+					<th width="50" align="center">Matrix</th>
+					<th width="50" align="center">Output</th>
+				</tr>
+			</table>
+			<% @system.tallies.each do |@tally| %>
+			  <% form_remote_tag :url => {:controller=>'systems', :action =>'update_tally'} do %>
+				<table cellspacing="0" border="0"  width="100%">
+					<tr>
+						<td width="80" align="left">
+							<div style="width:100%;">
+								<%= hidden_field 'tally', :id, :id => "tally_id" %>
+								<%= text_field('tally', :name, {:readonly => true, :style=>"width:90%;", :onchange=>"document.getElementById('s" + @tally.id.to_s + "').click();"}) %>
+							</div>
+						</td>
+						<td width="50" align="center">
+							<div id="kv_<%=@tally.id%>" style="width:100%;">
+								<%= select('tally', 'kreuzschiene_id', @kv, { :include_blank => true,:selected=>@tally.kreuzschiene_id}, {:style => "width:100%;",:onchange=>"document.getElementById('s" + @tally.id.to_s + "').click(); "} ) %>
+							</div>
+						</td>
+						<td width="50" align="center">
+							<div id="sn_<%=@tally.id%>" style="100%;">
+								<%=render :partial => "getSenke", :locals => { :kv_tally => @tally.kreuzschiene_id } %>
+							</div>
+							<input type="image" src="/images/blank.png" id="s<%= @tally.id.to_s %>" />
+						</td>
+					</tr>
+				</table>
+			  <% end  %>
+			<% end %>
+		</fieldset>
+		<br/>
+	  </td>
+
+  </tr>
+</table>
+
+<table width="100%">
+<tr>
+	<td><br />
+	<fieldset>
+		<h2>Matching Section</h2>
+		<table width="100%">
+		<tr>
+			<%@system_matchings.each_with_index do |@system_matching, index|%>
+			<td width="33%">	
+				<fieldset>
+				<h2>Matching Section <%=index+1%></h2>
+			  	<% form_remote_tag :url => {:controller=>'systems', :action =>'update_matching', :id => @system_matching.id} do %>
+				<table width="100%">
+				<tr>
+					<td width="120px;"><strong>Matching Set</strong></td>
+					<td width="160px;"><%=select "system_matching", "matching_set", [["No","0"],["Matching set 1","1"],["Matching set 2","2"],["Matching set 3","3"]], {:selected=>@system_matching.matching_set.to_s}, {:onchange => "document.getElementById('submit_matching" + @system_matching.id.to_s + "').click()"}%></td>
+				</tr>
+				<tr>
+					<td><strong>Select Panel</strong></td>
+					<td><%=select "system_matching", "matching_panel", (1..64).to_a, {:selected=>@system_matching.matching_panel, :include_blank => true},{:onchange => "document.getElementById('submit_matching" + @system_matching.id.to_s + "').click()"}%></td>
+				</tr>
+				<tr>
+					<td><strong>Matching Start</strong></td>
+					<td><%=select "system_matching", "matching_start_quelle", (1..64).to_a, {:selected=>@system_matching.matching_start_quelle, :include_blank => true},{:onchange => "document.getElementById('submit_matching" + @system_matching.id.to_s + "').click()"}%></td>
+				</tr>
+				<tr>
+					<td><strong>Matching End</strong></td>
+					<td><%=select "system_matching", "matching_end_quelle", (1..64).to_a, {:selected=>@system_matching.matching_end_quelle, :include_blank => true}, {:onchange => "document.getElementById('submit_matching" + @system_matching.id.to_s + "').click()"}%></td>
+					<input type="image" src="/images/blank.png" id="submit_matrix" width="0" height=0>
+				</tr>
+				<tr>
+					<td><strong>Matrix</strong></td>
+					<td><%= select('system_matching', 'matching_matrix', @kv, {:selected=>@system_matching.matching_matrix, :include_blank=>true}, {:onchange=>"document.getElementById('submit_matching" + @system_matching.id.to_s + "').click();"}) %></td>
+				</tr>
+				<tr>
+					<td><strong>Matrix</strong></td>
+					<td id="system_mathching_sn_<%=@system_matching.id%>">
+						<%=render :partial => "getSenke_matching", :locals => { :matching => @system_matching.matching_matrix} %>
+					</td>
+					<input type="image" src="/images/blank.png" id="submit_matching<%=@system_matching.id%>" width="0" height=0>
+				</tr>
+				</table>
+				<% end %>
+			</td>
+			<%end%>
+		</tr>
+		</table>
+	</fieldset>
+	</td>
+</tr>
+</table>
+
+<table width="100%">
+<tr>
+	<td><br />
+	<fieldset>
+		<h2>Assoziations</h2>
+		<table width="100%">
+		<%@system_assoziations.each_with_index do |@system_assoziation, index|%>
+		<tr>
+			<td>
+			<% form_remote_tag :url => {:controller=>'systems', :action =>'update_assoziation', :id => @system_assoziation.id} do %>
+			<table width="100%">
+			<tr>
+				<td colspan="4" align="left">Assoziation <%=index+1%></td>
+			</tr>
+			<tr>
+				<td width="25%">Source</td>
+				<td width="25%">1</td>
+				<td width="25%">2</td>
+				<td width="25%">3</td>
+			</tr>
+			<tr>
+				<td><%= select('system_assoziation', 'source_matrix', @kv, {:selected=>@system_assoziation.source_matrix, :include_blank=>true}, {:onchange=>"document.getElementById('system_assoziation" + @system_assoziation.id.to_s + "').click();"}) %></td>
+				<td><%= select('system_assoziation', 'matrix_1', @kv, {:selected=>@system_assoziation.matrix_1, :include_blank=>true}, {:onchange=>"document.getElementById('system_assoziation" + @system_assoziation.id.to_s + "').click();"}) %></td>
+				<td><%= select('system_assoziation', 'matrix_2', @kv, {:selected=>@system_assoziation.matrix_2, :include_blank=>true}, {:onchange=>"document.getElementById('system_assoziation" + @system_assoziation.id.to_s + "').click();"}) %></td>	
+				<td><%= select('system_assoziation', 'matrix_3', @kv, {:selected=>@system_assoziation.matrix_3, :include_blank=>true}, {:onchange=>"document.getElementById('system_assoziation" + @system_assoziation.id.to_s + "').click();"}) %></td>
+			</tr>
+			<tr>
+				<td id="system_assoziation_sn1_<%=@system_assoziation.id%>">
+					<%=render :partial => "getSenke_assoziation_source", :locals => { :assoziation => @system_assoziation.source_matrix} %>
+				</td>
+				<td id="system_assoziation_sn2_<%=@system_assoziation.id%>">
+					<%=render :partial => "getSenke_assoziation_matrix_1", :locals => { :assoziation => @system_assoziation.matrix_1} %>
+				</td>
+				<td id="system_assoziation_sn3_<%=@system_assoziation.id%>">
+					<%=render :partial => "getSenke_assoziation_matrix_2", :locals => { :assoziation => @system_assoziation.matrix_2} %>
+				</td>
+				<td id="system_assoziation_sn4_<%=@system_assoziation.id%>">
+					<%=render :partial => "getSenke_assoziation_matrix_3", :locals => { :assoziation => @system_assoziation.matrix_3} %>
+				</td>
+			</tr>
+			<input type="image" src="/images/blank.png" id="system_assoziation<%=@system_assoziation.id%>" width="0" height=0>
+			</table>
+			<%end%>
+			</td>
+		</tr>
+		<%end%>
+		</table>
+	</fieldset>
+	</td>
+</tr>
+</table>
+
+
+<script type="text/javascript">
+	//<![CDATA[
+	function update_tally(){
+		var chk = document.getElementById("tally_option");
+		var val = ""
+		if (chk.checked == true){
+			val = "yes"
+		} else {
+			val = "no"
+		}
+
+		new Ajax.Request('/options/update/1', {asynchronous:true, evalScripts:true, method:'post',parameters: {val: val}}); return false;
+	}
+	//]]>
+</script>
+

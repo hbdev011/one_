@@ -1,0 +1,28 @@
+<% if !@source.par_matrix.blank? && !@source.par_matrix.nil? %>
+	<% @kr = Kreuzschiene.getMatrix(@source.par_matrix.to_i, @system.id) %>
+	<% @quelle = @kr.getSourceQuelle %> 
+
+	<% if @quelle %>
+		<select title="<%=@source.quelle.to_s%>" onchange="document.getElementById('submitchangeitem<%=@source.id.to_s%>').click();" name="source[par_quelle]" id="source_par_quelle" class="ibtTableSelectBox">
+			<option selected="selected" value=""></option>
+			<%if session[:display]=='id'%>
+				<% @quelle.each do |q| %>
+					<option value="<%=q.intnummer%>" <%=@source.par_quelle.to_s == q.intnummer.to_s ? "selected='selected'" : nil%> ><%=q.intnummer%></option>
+				<% end %>
+			<%else%>
+				<% @quelle.each do |q| %>
+					<option value="<%=q.intnummer%>" <%=@source.par_quelle.to_s == q.intnummer.to_s ? "selected='selected'" : nil%> ><%=q.char6%></option>
+				<% end %>
+			<%end%>
+		</select>
+	<%else%>
+		<select id="source_quelle" name="source[quelle]" class="ibtTableSelectBox">
+			<option selected="selected" value="">&nbsp;</option>
+		</select>
+	<% end %>
+<%else%>
+	<select id="source_quelle" class="ibtTableSelectBox">
+		<option selected="selected" value="">&nbsp;</option>
+	</select>
+<% end %>
+

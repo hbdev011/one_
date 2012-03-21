@@ -1,0 +1,47 @@
+			<% form_remote_tag :url => { :controller=>'crosspoints', :action=>'update_kv',  :id => f }, :html => {:onsubmit => "$('spin_#{f.id}').show();"} do %>
+		          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+
+			        <tr>
+			          <td align="center" width="10%"><%= f.nummer %></td>
+			          <td align="center" width="10%">
+			            <span>
+			              <%= select('crosspoint','stack1',((1..9).to_a),{:selected => f.stack.to_s.split(".")[0].to_i  },{:onchange => "document.getElementById('s" + f.id.to_s + "').click();"}) %>
+			              <%= select('crosspoint','stack2',((0..15).to_a),{:selected => f.stack.to_s.split(".")[1].to_i  },{:onchange => "document.getElementById('s" + f.id.to_s + "').click();"}) %>
+			            </span>
+		            </td>
+			          <td align="center" width="10%"><%= select('crosspoint','frame',((1..10).to_a.map{|x| [x,x]}),{:selected => f.frame},{:onchange => "document.getElementById('s" + f.id.to_s + "').click();"}) %></td>
+			          <td align="center" width="5%"><%= select('crosspoint','slot',((1..7).to_a.map{|x| [x,x]}),{:selected => f.slot},{:onchange => "document.getElementById('s" + f.id.to_s + "').click();"}) %></td>
+			          <td align="center" width="22%">
+				    <%if !f.parameter.nil? && !f.parameter.blank?%>	
+			            <%= text_field("crosspoint","parameter", :value => f.parameter, :maxlength => 32, :onchange => "document.getElementById('s" + f.id.to_s + "').click();", :id => "parameter_#{f}", :style=>"width:230px;")%>
+				    <%else%>	
+				    <%= text_field("crosspoint","parameter", :value => '', :maxlength => 32,:onchange => "document.getElementById('s" + f.id.to_s + "').click();", :id => "parameter_#{f}", :style=>"width:230px;")%>
+				    <%end%>	
+			          </td>
+
+					<td align="center"  width="22%">
+						<%if !f.value.nil? && !f.value.blank?%>
+						<%= text_field("crosspoint","value",:value => f.value, :maxlength => 32, :onchange => "document.getElementById('s" + f.id.to_s + "').click();", :id => "value_#{f}", :style=>"width:230px;")%>
+						<%else%>
+						<%= text_field("crosspoint","value",:value => '', :maxlength => 32, :onchange => "document.getElementById('s" + f.id.to_s + "').click();", :id => "value_#{f}", :style=>"width:230px;")%>
+						<%end%>
+					</td>
+					<td align="center"  width="15%">
+						<%if !f.comment.nil? && !f.comment.blank?%>	
+						<%= text_field("crosspoint","comment",:value => f.comment, :maxlength => 16,:onchange => "document.getElementById('s" + f.id.to_s + "').click();", :id => "comment_#{f}", :style=>"width:150px;")%>
+						<%else%>
+						<%= text_field("crosspoint","comment",:value => f.comment, :maxlength => 16,:onchange => "document.getElementById('s" + f.id.to_s + "').click();", :id => "comment_#{f}", :style=>"width:150px;")%>
+						<%end%>
+					</td>
+
+					<td align="left"  width="6%" style="border-bottom:none;">
+						<div id="spin_<%=f.id%>" style="display:none;">
+						<%=image_tag "/images/spinner.gif" %>
+					</div>
+					<input type="image" src="/images/blank.png" id="s<%= f.id.to_s %>" width="0" height=0>
+					</td>					
+			        </tr>
+
+		          </table>
+			<%end%>
+

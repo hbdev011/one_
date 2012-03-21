@@ -1,0 +1,5 @@
+<% if @kreuzschiene.kr_type == "MIXER" %>
+	<%= select('kreuzschiene', 'mixer_template_id', @tpls, { :include_blank => true}, {:onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();",  :style => "width:70px;"} ) %> 
+<% else %>
+	<%= select('kreuzschiene', 'mixer_template_id', @m_types, { :include_blank => true}, {:onchange=>"document.getElementById('k" + @kreuzschiene.id.to_s + "').click();",  :style => "width:70px;"} ) %>
+<% end %>

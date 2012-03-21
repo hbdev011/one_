@@ -1,0 +1,12 @@
+<% if !assoziation.nil? %>
+	<% @kv_id = Kreuzschiene.getMatrix(@system_assoziation.source_matrix, @system.id) %>
+	<% if session[:display].nil? || session[:display]=='name' then %>
+		<% @targets = Target.find(:all, :conditions=>["kreuzschiene_id=?", @kv_id.id], :order=>"intnummer").map {|u| [u.name5stellig, u.intnummer]} %>
+	<% else %>
+		<% @targets = Target.find(:all, :conditions=>["kreuzschiene_id=?", @kv_id.id], :order=>"intnummer").map {|u| [u.intnummer, u.intnummer]} %>
+	<% end %>
+
+	<%= select('system_assoziation', 'source_senke', @targets, { :include_blank => true,:selected=> @system_assoziation.source_senke}, {:style => "width:100px;",:onchange=>"document.getElementById('system_assoziation" + @system_assoziation.id.to_s + "').click(); "} ) %>
+<% else %>
+	___
+<% end %>

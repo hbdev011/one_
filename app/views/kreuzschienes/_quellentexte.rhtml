@@ -1,0 +1,238 @@
+<% @sources=@kreuzschiene.getSources %> 
+<% height = (@sources.size*20)+30 %>
+<div style="display:none;" id="div-loader" class="relative">
+    <div class="loader-home" style="height:<%=height%>px;">
+        <img alt="Loading..." src="/images/ajax-loader.gif">
+    </div>
+</div>
+
+<center><h3>Quellen</h3></center>
+
+<div class="ibtSourceTableMain">
+    <div class="ibtSourceTableSubTitle1" style="width:30% !important;padding-left: 9px;" >Label</div>
+    <% if session[:mode]!="user" then %>
+        <div class="ibtSourceTableSubTitle2" style="width:42% !important;padding-left: 6px;">
+            <div class="ibtSourceTableSubTitle3" style="padding:0px;width:43% !important">Tally</div>
+            <div class="ibtSourceTableSubTitle31" style="width:47% !important;padding:0px;  float:left;border-left:1px solid white">Audio follow Video</div>
+        </div>
+    <% end %>
+    <% kv_nr = @kreuzschiene.id %>
+	<% if session[:mode]!="user" then %>
+		<div class="ibtSourceTableSubTitle4" style="border-right:1px solid #fff;width: 16% !important;">
+		Crosspoint Label update / Feed from
+		</div>
+	<% end %>
+    <div class="ibtSourceTableSubTitle45" style="width:2%  !important">&nbsp;</div>
+</div>
+
+<div class="clear"></div>
+
+<div class="ibtSourceTableMain">
+    <div class="ibtSourceTableCol1" class="clean" style="padding-right:0px;">&nbsp;</div>
+    <div class="ibtSourceTableCol4" style="padding-right:0px;">Label1</div>
+    <div class="ibtSourceTableCol4" style="padding-right:0px;">Label2</div>
+    <div class="ibtSourceTableCol4" style="padding-right:0px;">Label3</div>
+    <div class="ibtSourceTableCol4" style="padding-right:0px;">Label4</div>
+    <% if session[:mode]!="user" then %>
+        <div class="ibtSourceTableCol2" style="padding-right:0px;">Clone Input</div>
+        <div class="ibtSourceTableCol1" style="padding-right:0px;">Red</div>
+	<div class="ibtSourceTableCol1" style="padding-right:0px;">Green</div>
+	<div class="ibtSourceTableCol1" style="padding-right:0px;">Yellow</div>	
+	<div class="ibtSourceTableCol1" style="padding-right:0px;">Blue</div>
+        <div class="ibtSourceTableCol2" style="padding-right:0px;">Matrix</div> <!-- kreuzschienes tbl :: nummer col val :: use id (729) -->
+        <div class="ibtSourceTableCol2" style="padding-right:0px;">Quelle</div> <!-- Source tbl :: char6 col val :: related to matrix val -->
+        <div class="ibtSourceTableCol2" style="padding-right:0px;">Channel</div>
+        <div class="ibtSourceTableCol2" style="padding-right:0px;">Family</div>
+
+	<div class="ibtSourceTableCol2" style="padding-right:0px;width:57px;" align="middle">Enable</div>
+	<div class="ibtSourceTableCol2" style="padding-right:0px;">Matrix</div>
+	<div class="ibtSourceTableCol2" style="padding-right:0px;">Senke</div>
+    <% end %>
+   
+    <div class="ibtSourceTableCol6" style="width:7% !important;padding-right:0px;">Comment</div>
+    <div style="width:1%; float:left;" style="width:1% !important;padding-right:0px;">&nbsp; </div>
+</div>
+
+<div class="clear"></div>
+
+<% kr_type = @kreuzschiene.kr_type %>
+<% @sources.each do |@source| %>
+    <% form_remote_tag :url => {:controller=>'sources', :action =>'update', :id => @source}, :html => {:id => @source.id} do %>
+        <div class="ibtSourceTableHeader"style="margin-top:1px;">
+            <div class="ibtSourceTableCol1" class="clean" style="padding-right:0px;">
+                <%= @source.nummer %>
+            </div>
+            <div class="ibtSourceTableCol4" style="padding-right:0px;">
+                <input type="hidden" name="id" value="<%= @source.nummer %>">
+                <input type="hidden" name="kreuzschiene_id" value="<%= @source.kreuzschiene_id %>">
+                <%= text_field 'source', :name4stellig, {:maxlength=>10, :onchange=>"document.getElementById('submitchangeitem" + @source.id.to_s + "').click();", :title => @source.name4stellig, :style => "width:90%;"} %>
+            </div>
+            <div class="ibtSourceTableCol4" style="padding-right:0px;">
+                <%= text_field 'source', :name5stellig, {:maxlength=>10, :onchange=>"document.getElementById('submitchangeitem" + @source.id.to_s + "').click();", :title => @source.name5stellig, :style => "width:90%;"} %>
+            </div>
+            <div class="ibtSourceTableCol4" style="padding-right:0px;">
+                <%= text_field 'source', :char6, {:maxlength=>10, :onchange=>"document.getElementById('submitchangeitem" + @source.id.to_s + "').click();", :title => @source.char6, :style => "width:92%;"} %>
+            </div>
+            <div class="ibtSourceTableCol4" style="padding-right:0px;">
+                <%= text_field 'source', :char10, {:maxlength=>10, :onchange=>"document.getElementById('submitchangeitem" + @source.id.to_s + "').click();", :title => @source.char10, :style => "width:92%;"} %>
+            </div>
+            <% if session[:mode]!="user" then %>
+                <div class="ibtSourceTableCol2 cloneinput_bg" id="cloneinput_<%=@source.id%>" style="padding-right:0px;">
+                    <center>
+                        <% if @source.cloneinput.nil? && @source.cloneinput.blank? %>
+                            <% @clone = '____' %>
+                        <% else %>
+                            <% @clone = Source.getCloneRecord(@source.cloneinput.to_i, @kreuzschiene.id) %>
+                            <% if !@clone.nil? && !@clone.char6.nil? && !@clone.char6.blank?
+                                if session[:display]=='id'
+                                    @clone = @clone.intnummer
+                                else
+                                    @clone = @clone.char6
+                                end
+                            else
+                                @clone = "____"
+                            end %>
+                        <% end %>
+                        <%= link_to @clone, "Javascript:void(0)", :style => "text-decoration:none;", :onclick => "getCloneInput('#{@source.intnummer.to_s}','#{session[:display]}');"%>
+                    </center>
+                </div>
+                <div class="ibtSourceTableCol1 cloneinput_bg" id="source_tally<%=@source.id%>" style="padding-right:0px;">
+                    <center>
+                        <%= link_to (@source.tallybit.nil? || @source.tallybit.blank?) ? "____" : @source.tallybit, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_tally', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@source.id} } } ); " %>
+                    </center>
+                </div>
+                <div class="ibtSourceTableCol1 cloneinput_bg" id="source_green<%=@source.id%>" style="padding-right:0px;">
+                    <center>
+                        <%= link_to (@source.green.nil? || @source.green.blank?) ? "____" : @source.green, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_green', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@source.id} } } ); " %>
+                    </center>
+                </div>
+                <div class="ibtSourceTableCol1 cloneinput_bg" id="source_yellow<%=@source.id%>" style="padding-right:0px;">
+                    <center>
+                        <%= link_to (@source.yellow.nil? || @source.yellow.blank?) ? "____" : @source.yellow, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_yellow', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@source.id} } } ); " %>
+                    </center>
+                </div>
+                <div class="ibtSourceTableCol1 cloneinput_bg" id="source_blue<%=@source.id%>" style="padding-right:0px;">
+                    <center>
+                        <%= link_to (@source.blue.nil? || @source.blue.blank?) ? "____" : @source.blue, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_blue', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@source.id} } } ); " %>
+                    </center>
+                </div>
+
+                <div class="ibtSourceTableCol3 cloneinput_bg" style="padding-right:0px;" id="source_matrix<%=@source.id%>">
+			<center>
+			<% if session[:display]=='id'%>
+			<%= link_to (@source.matrix.nil? || @source.matrix.blank?) ? "____" : @source.matrix, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_matrix', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@source.id} } } ); " %>
+			<%else%>
+			<%= link_to (@source.matrix.nil? || @source.matrix.blank?) ? "____" : Kreuzschiene.getMatrixByIntNummer(@source.matrix, cookies[:system_id]), "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_matrix', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@source.id} } } ); " %>
+			<%end%>
+			</center>
+                </div>
+
+                <div class="ibtSourceTableCol2 cloneinput_bg" id="source_<%=@source.id%>" style="padding-right:0px;" >
+                    <center>
+                        <%
+                            if !@source.matrix.blank? && !@source.matrix.nil?
+                                system = System.find(cookies[:system_id])
+                                @ql = Source.getQuelleNameByNummer(@source.quelle, @source.matrix, system)
+                        %>
+                            <%= link_to (@ql.nil? || @ql.blank?) ? "____" : @ql, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_quelle', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@source.id} } } ); " %>
+                        <% else %>
+                            ____
+                        <%end%>
+                    </center>
+                </div>
+
+                <div class="ibtSourceTableCol2 cloneinput_bg" id="source_channel<%=@source.id%>" style="padding-right:0px;" >
+                    <center>
+                        <%= link_to (@source.channel.nil? || @source.channel.blank?) ? "____" : @source.channel, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_channel', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@source.id} } } ); " %>
+                    </center>			                    
+                </div>
+
+                <div class="ibtSourceTableCol2 cloneinput_bg" id="source_family_id<%=@source.id%>" style="padding-right:0px;" >
+                    <center>
+			<% if session[:display]=='id'%>
+        	                <%= link_to (@source.family_id.nil? || @source.family_id.blank? || @source.family_id.to_i==0) ? "____" : @source.family_id, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_family', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@source.id} } } ); " %>
+			<%else%>
+				<%= link_to (@source.family_id.nil? || @source.family_id.blank? || @source.family_id.to_i==0) ? "____" : Family.get_family(@source.family_id), "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_family', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@source.id} } } ); " %>
+			<%end%>
+                    </center>			                    
+                </div>
+
+
+
+		<div class="ibtSourceTableCol2" id="source_family_<%=@source.id%>" style="padding-right:0px;width:50px;" align="middle">
+		<%= check_box_tag "source[enable]","1", ((@source.enable == 0) ? false : true), :onchange=>"document.getElementById('submitchangeitem#{@source.id.to_s}').click();" %>
+		</div>
+		<div class="ibtSourceTableCol2 cloneinput_bg" style="padding-right:0px;" id="source_mx_matrix<%=@source.id%>">
+			<center>
+			<% if session[:display]=='id'%>
+			<%= link_to (@source.mx_matrix.nil? || @source.mx_matrix.blank?) ? "____" : @source.mx_matrix, "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_mx_matrix', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@source.id} } } ); " %>
+			<%else%>
+			<%= link_to (@source.mx_matrix.nil? || @source.mx_matrix.blank?) ? "____" : Kreuzschiene.getMatrixByIntNummer(@source.mx_matrix, cookies[:system_id]), "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_mx_matrix', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@source.id} } } ); " %>
+			<%end%>
+			</center>
+		</div>
+
+		<div class="ibtSourceTableCol2 cloneinput_bg" id="source_sn_<%=@source.id%>" style="padding-right:0px;">
+		<center>
+		    <%
+			if !@source.mx_matrix.blank? && !@source.mx_matrix.nil?
+			    system = System.find(cookies[:system_id])
+			    @senke = Target.getQuelleNameByNummer(@source.mx_senke, @source.mx_matrix, system)
+		    %>
+			<%=link_to (@senke || "____"), "Javascript:void(0)", :onclick => "new Ajax.Request('/sources/get_mx_senke', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@source.id} } } ); " %>
+		    <% else %>
+			____
+		    <% end %>
+		</center>
+		</div>
+            <% end %>
+    
+            <div class="ibtSourceTableCol6" style="padding-right:0px;width:7%">
+                <%= text_field 'source', :comment, {:maxlength=>16, :onchange=>"document.getElementById('submitchangeitem" + @source.id.to_s + "').click();", :title => @source.comment, :style => "width:95%;"} %>
+                <input type="hidden" id="kr_id" name="kr_id" value="<%=kv_nr%>"/>
+                <input type="image" src="/images/blank.png" width="0" height="0" id="submitchangeitem<%= @source.id.to_s %>" />
+            </div>
+
+            <div style="width:2%; float:left;padding-top:3px;padding-right:0px;">&nbsp;
+                <%#=link_to_remote "Entfernen", :url => {:controller=>'kreuzschienes', :action => 'remove_row', :row_nr => @source.intnummer, :page => @page, :inputs => @kreuzschiene.input, :outputs => @kreuzschiene.output, :kv_id => kv_nr}, :html => {:onclick => "$('div-loader').show();"}, :confirm => "Sie sind sicher, dass Sie Zeile entfernen ?" %>
+                <%#=link_to "Entfernen", "Javascript:void(0)", :onclick => "delete_row(#{@source.intnummer}, '#{@page}', #{@kreuzschiene.input}, #{@kreuzschiene.output}, #{kv_nr} );" %>
+                <%=link_to image_tag("cross.png",:style=> "border:none;"), "Javascript:void(0)", :onclick => "delete_row(#{@source.intnummer}, '#{@page}', #{@kreuzschiene.input}, #{@kreuzschiene.output}, #{kv_nr} );" , :style=>"border:none;text-decoration:none" %>
+            </div>
+        </div>
+    <% end %>
+    <div class="clear"></div>
+<% end %>
+
+<script type="text/javascript">
+    //<![CDATA[
+    function getQuelle(source_id){
+        document.getElementById('submitchangeitem'+source_id).click();
+    }
+
+    function getSenke(source_id){
+        document.getElementById('submitchangeitem'+source_id).click();
+    }
+
+    function delete_row(row_nr, page, inputs, outputs, kv_id) {
+        if (confirm('Sie sind sicher, dass Sie Zeile entfernen ?')) {
+            $('div-loader').show();
+            new Ajax.Request('/kreuzschienes/remove_row?inputs='+inputs+'&kv_id='+kv_id+'&outputs='+outputs+'&page='+page+'&row_nr='+row_nr, {asynchronous:true, evalScripts:true});
+        };
+        return false;
+    }
+
+    //]]>
+</script>
+<style type="text/css" media="screen">
+/* <![CDATA[ */
+    .ibtSourceTableCol3{width:5%;}
+    .ibtSourceTableSubTitle1 {
+        width: 30%;
+        float: left;
+        border-right: 1px solid white;
+        padding-left: 8px !important;
+    }
+    input[type=text]{margin-top:-1px;}
+/* ]]> */
+</style>
+

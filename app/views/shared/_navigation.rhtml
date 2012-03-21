@@ -1,0 +1,78 @@
+<%  system_id = cookies[:system_id] 
+    #begin
+    #    @system = System.find(system_id)
+    #rescue
+    #    @system = System.new
+    #end      
+%>
+
+
+<fieldset>
+  
+  <table>
+    <tr>
+      <td class="clean">
+        <% begin %>
+            Aktuell geladene Konfiguration <b><%= @system.name %></b> 
+        <% rescue %>
+            Keine Konfiguration geladen       
+        <% end %> 
+        | <%= link_to "Konfigurationsauswahl", :controller=>"systems" %>  |
+        
+      </td>
+      <td class="clean">
+        <b>[ Dropdown-Anzeige: 
+        <% if session[:display].nil? || session[:display]=='name' then %>
+            <%= link_to "nach ID", :controller=>request.path, :display=>'id' %> 
+        <% else %>
+            <%= link_to "nach Name", :controller=>request.path, :display=>'name' %> 
+        <% end %>
+        ]</b>
+      </td>
+      <td class="clean">
+        <% form_tag(:controller=>'systems', :action=>'ftptransfer', :id=>system_id) do %>
+            <%= submit_tag "Daten per FTP ins System übertragen", :disable_with=>"Übertragung..." %>
+        <% end %> 
+      </td>
+    </tr>
+  </table>
+
+</fieldset>
+
+
+<fieldset>
+
+<% if session[:mode]=="admin" then %>
+  <%= link_to "System", :controller=>'systems', :action=>'show', :id=>system_id %> | 
+<% end %>
+<%= link_to "Panels", :controller=>'bediengeraets', :action=>'show' %> | 
+<%  
+    @system.kreuzschienes.each do |@kreuzschiene|
+        if @kreuzschiene.name!="" then 
+%>
+              <%= link_to @kreuzschiene.name, :controller=>'kreuzschienes', :action=>'edit', :id=>@kreuzschiene.id %> | 
+<%      
+        end
+    end 
+%>
+<%= link_to "UMD", :controller=>'umds', :action=>'show', :id=>system_id %> |
+
+<%= link_to "XP_Setup", :controller=>'crosspoints', :action=>'show_ajax', :system_id=>system_id %> |
+<%= link_to "Mixer", :controller=>'bmes', :action=>'show', :id=>system_id %> |
+
+<% if session[:mode]=="admin" then %>
+
+  <i><%= link_to "Protokolle", :controller=>'protocols', :action=>'show', :id=>system_id %></i> |
+  <i><%= link_to "BD Typen", :controller=>'bdtypes', :action=>'show', :id=>system_id %></i> |
+
+<% end %>
+
+</fieldset>
+
+
+  <% if flash[:notice] %>
+  <div id="usernotice"><div class="usernotice"><font color="red"><i><%= flash[:notice] %></i></font></div></div>
+  <% else %>
+    <div id="usernotice"><div class="usernotice">&nbsp;</div></div>
+  <% end %>
+

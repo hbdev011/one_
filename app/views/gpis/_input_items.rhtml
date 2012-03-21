@@ -1,0 +1,42 @@
+	<% if @change_items == 0 %>
+		<div class="ibtSourceTableCol2">
+			<%= text_field :gp_input, :unit, :style => "width:95%;", :readonly => true %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<%= text_field :gp_input, :port, :style => "width:95%;", :readonly => true %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<%= text_field :gp_input, :byte, :style => "width:95%;", :onkeypress => "return numbersOnly(event);" %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<%= select :gp_input, :bit, @bit, {:include_blank => true}, {:style => "width:95%;"} %>
+		</div>
+	<% else %>
+		<%if @val == "Panel"%>
+			<div class="ibtSourceTableCol2">
+				<%= select :gp_input, :unit, @panels, {:include_blank => true}, {:style => "width:95%;"} %>
+			</div>
+			<div class="ibtSourceTableCol2">
+				<%= text_field :gp_input, :port, :value => "1", :style => "width:95%;", :readonly => true %>
+			</div>
+			<div class="ibtSourceTableCol2">
+				<%= text_field :gp_input, :byte, :style => "width:95%;", :onkeypress => "return numbersOnly(event);" %>
+			</div>
+			<div class="ibtSourceTableCol2">
+				<%= text_field :gp_input, :bit, :value => "1", :style => "width:95%;", :readonly => true %>
+			</div>
+		<%else%>
+			<div class="ibtSourceTableCol2">
+				<%= select :gp_input, :unit, @units, {:include_blank => true}, {:style => "width:95%;", :onchange => "new Ajax.Request('/systems/get_ports?curr_port=&curr_unit='+this.value+'&s_id=new&opt=5', {asynchronous:true, evalScripts:true}); return false;"} %>
+			</div>
+			<div class="ibtSourceTableCol2" id="port5_new">
+				<%= text_field :gp_input, :port, :style => "width:95%;", :readonly => true %>
+			</div>
+			<div class="ibtSourceTableCol2">
+				<%= text_field :gp_input, :byte, :style => "width:95%;" %>
+			</div>
+			<div class="ibtSourceTableCol2">
+				<%= select :gp_input, :bit, @bit, {:include_blank => true}, {:style => "width:95%;"} %>
+			</div>
+		<%end%>
+	<% end %>

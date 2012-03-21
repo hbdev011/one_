@@ -1,0 +1,21 @@
+<% if @page=="quellen" %>
+	<% if field == "signal" %>
+		<%= select 'source', :signal, @signals, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange=>"$('submitchangeitem" + @source.id.to_s + "').click();"} %>
+	<% elsif field == "subclass" %>
+		<%= select 'source', :subclass, @subclass, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange=>"$('submitchangeitem" + @source.id.to_s + "').click();"} %>
+	<% elsif field == "component" %>
+		<%= select 'source', :component, @component, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange=>"$('submitchangeitem" + @source.id.to_s + "').click();"} %>
+	<% elsif field == "subcomponent" %>
+		<%= select 'source', :subcomponent, @subcomponent, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange=>"$('submitchangeitem" + @source.id.to_s + "').click();"} %>
+	<% end %>
+<% else %>
+	<% if field == "signal" %>
+		<%= select 'target', :signal, @signals, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange=>"$('submitchangeitem" + @target.id.to_s + "').click();"} %>
+	<% elsif field == "subclass" %>
+		<%= select 'target', :subclass, @subclass, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange=>"$('submitchangeitem" + @target.id.to_s + "').click();"} %>
+	<% elsif field == "component" %>
+		<%= select 'target', :component, @component, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange=>"$('submitchangeitem" + @target.id.to_s + "').click();"} %>
+	<% elsif field == "subcomponent" %>
+		<%= select 'target', :subcomponent, @subcomponent, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange=>"$('submitchangeitem" + @target.id.to_s + "').click();"} %>
+	<% end %>
+<% end %>

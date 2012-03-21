@@ -1,0 +1,32 @@
+<legend><b>MATRIX Types</b></legend>
+<div> <%=flash[:message]%>&nbsp; </div>
+<table>
+<tr>
+<th>Nummer</th>
+<th>Name</th>
+<tr>
+
+<% @m_types.each do |@m| %>
+<tr>
+  <td>
+	<% form_tag :controller=>'kreuzschienes', :action =>'update_matrix_type', :id => @m do %>  
+		<%= text_field :matrix_type, :intnummer, :size=>5, :value => @m.intnummer %>
+  </td>
+  <td><%= text_field :matrix_type, :title, :size=>20, :value => @m.title %></td>
+  <td><%= submit_tag %><% end %></td>
+  <td><%= button_to "loschen", "/kreuzschienes/delete_matrix_type/#{@m.intnummer}", :confirm => "Sie sind sicher, dass Sie Matrix Typ löschen ?" %></td>
+
+<tr>
+<% end %>
+</table>
+
+Neu:<br/>
+<table>
+  <tr>
+	<td><% form_tag :controller=>'kreuzschienes', :action =>'create_matrix_type' do %>  
+		<%= text_field :matrix_type, :intnummer, :size=>5 %>
+	</td>
+	<td><%= text_field :matrix_type, :title, :size=>20 %></td>
+	<td><%= submit_tag %><% end %></td>
+  </tr>
+</table>

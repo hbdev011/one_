@@ -1,0 +1,5 @@
+<%if @target.family_id.nil?%>
+	<%= select('target', :family_id, @families, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange => "document.getElementById('submitchangeitemt#{@target.id.to_s}').click();", :title => @target.family_id.to_s}) %> 
+<%else%>
+	<%= select('target', :family_id, @families, {:selected=>@target.family_id.to_i, :include_blank => true}, {:class => "ibtTableSelectBox", :onchange => "document.getElementById('submitchangeitemt#{@target.id.to_s}').click();", :title => @target.family_id.to_s}) %> 
+<%end%>

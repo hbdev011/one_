@@ -1,0 +1,34 @@
+			<% @setups.each do |@tpl| %>
+				<% form_remote_tag :url => {:controller=>'bmes', :action =>'update_mixer_template_setup', :id => @tpl.id}, :html => {:id => @tpl.id} do %>
+				<div class="ibtSourceTableHeader">
+					<div class="ibtSourceTableCol1" class="clean">
+						<%= @tpl.intnummer %>
+					</div>
+					<div class="ibtSourceTableCol3">
+						<input type="hidden" name="id" value="<%= @tpl.intnummer %>">
+						<%= text_field 'mixer_template_setup', :name4stellig, {:maxlength=>4, :onchange=>"document.getElementById('submitchangeitem" + @tpl.id.to_s + "').click();", :title => @tpl.name4stellig, :style => "width:95%;", :value => @tpl.name4stellig} %>
+					</div>
+					<div class="ibtSourceTableCol3">
+						<%= text_field 'mixer_template_setup', :name5stellig, {:maxlength=>5, :onchange=>"document.getElementById('submitchangeitem" + @tpl.id.to_s + "').click();", :title => @tpl.name5stellig, :style => "width:95%;", :value => @tpl.name5stellig} %>
+					</div>
+					<div class="ibtSourceTableCol4">
+						<%= text_field 'mixer_template_setup', :char6, {:maxlength=>6, :onchange=>"document.getElementById('submitchangeitem" + @tpl.id.to_s + "').click();", :title => @tpl.char6, :style => "width:95%;", :value => @tpl.char6} %>
+					</div>
+					<div class="ibtSourceTableCol5">
+						<%= text_field 'mixer_template_setup', :char10, {:maxlength=>10, :onchange=>"document.getElementById('submitchangeitem" + @tpl.id.to_s + "').click();", :title => @tpl.char10, :style => "width:95%;", :value => @tpl.char10} %>
+					</div>
+
+					<div class="ibtSourceTableCol2">
+						<%= text_field 'mixer_template_setup', :tallybit, {:maxlength=>4, :onchange=>"document.getElementById('submitchangeitem" + @tpl.id.to_s + "').click();", :title => @tpl.tallybit, :style => "width:95%;", :value => @tpl.tallybit} %>
+						<%#= select('mixer_template_setup', :tallybit, @tally, {:selected=>@tpl.tallybit.to_i}, {:class => "ibtTableSelectBox", :onchange => "document.getElementById('submitchangeitem#{@tpl.id.to_s}').click();", :title => @tpl.tallybit.to_s}) %> 
+					</div>
+
+					<div class="ibtSourceTableCol6">
+						<%= text_field 'mixer_template_setup', :comment, {:maxlength=>16, :onchange=>"document.getElementById('submitchangeitem" + @tpl.id.to_s + "').click();", :title => @tpl.comment, :style => "width:95%;", :value => @tpl.comment} %>
+
+						<input type="image" src="/images/blank.png" width="0" height="0" id="submitchangeitem<%= @tpl.id.to_s %>" /> 
+					</div>
+				</div>
+				<% end %>
+			<div class="clear"></div>
+			<% end %>

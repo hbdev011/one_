@@ -1,0 +1,53 @@
+<%
+  if session[:display].nil? || session[:display]=='name' then
+
+      if @currcrosspoint.source_id>0 then
+        begin
+          sourcename = @currcrosspoint.sourcename.to_s
+        rescue
+          sourcename = "leer"
+        end            
+      end
+
+      if @currcrosspoint.target_id>0 then
+        begin
+          targetname = @currcrosspoint.targetname.to_s
+        rescue
+          targetname = "leer"
+        end           
+      end
+
+    else
+      
+      sourcename = @currcrosspoint.source_id.to_s
+      targetname = @currcrosspoint.target_id.to_s
+    end
+    
+        sourcename = "___" if sourcename.nil? or sourcename==""
+        targetname = "___" if targetname.nil? or targetname==""
+%>
+
+<table width="600" border="0" cellpadding="0" cellspacing="0">
+  
+  <tr>        
+    <td width="120"><%= @currcrosspoint.nummer %></td> 
+    <td width="120">
+      <% form_tag do %>
+          <%= select('crosspoint', 'kreuzschiene_id', @kv ,{:include_blank=>true, :selected=>@currcrosspoint.kreuzschiene_id}, :onchange=>"document.getElementById('submitx" + @currcrosspoint.id.to_s + "').click();") %>
+          <%= submit_to_remote 'update_btn', 'ändern', :url=>{ :controller=>'crosspoints', :action =>'update', :id => @currcrosspoint}, :update=>"div_" + @currcrosspoint.id.to_s %>
+      <% end %>
+    </td>
+    <td width="120">
+      <%= link_to_remote(sourcename + " ",
+      :update => "div_" + @currcrosspoint.id.to_s,
+      :url =>{ :controller=>:crosspoints, :action => :show_single_edit, :id=>@currcrosspoint }) %> 
+    </td>
+    <td width="120">
+       <%= link_to_remote(targetname + " ",
+      :update => "div_" + @currcrosspoint.id.to_s,
+      :url =>{ :controller=>:crosspoints, :action => :show_single_edit, :id=>@currcrosspoint }) %> 
+
+    </td>
+  </tr>
+
+</table>

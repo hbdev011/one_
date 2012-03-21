@@ -1,0 +1,140 @@
+<% breite=75 %>
+<%= render(:partial => "/shared/typheader", :locals => { :panel=>@panel } )%> <br/>
+<% height = get_panel_spinner_height(@panel.bdtype_id) %>
+
+<div style="display:none;" id="div-loader" class="relative">
+  <div class="loader-home" style="height:<%=height%>px;"> 
+    <img alt="Loading..." src="/images/ajax-loader.gif"> 
+  </div>
+</div>
+
+<table border="0" cellpadding="0" cellspacing="0" >
+	<tr>
+		<td>
+			<%= button_to "1:1 Belegung", {:action=>"oneonone", :part=>'quellen', :id=>@panel}, {:onclick => "if (confirm('Wollen Sie wirklich die Tastenzuordnung 1:1 anwenden')){$('div-loader').show();}", :class => 'panel-button'} %>
+		</td>
+
+		<td>
+			<%= button_to "Clear Quellen", {:controller => "bediengeraets", :action=>"clear_section", :part=>'quellen', :id=>@panel}, {:onclick => "if (confirm('Wollen Sie wirklich auf Clear Quellen')){$('div-loader').show();}", :class => 'panel-button'} %>
+		</td>
+
+		<td style="width:250px;" class="btn-space">
+			<%=render :partial => "shared/add_normal_quelle"%>
+		</td>
+
+		<td style="width:250px;">
+			<%=render :partial => "shared/remove_normal_quelle"%>
+		</td>
+		<td style="width:350px;">
+			<%form_remote_tag :url => {:controller => 'bediengeraets', :action => 'update_normalquelle', :id => @panel.id} do%>
+			<table width="100%">
+			<tr>
+				<td>
+					<strong>Label: </strong>
+					<%= select :bediengeraets, :label_quellen, (1..4).to_a.map{|x| ["Label #{x}",x]}, {:selected => @panel.label_quellen}, {:onchange=>"document.getElementById('submit').click();"}%>
+				</td>
+				<td style="width:200px;">
+					<strong>Font: </strong>
+					<%=select :bediengeraets, :font_quellen, @quellen_font,{:selected => @panel.font_quellen.to_s}, {:onchange=>"document.getElementById('submit').click();"}%>
+				</td>
+				<input type="image" src="/images/blank.png" id="submit" width="0" height=0>
+			</tr>
+			</table>		
+			<%end%>
+		</td>
+	</tr>
+</table> <br/>
+
+<!-- Normalquellen -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="ibtAssignmentBlockTable">
+<tr>
+	<td class="ibtTitle">Quelle Normalbetrieb</td>
+</tr>
+<tr>
+	<td>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="ibtAssignmentTable">
+		<%
+		start1 = 0
+		innercounter = 0
+		cnt=0
+		5.times do 
+		%>
+		<tr>
+			<td colspan="18" class="ibtSubTitle">Page <%=cnt+=1%></td>
+		</tr>
+		<tr>
+			<td class="ibtSeparator grey">Taste Nr.</td>
+			<% 16.times do %>
+			<td class="ibtSeparator grey"><%= start1 = start1 + 1 %></td>
+			<% end %>
+		</tr>
+		<tr>
+			<td class="ibtKey grey">Belegung</td>
+			<%=@panel.typesources.inspect%>
+			<% @panel.typesources[innercounter..(innercounter+14)].each do |@source| %>
+			<td class="ibtKey grey">
+				<div id="s_<%= @source.id.to_s %>">
+				<% if @panel.normalquellen_kv_id.nil? %>
+				____
+				<% else %>
+					<%= link_to_remote((@source.source_id!=0 ? @source.source_id.to_s : "____"), :update => "s_" + @source.id.to_s,
+						:url =>{ :controller=>:sources, :action => :dropdowns, :id=>@source.id, :bdtype_id=>@panel.bdtype_id, :kv=>@panel.normalquellen_kv_id, :display=>session[:display] }) %>
+				<% end %>
+				</div>
+			  </td>
+			  <% end %>
+			  <td class="ibtKey">
+				<div id="t_<%= @source.id.to_s %>">
+				Shift
+				</div>
+			  </td>
+		</tr>		
+		<% 
+		innercounter = innercounter + 15
+		end 
+		%>
+		</table>
+	</td>
+</tr>
+</table>
+<br/>
+
+<p>  
+  <table width="1000" border="0" cellpadding="0" cellspacing="0" class="ibtAssignmentBlockTable">
+    <tr>
+      <td class="ibtKey">
+          <%= @panel.nummer %> &nbsp;&nbsp;&nbsp; <%= @panel.name8stellig %> &nbsp;&nbsp;&nbsp; <%= @panel.name4stellig %> &nbsp;&nbsp;&nbsp; Unit: <%= @panel.unit %> &nbsp;&nbsp;&nbsp; Port: <%= @panel.port %>
+      </td>
+    </tr>
+  </table>
+</p>
+<br/>
+
+<!-- Senke -->
+<table width="150" border="0" cellpadding="0" cellspacing="0" class="ibtAssignmentBlockTable">
+  <tr>
+    <td align="center">Senke</td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="0" class="ibtAssignmentTable">
+      <tr>
+        <td class="ibtSeparator grey">Taste Nr.</td>
+        <td class="ibtSeparator grey">1</td>
+      </tr>
+      <tr>
+        <td class="ibtKey grey">Belegung</td>
+          <% @panel.typetargets[0..0].each do |@target| %>
+          <td class="ibtKey grey">
+            <div id="t_<%= @target.id.to_s %>">
+            	<% if @panel.normalquellen_kv_id %>
+					<%= link_to_remote((@target.target_id!=0 ? @target.target_id.to_s : "____") + "&nbsp;", :update => "t_" + @target.id.to_s,
+							:url =>{ :controller=>:targets, :action => :dropdowns, :id=>@target.id, :bdtype_id=>@panel.bdtype_id, :kv=>@panel.normalquellen_kv_id, :display=>session[:display] }) %>
+				<%else%>____<%end%>
+
+            </div>
+          </td>
+          <% end %>
+      </tr>
+    </table></td>
+  </tr>
+</table>

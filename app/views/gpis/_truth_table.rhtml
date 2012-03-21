@@ -1,0 +1,80 @@
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+	<tr class="ibtTableMain">
+		<th width="10%"> Inputs </th>
+		<th width="50%"> Function </th>
+		<th width="10%"> Outputs </th>
+		<th width="30%" align="right" style="padding-right:15px;"> <b> Table : <%=@t.intnummer%> </b> </th>
+	</tr>
+
+	<tr class="ibtTableSub">
+		<td align="center">
+			<span id="input-<%=@t.intnummer%>-1" >
+				<%= link_to_remote get_tt_input(@t.input1), :url => {:controller => "gpis", :action => "get_tt_input", :table => @t.intnummer, :id => 1 } %> <br />
+			</span>
+
+			<span id="input-<%=@t.intnummer%>-2" >
+				<% if [@t.input1].include? nil %>
+					____ <br />
+				<% else %>
+					<%= link_to_remote get_tt_input(@t.input2), :url => {:controller => "gpis", :action => "get_tt_input", :table => @t.intnummer, :id => 2} %> <br />
+				<% end %>
+			</span>
+	
+			<span id="input-<%=@t.intnummer%>-3" >
+				<% if [@t.input1, @t.input2].include? nil %>
+					____ <br />
+				<% else %>
+					<%= link_to_remote get_tt_input(@t.input3), :url => {:controller => "gpis", :action => "get_tt_input", :table => @t.intnummer, :id => 3} %> <br />
+				<% end %>
+			</span>
+	
+			<span id="input-<%=@t.intnummer%>-4" >
+				<% if [@t.input1, @t.input2, @t.input3].include? nil %>
+					____ <br />
+				<% else %>
+					<%= link_to_remote get_tt_input(@t.input4), :url => {:controller => "gpis", :action => "get_tt_input", :table => @t.intnummer, :id => 4} %> <br />
+				<% end %>
+			</span>
+	
+			<span id="input-<%=@t.intnummer%>-5" >
+				<% if [@t.input1, @t.input2, @t.input3, @t.input4].include? nil %>
+					____ <br />
+				<% else %>
+					<%= link_to_remote get_tt_input(@t.input5), :url => {:controller => "gpis", :action => "get_tt_input", :table => @t.intnummer, :id => 5} %> <br />
+				<% end %>
+			</span>
+	
+			<span id="input-<%=@t.intnummer%>-6" >
+				<% if [@t.input1, @t.input2, @t.input3, @t.input4, @t.input5].include? nil %>
+					____ <br />
+				<% else %>
+					<%= link_to_remote get_tt_input(@t.input6), :url => {:controller => "gpis", :action => "get_tt_input", :table => @t.intnummer, :id => 6} %> <br />
+				<% end %>
+			</span>
+	
+			<span id="input-<%=@t.intnummer%>-7" >
+				<% if [@t.input1, @t.input2, @t.input3, @t.input4, @t.input5, @t.input6].include? nil %>
+					____ <br />
+				<% else %>
+					<%= link_to_remote get_tt_input(@t.input7), :url => {:controller => "gpis", :action => "get_tt_input", :table => @t.intnummer, :id => 7} %> <br />
+				<% end %>
+			</span>
+	
+			<span id="input-<%=@t.intnummer%>-8" >
+				<% if [@t.input1, @t.input2, @t.input3, @t.input4, @t.input5, @t.input6].include? nil %>
+					____ <br />
+				<% else %>
+					<%= link_to_remote get_tt_input(@t.input8), :url => {:controller => "gpis", :action => "get_tt_input", :table => @t.intnummer, :id => 8} %> <br />
+				<% end %>
+			</span>
+		</td>
+		<td align="center" class="cloneinput_bg"> Function </td>
+		<td align="center">
+			<span id="output-<%=@t.intnummer%>" >
+				<%= link_to_remote get_tt_output(@t.output), :url => {:controller => "gpis", :action => "get_tt_output", :table => @t.intnummer} %> <br />
+			</span>
+		</td>
+		<td align="center"> &nbsp; </td>
+	</tr>
+
+</table> <br />

@@ -1,0 +1,25 @@
+<% form_for '', :url => {:controller => 'systems', :action => 'panel_reboot_one'}, :html => {:multipart => 'true', :onsubmit => "$('div-loader').show();" } do%>
+<table width="100%">
+	<tr>
+		<td colspan="2"><h2>Reboot Panel</h2></td>
+	</tr>
+	<tr>
+		<td width="7%" style="font-size:11pt; font-weight:bold">Panel : </td>
+		<td width="93%"><%=collection_select(:panel, :panel, @system_panels, :id, :nummer, {:prompt => "select panel"},{:style=>"width:150px; height:25px;"})%></strong> </td>
+	</tr>
+	<tr>		
+		<td colspan="2"><%=submit_tag 'Panel Firmware Update', :onclick=>"return checkfile('panel_firmware');"%></td>
+	</tr>
+</table>
+<%end%>
+<script>
+function checkfile(name)
+{
+	if(document.getElementById('panel_panel').value=='')
+	{
+		alert("Please select Panel");
+		return false;
+	}
+}
+</script>
+

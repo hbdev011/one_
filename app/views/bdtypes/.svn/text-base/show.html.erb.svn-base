@@ -1,0 +1,27 @@
+<legend><b>BD Typen</b></legend>
+
+<table>
+<tr>
+<th>Nummer</th>
+<th>Name</th>
+<tr>
+
+<% @bdtypes.each do |@bdtype| %>
+<tr>
+  <td><% form_tag :controller=>'bdtypes', :action =>'update', :id => @bdtype do %>  
+      <%= text_field :bdtype, :nummer, :size=>5 %></td>
+  <td><%= text_field :bdtype, :name, :size=>20 %></td>
+  <td><%= submit_tag %><% end %></td>
+<tr>
+<% end %>
+</table>
+
+Neu:<br/>
+<table>
+  <tr>
+    <td><% form_tag :controller=>'bdtypes', :action =>'create' do %>  
+        <%= text_field :bdtype, :nummer, :size=>5 %></td>
+    <td><%= text_field :bdtype, :name, :size=>20 %></td>
+    <td><%= submit_tag %><% end %></td>
+  </tr>
+</table>

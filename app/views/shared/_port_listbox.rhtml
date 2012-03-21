@@ -1,0 +1,41 @@
+<% if show == "link" %>
+
+	<% if opt == 1 %>
+		<%= link_to_remote (@kreuzschiene.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @kreuzschiene.unit, :curr_port => @kreuzschiene.port, :s_id => @kreuzschiene.id, :opt => 1 } %>
+	<% elsif opt == 2 %>
+		<%= link_to_remote (@kreuzschiene.port2 || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @kreuzschiene.unit2, :curr_port => @kreuzschiene.port2, :s_id => @kreuzschiene.id, :opt => 2 } %>
+	<% elsif opt == 3 %>
+		<%= link_to_remote (@device.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @device.unit, :curr_port => @device.port, :s_id => @device.id, :opt => 3 } %>
+	<% elsif opt == 4 %>
+		<%= link_to_remote (@bediengeraet.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @bediengeraet.unit, :curr_port => @bediengeraet.port, :s_id => @bediengeraet.id, :opt => 4 } %>
+	<% elsif opt == 6 %>
+		<center>
+		<%= link_to_remote (@input.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @input.unit, :curr_port => @input.port, :s_id => @input.id, :opt => 6 }, :style => "width:95%;" %>
+		</center>
+	<% elsif opt == 7 %>
+		<center>
+		<%= link_to_remote (@output.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @output.unit, :curr_port => @output.port, :s_id => @output.id, :opt => 7 }, :style => "width:95%;" %>
+		</center>
+	<% end %>
+
+<% else %>
+
+	<% if opt == 5 %>
+		<%= select("#{obj_name}", "#{field}", @ports, { :include_blank => true, :selected => curr_port}, {:style => "width:95%;"} ) %>
+	<% elsif opt == 6 %>
+		<%= select("#{obj_name}", "#{field}", @ports, { :include_blank => true, :selected => 12}, {:onchange=>"$('#{submit_id}').click();", :style => "width:95%;"} ) %>
+	<% elsif opt == 7 %>
+		<%= select("#{obj_name}", "#{field}", @ports, { :include_blank => true, :selected => 11}, {:onchange=>"$('#{submit_id}').click();", :style => "width:95%;"} ) %>
+	<% else %>
+		<%= select("#{obj_name}", "#{field}", @ports, { :include_blank => true, :selected => curr_port}, {:onchange => "$('#{submit_id}').click();", :style => "width:99%;"} ) %>
+	<% end %>
+
+<% end %>
+<%if !params[:curr_unit].nil? && !params[:curr_unit].blank? && params[:curr_unit].to_i == 0%>
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+  document.getElementById("<%=obj_name%>_<%=field%>").onchange();
+// ]]>
+</script>
+<% end %>
+

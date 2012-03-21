@@ -1,0 +1,11 @@
+<h3>File Upload</h3>
+<b style="color:green;"> <%=flash[:msg]%> </b>
+
+<% form_tag('/uploads/uploadFile', :multipart => true) do -%>
+	<p>
+		<label for="upload_file">Upload File</label> : 
+		<%= file_field 'upload', 'datafile' %>
+		<%= submit_tag "Upload" %>
+	</p>
+<% end -%>
+

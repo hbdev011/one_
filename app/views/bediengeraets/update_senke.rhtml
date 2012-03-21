@@ -1,0 +1,9 @@
+<%if !params[:bediengeraets][:sende_matrix_id].blank?%>
+	<% form_remote_tag :url => {:controller=>'bediengeraets', :action => 'update_sende_values', :id => @panel.id} do %>
+		<%= select('bediengeraets', 'sende_senke_id', @sn, {:selected=>@panel.sende_senke_id, :include_blank=>true}, {:onchange=>"document.getElementById('submit_senke').click();"}) %>
+		<input type="hidden" id="bediengeraets_sende_matrix_id" name="bediengeraets[sende_matrix_id]" value="<%=@matrix%>">
+		<input type="image" src="/images/blank.png" id="submit_senke" width="0" height=0>
+	<% end %>
+<% else %>
+	_____
+<% end %>

@@ -1,0 +1,96 @@
+<% form_remote_tag :url => url_for( :controller=>'umds', :action =>'update', :id => @umd, :style=>'margin:0; padding:0;') do %>
+
+  <table cellspacing="0" cellpadding="0" width="100%" border="0">
+
+    <tr>
+
+      <td width="6%" align="center"><%= @umd.umdnummer.to_s %></td>
+      <td width="5%" align="center">
+          <div id="kv_select_<%=@umd.id%>" style="width:50px;">
+          <%
+              kvname = @umd.kreuzschienen_name(session[:display])
+              kvname = "___" if kvname.nil? or kvname == ""
+          %>
+          <%= link_to_remote(kvname,
+            :update => "kv_select_" + @umd.id.to_s,
+            :url => { :controller=>:umds, :action => :show_single_edit_kv, :id=>@umd }) %>
+          </div>
+      </td>
+      <td width="7%" align="center">
+        <select name="umd[choice]" id="choice_<%= @umd.id.to_s %>" onchange="document.getElementById('s_l_<%=@umd.id.to_s%>').click()" >
+          <option value="0">Senke</option>
+          <option value="1" <%if @umd.choice == '1' %> selected <% end %> >Quelle</option>
+        </select>
+      </td>
+      <td width="5%" align="center">
+          <div id="sn_select_<%=@umd.id%>" style="width:50px;">
+          <%
+              senkenname = @umd.senken_name(session[:display])
+              senkenname = "___" if senkenname.nil? or senkenname == ""
+          %>
+          <%= link_to_remote(senkenname,
+            :update => "sn_select_" + @umd.id.to_s,
+            :url =>{:controller=>:umds, :action => :show_single_edit_senke, :id=>@umd.id} , :with => "'choice='+$F('choice_#{@umd.id}')")%>
+          </div>
+      </td>
+      <td width="9%" align="center" >
+		<select name="umd[type_option]" onchange = "displayoption(<%=@umd.id%>); document.getElementById('s_l_<%=@umd.id.to_s%>').click();" id = "type_<%=@umd.id%>">
+			<option value="0">IBT / TSL</option>
+			<option value="1" <%if @umd.type_option == '1'%>selected<%end%>>VTS</option>
+		</select>
+      </td>
+      <td width="4%" align="center" id="panel_nor_<%=@umd.id%>">&nbsp;</td>
+      <td width="4%" align="center" id="vts_input_nor_<%=@umd.id%>">&nbsp;</td>
+      <td width="11%" align="center" id="ip_address_nor_<%=@umd.id%>">&nbsp;</td>
+      <td width="4%" align="center" style="display:none;" id="panel_<%=@umd.id%>"><%= select "umd","panel",['1','2','3','4'],{:selected => @umd.panel.to_s}, {:onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"}%></td>
+      <td width="4%" align="center" style="display:none;" id="vts_input_<%=@umd.id%>"><%= select "umd","vts_input",(1..Global::VTS_MAX_IMPUTS).to_a,{:selected => @umd.vts_input},{:onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"} %></td>
+      <td width="11%" align="center" style="display:none; " id="ip_address_<%=@umd.id%>">
+        <% if @umd.panel.to_i == 1 %>
+          <%= text_field 'umd', :ip_address, {:style=>'width:110px;', :onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"} %>
+        <% else %>
+          <%= collection_select('umd','master_umd',Umd.find(:all,:select =>"intnummer,umdnummer", :conditions => ['system_id = ? ', cookies[:system_id]]),'intnummer','umdnummer', {:selected => @umd.master_umd },{ :onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"} )%>
+        <% end %>
+      </td>
+
+      <td width="7%" align="center">
+        <%= text_field 'umd', :festtext, {:size=>6, :maxlength=>8, :onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"} %>
+      </td>
+      <td width="4%" align="center">
+        <%=check_box("umd", :pgm_monitor, {:onclick => "var val; if (this.checked==true){val='1'; } else{val='0';} new Ajax.Request('/umds/update_pgm_monitor/#{@umd.id}', {asynchronous: true, evalscript: true, parameters: {val: val} }); " }, "1", "0")%>
+      </td>
+      <td width="5%" align="center">
+        <%= text_field 'umd', :monitor, {:size=>6, :maxlength=>5, :onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"} %>
+      </td>
+      <td width="5%" align="center">
+        <%= text_field 'umd', :gpi, {:size=>6, :onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"} %>
+      </td>
+      <td width="5%" align="center">
+        <%= text_field 'umd', :bme, {:size=>6, :maxlength=>5, :onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"} %>
+      </td>
+      <td width="5%" align="center" id="mon_havarie_<%=@umd.id%>">
+	<%if !@umd.mon_havarie.nil? && !@umd.mon_havarie.blank?%>
+		<%=link_to_remote(Umd.new().get_mon_havarie(@umd.id),
+		    :update => "mon_havarie_" + @umd.id.to_s,
+		    :url =>{:controller=>:umds, :action => :show_5stelling, :id=>@umd.id} , :with => "'kid='+#{@umd.kreuzschiene_id}+'&mon_havarie='+#{@umd.mon_havarie}")%>
+	<%else%>
+		<%=link_to_remote("___",
+		    :update => "mon_havarie_" + @umd.id.to_s,
+		    :url =>{:controller=>:umds, :action => :show_5stelling, :id=>@umd.id} , :with => "'kid='+#{@umd.kreuzschiene_id}")%>
+	<%end%>
+	
+      </td>
+      <td width="5%" align="center">
+        <%= text_field 'umd', :konfiguration, {:size=>6, :maxlength=>6, :onchange=>"document.getElementById('s_l_" + @umd.id.to_s + "').click();"} %>
+        <input type="image" src="/images/blank.png" id="s_l_<%= @umd.id.to_s %>" />
+      </td>
+
+    </tr>
+<%if @umd.type_option=='1'%>
+<script>
+displayoption(<%=@umd.id%>);
+</script>
+<%end%>
+  </table>
+
+<% end %>
+

@@ -1,0 +1,112 @@
+<legend><b>Signals</b></legend>
+<div class="menu">
+	<div class="menu-item"> <%= link_to "Inputs Signals", "/gpis/io_signals?tab=in_signal" %> </div>
+	<div class="menu-item" style="margin-left: -1px;"> <%= link_to "Output Signals", "/gpis/io_signals?tab=out_signal" %> </div>
+</div>
+<div class="clear"></div>
+
+<!-- ___________________ Input Signals : Start ___________________ -->
+
+<% if params[:tab].nil? || params[:tab] == "in_signal" %>
+
+	<% height_in = (@i_signals.size*22)+50 %>
+	<div style="display:none;" id="div-loader-in" class="relative">
+		<div class="loader-ion" style="height:<%=height_in%>px;"> 
+			<img alt="Loading..." src="/images/ajax-loader.gif"> 
+		</div>
+	</div>
+
+	<div class="main-block">
+
+		<center><h3 style="margin:0; padding:0;">Inputs Signals</h3></center>
+		<div style="width:99%; float:left; margin-bottom:5px;">
+			<div id="in_msg" style="width:66%; float:left;"> <%=flash[:i_signal_msg]%>&nbsp;</div>
+			<div style="width:33%; float:left;"> 
+				<% form_tag :controller => "gpis", :action => "options_in_signal" do %>
+					<b>Options : </b>
+					<% @i_signals.size==0 ? opt = {"Add Row at last" => 1, "Add N Rows at last" => 2} : opt = @options %>
+					<%= select :i_signal, :option, opt.sort_on("value"), {}, { :onchange => "if (this.value == '' || this.value == 1){$('i_signal_nummer').hide();}else{$('i_signal_nummer').show();} "} %>
+					<%= text_field :i_signal, :nummer, :size => "2", :onkeypress => "return numbersOnly(event)", :style => "display:none;", :maxlength => 3 %>
+					<%= submit_tag :Submit, :id => "add_submit_in", :onclick => "$('div-loader-in').show();" %>
+				<%end%>
+			</div>
+		</div>
+		<div class="ibtSourceTableMain">
+			<div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+			<div class="ibtSourceTableCol7"> Name </div>
+			<div style="width:5%; float:left;">&nbsp; </div>
+		</div>
+		<div class="clear"></div>
+
+		<% @i_signals.each do |@input| %>
+			<div id="input_row_<%=@input.id%>">
+				<%=render :partial => "i_signal"%>
+			</div>
+		<% end %>
+
+	</div>
+	<div class="clear"></div>
+<%end%>
+<!-- ___________________ Input Signals : End ___________________ -->
+
+<!-- ___________________ Output Signals : Start ___________________ -->
+
+<% if params[:tab] == "out_signal" %>
+
+	<% height_out = (@o_signals.size*22)+50 %>
+	<div style="display:none;" id="div-loader-out" class="relative">
+		<div class="loader-ion" style="height:<%=height_out%>px;"> 
+			<img alt="Loading..." src="/images/ajax-loader.gif"> 
+		</div>
+	</div>
+
+	<div class="main-block">
+		<center><h3 style="margin:0; padding:0;">Outputs Signals</h3></center>
+		<div style="width:99%; float:left; margin-bottom:5px;">
+			<div id="out_msg" style="width:66%; float:left;"> <%=flash[:o_signal_msg]%>&nbsp;</div>
+			<div style="width:33%; float:left;"> 
+				<% form_tag :controller => "gpis", :action => "options_out_signal" do %>
+					<b>Options : </b>
+					<% @o_signals.size==0 ? opt = {"Add Row at last" => 1, "Add N Rows at last" => 2} : opt = @options %>
+					<%= select :o_signal, :option, opt.sort_on("value"), {}, { :onchange => "if (this.value == '' || this.value == 1){$('o_signal_nummer').hide();}else{$('o_signal_nummer').show();} "} %>
+					<%= text_field :o_signal, :nummer, :size => "2", :onkeypress => "return numbersOnly(event)", :style => "display:none;", :maxlength => 3 %>
+					<%= submit_tag :Submit, :id => "add_submit_out", :onclick => "$('div-loader-out').show();" %>
+				<%end%>
+			</div>
+		</div>
+		<div class="ibtSourceTableMain">
+			<div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+			<div class="ibtSourceTableCol7"> Name </div>
+			<div style="width:5%; float:left;">&nbsp; </div>
+		</div>
+		<div class="clear"></div>
+
+		<% @o_signals.each do |@output| %>
+			<div id="output_row_<%=@output.id%>">
+				<%=render :partial => "o_signal"%>
+			</div>
+		<% end %>
+
+	</div>
+	<div class="clear"></div>
+<%end%>
+<!-- ___________________ Output Signals : End ___________________ -->
+
+
+
+
+<script type="text/javascript">
+	//<![CDATA[
+	function delete_io_signal(tab, id){
+		if (tab == "input"){
+			if (confirm("Sind Sie sicher, dass Sie Eingangssignal entfernen ?")){
+				new Ajax.Request("/gpis/delete_io_signals/"+id+"?tab="+tab, {asynchronous:true, evalScripts:true})
+			}
+		} else {
+			if (confirm("Sind Sie sicher, dass Sie Ausgangssignal entfernen ?")){
+				new Ajax.Request("/gpis/delete_io_signals/"+id+"?tab="+tab, {asynchronous:true,  evalScripts:true})
+			}
+		}
+	}
+	//]]>
+</script>

@@ -1,0 +1,9 @@
+<% if bdtype_id.nil? %>
+	&nbsp;
+<% else %>
+	<input type="checkbox" id="copy_quelle" name="copy[quelle]" checked="true"> Copy Quellen &nbsp; &nbsp;
+	<% if [2, 3, 5].include? bdtype_id.to_i %>
+		<input type="checkbox" id="copy_splitquellen" name="copy[splitquellen]" checked="true"> Copy Splitquellen &nbsp; &nbsp;
+	<% end %>
+	<input type="checkbox" id="copy_senken" name="copy[senken]" checked="true"> Copy Senken &nbsp; &nbsp;
+<% end %>

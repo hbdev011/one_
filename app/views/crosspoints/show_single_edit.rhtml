@@ -1,0 +1,43 @@
+<table width="600" border="0" cellpadding="0" cellspacing="0">
+
+ <tr>
+
+    <td align="center" width="120"><%= @crosspoint.nummer %></td>
+    <td align="center" width="120">
+
+        <% 
+            # form_tag :controller=>'crosspoints', :action =>'update_kv', :id => @crosspoint do 
+            form_remote_tag :url => { :controller=>'crosspoints', :action=>'update_kv',  :id => @crosspoint }, :html => {:onsubmit => "$('spin_#{@crosspoint.id}').show();"} do %>
+            <%
+                kid = 0
+                kid = @crosspoint.id unless @crosspoint.nil?
+            %>
+            <%= select('crosspoint', 'kreuzschiene_id', @kv ,{:include_blank => true, :selected => @crosspoint.kreuzschiene.id}, {:class => "clsDropDownP", :onchange=>"document.getElementById('s#{@crosspoint.id}').click();"}) %>
+            <input type="image" src="/images/blank.png" id="s<%= @crosspoint.id.to_s %>" width="0" height=0>
+        <% end %>
+
+        <%#= link_to(@kreuzschiene_name, :controller=>'crosspoints', :action=>'show_ajax') %>
+    </td>
+            
+    <td align="center" width="120">
+        <% form_remote_tag :url => url_for( :controller=>'crosspoints', :action =>'update', :id => @crosspoint) do %>
+            <%= select('crosspoint', 'source_id', @quellen, {:include_blank=>true, :selected=>@crosspoint.source_id}, :onchange=>"document.getElementById('submitchangeitemq" + @crosspoint.id.to_s + "').click();") %>
+            <input type="image" src="/images/blank.png" id="submitchangeitemq<%= @crosspoint.id.to_s %>" width="0" height=0>
+        <% end %>
+    </td>
+         
+    <td align="center" width="120">
+        <% form_remote_tag :url => url_for( :controller=>'crosspoints', :action =>'update', :id => @crosspoint) do %>
+            <%= select('crosspoint', 'target_id', @senken, {:include_blank=>true, :selected=>@crosspoint.target_id}, :onchange=>"document.getElementById('submitchangeitemk" + @crosspoint.id.to_s + "').click();") %>
+            <input type="image" src="/images/blank.png" id="submitchangeitemk<%= @crosspoint.id.to_s %>" width="0" height=0>
+        <% end %>
+    </td>     
+    <td align="left" width="120" style="border-bottom:none;">
+        <div id="spin_<%=@crosspoint.id%>" style="display:none;">
+            <%=image_tag "/images/spinner.gif" %>
+        </div>
+    <td>
+    
+  </tr>
+  
+</table>

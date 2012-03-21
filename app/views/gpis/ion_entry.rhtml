@@ -1,0 +1,395 @@
+
+
+<div class="menu">
+	<div class="menu-item"> <%= link_to "Inputs", "/gpis/ion_entry?tab=input" %> </div>
+	<div class="menu-item" style="margin-left: -1px;"> <%= link_to "Input Signals", "/gpis/ion_entry?tab=in_signal" %> </div>
+	<div class="menu-item" style="margin-left: -1px;"> <%= link_to "Outputs", "/gpis/ion_entry?tab=output" %> </div>
+	<div class="menu-item" style="margin-left: -1px;"> <%= link_to "Output Signals", "/gpis/ion_entry?tab=out_signal" %> </div>
+	<div class="menu-item" style="margin-left: -1px;"> <%= link_to "Nodes", "/gpis/ion_entry?tab=node" %> </div>
+	<div class="menu-item" style="margin-left: -1px;"> <%= link_to "Logic", "/gpis/ion_entry?tab=logic" %> </div>
+</div>
+<div class="clear"></div>
+
+<!-- ___________________ Input : Start ___________________ -->
+
+<% if params[:tab].nil? || params[:tab] == "input" %>
+
+	<% height_in = (@inputs.size*22)+50 %>
+	<div style="display:none;" id="div-loader-in" class="relative">
+		<div class="loader-ion" style="height:<%=height_in%>px;">
+			<img alt="Loading..." src="/images/ajax-loader.gif">
+		</div>
+	</div>
+
+	<div class="main-block">
+
+		<center><h3 style="margin:0; padding:0;">Inputs</h3></center>
+		<div style="width:99%; float:left; margin-bottom:5px;">
+			<div id="in_msg" style="width:66%; float:left;"> <%=flash[:in_msg]%>&nbsp;</div>
+			<div style="width:33%; float:left;">
+				<% form_tag :controller => "gpis", :action => "options_input" do %>
+					<b>Options : </b>
+					<% @inputs.size==0 ? opt = {"Add Row at last" => 1, "Add N Rows at last" => 2} : opt = @options %>
+					<%= select :input, :option, opt.sort_on("value"), {}, { :onchange => "if (this.value == '' || this.value == 1){$('input_nummer').hide();}else{$('input_nummer').show();} "} %>
+					<%= text_field :input, :nummer, :size => "2", :onkeypress => "return numbersOnly(event)", :style => "display:none;", :maxlength => 3 %>
+					<%= submit_tag :Submit, :id => "add_submit_in", :onclick => "$('div-loader-in').show();" %>
+				<%end%>
+			</div>
+		</div>
+		<div class="ibtSourceTableMain">
+			<div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+			<div class="ibtSourceTableCol7"> Name </div>
+			<div class="ibtSourceTableCol4"> Type </div>
+			<div class="ibtSourceTableCol2"> Nr. </div>
+			<div class="ibtSourceTableCol2"> Port </div>
+			<div class="ibtSourceTableCol2"> Word </div>
+			<div class="ibtSourceTableCol2"> Bit </div>
+			<div class="ibtSourceTableCol2"> Invert </div>
+			<div class="ibtSourceTableCol6"> RadioButton Group </div>
+			<div class="ibtSourceTableCol6"> Comment </div>
+			<div style="width:5%; float:left;">&nbsp; </div>
+		</div>
+		<div class="clear"></div>
+
+		<% @inputs.each do |@input| %>
+			<div id="input_row_<%=@input.id%>">
+				<%=render :partial => "input_row"%>
+			</div>
+		<% end %>
+
+	</div>
+	<div class="clear"></div>
+<%end%>
+<!-- ___________________ Input : End ___________________ -->
+
+
+<!-- ___________________ Input Signal : Start ___________________ -->
+
+<% if params[:tab] == "in_signal" %>
+
+	<div class="main-block">
+		<center><h3 style="margin:0; padding:0;">Input Signals</h3></center>
+		<div style="width:99%; float:left; margin-bottom:5px;"> &nbsp; </div>
+		<div class="ibtSourceTableMain">
+			<div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+			<div class="ibtSourceTableCol6"> Name </div>
+			<div style="width:5%; float:left;">&nbsp; </div>
+		</div>
+		<div class="clear"></div>
+
+		<% @i_signals.each do |@i_sgn| %>
+			<div id="in_signal_row_<%=@i_sgn.id%>">
+				<%=render :partial => "in_signal_row"%>
+			</div>
+		<% end %>
+
+	</div>
+	<div class="clear"></div>
+<% end %>
+
+<!-- ___________________ Input Signal : End ___________________ -->
+
+
+<!-- ___________________ Output : Start  ___________________ -->
+<% if params[:tab] == "output" %>
+
+	<% height_out = (@outputs.size*22)+50 %>
+	<div class="main-block">
+
+		<div style="display:none;" id="div-loader-out" class="relative">
+			<div class="loader-ion" style="height:<%=height_out%>px;">
+				<img alt="Loading..." src="/images/ajax-loader.gif">
+			</div>
+		</div>
+
+		<center><h3 style="margin:0; padding:0;">Outputs</h3></center>
+		<div style="width:99%; float:left; margin-bottom:5px;">
+			<div id="out_msg" style="width:66%; float:left;"> <%=flash[:out_msg]%>&nbsp;</div>
+			<div style="width:33%; float:left;">
+				<% form_tag :controller => "gpis", :action => "options_output" do %>
+					<b>Options : </b>
+					<% @outputs.size==0 ? opt = {"Add Row at last" => 1, "Add N Rows at last" => 2} : opt = @options %>
+					<%= select :output, :option, opt.sort_on("value"), {}, { :onchange => "if (this.value == '' || this.value == 1){$('output_nummer').hide();}else{$('output_nummer').show();}"} %>
+					<%= text_field :output, :nummer, :size => "2", :onkeypress => "return numbersOnly(event)", :style => "display:none;", :maxlength => 3 %>
+					<%= submit_tag :Submit, :id => "add_submit_out", :onclick => "$('div-loader-out').show();" %>
+				<%end%>
+			</div>
+		</div>
+		<div class="ibtSourceTableMain">
+			<div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+			<div class="ibtSourceTableCol7"> Name </div>
+			<div class="ibtSourceTableCol3"> Active Name </div>
+			<div class="ibtSourceTableCol3"> Inactive Name </div>
+			<div class="ibtSourceTableCol4"> Mode </div>
+			<div class="ibtSourceTableCol4"> Type </div>
+			<div class="ibtSourceTableCol2"> Nr. </div>
+			<div class="ibtSourceTableCol2"> Port </div>
+			<div class="ibtSourceTableCol2"> Word </div>
+			<div class="ibtSourceTableCol2"> Bit </div>
+			<div class="ibtSourceTableCol2"> Invert </div>
+			<div class="ibtSourceTableCol6"> Comment </div>
+			<div style="width:5%; float:left;">&nbsp; </div>
+		</div>
+		<div class="clear"></div>
+
+		<% @outputs.each do |@output| %>
+			<div id="output_row_<%=@output.id%>">
+				<%=render :partial => "output_row"%>
+			</div>
+		<% end %>
+
+	</div>
+	<div class="clear"></div>
+<% end %>
+
+<!-- ___________________ Output : End ___________________ -->
+
+
+<!-- ___________________ Output Signal : Start ___________________ -->
+
+<% if params[:tab] == "out_signal" %>
+
+	<div class="main-block">
+		<center><h3 style="margin:0; padding:0;">Output Signals</h3></center>
+		<div style="width:99%; float:left; margin-bottom:5px;"> &nbsp; </div>
+		<div class="ibtSourceTableMain">
+			<div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+			<div class="ibtSourceTableCol6"> Name </div>
+			<div style="width:5%; float:left;">&nbsp; </div>
+		</div>
+		<div class="clear"></div>
+
+		<% @o_signals.each do |@o_sgn| %>
+			<div id="out_signal_row_<%=@o_sgn.id%>">
+				<%=render :partial => "out_signal_row"%>
+			</div>
+		<% end %>
+
+	</div>
+	<div class="clear"></div>
+<% end %>
+
+<!-- ___________________ Output Signal : End ___________________ -->
+
+
+
+<!-- ___________________ Node : Start ___________________ -->
+
+<% if params[:tab] == "node" %>
+
+	<% height_node = (@nodes.size*22)+50 %>
+	<div class="main-block">
+
+		<div style="display:none;" id="div-loader-node" class="relative">
+			<div class="loader-ion" style="height:<%=height_node%>px;">
+				<img alt="Loading..." src="/images/ajax-loader.gif">
+			</div>
+		</div>
+
+		<center><h3 style="margin:0; padding:0;">Nodes</h3></center>
+		<div style="width:99%; float:left; margin-bottom:5px;">
+			<div id="node_msg" style="width:66%; float:left;"> <%=flash[:node_msg]%>&nbsp;</div>
+			<div style="width:33%; float:left;"> &nbsp; </div>
+		</div>
+		<div class="ibtSourceTableMain">
+			<div class="ibtSourceTableCol1" class="clean">&nbsp;</div>
+			<div class="ibtSourceTableCol3"> Name </div>
+			<div style="width:5%; float:left;">&nbsp; </div>
+		</div>
+		<div class="clear"></div>
+
+		<% @nodes.each do |@node| %>
+			<div id="node_row_<%=@node.id%>">
+				<%=render :partial => "node_row"%>
+			</div>
+		<% end %>
+
+	</div>
+	<div class="clear"></div>
+<% end %>
+
+<!-- ___________________ Node : End ___________________ -->
+
+<!-- ___________________ Logic : Start ___________________ -->
+
+<% if params[:tab] == "logic" %>
+	<%# height_node = (@nodes.size*22)+50 %>
+	<div class="main-block">
+
+		<center>
+			<h3 style="margin:0 0 10px 0; padding:0;">Logic</h3>
+			<%=render :partial => "load_txt"%>
+		</center>
+		<div id="result" > &nbsp; </div>
+	</div><br />
+
+	<% if request.post? %>
+
+		<table border="1" width="70%" cellspacing="0px" cellpadding="3px">
+			<tr>
+				<td width="15%" valign="top" > <b>File Name</b> </td>
+				<td width="85%" > <%=@file_name%> </td>
+			</tr>
+
+			<tr>
+				<td width="15%" valign="top" > <b>System</b> </td>
+				<td width="85%" > <%=@system.name%> </td>
+			</tr>
+
+			<tr>
+				<td valign="top"> <b>Message</b> </td>
+				<td> <%=@message%> </td>
+			</tr>
+
+			<tr>
+				<td width="15%" valign="top" > <b>Truth Tables</b> </td>
+				<td width="85%" > <%=@tt_count%> </td>
+			</tr>
+
+			<tr>
+				<td width="15%" valign="top" > <b>Direct Logic</b> </td>
+				<td width="85%" > <%=@singles.size if @singles%> </td>
+			</tr>
+
+			<tr>
+				<td valign="top"> <b>Options</b> </td>
+				<td>
+					<%=link_to "Download Original File", "/downloads/gpio_file?name=#{@file_name}" %> &nbsp; | &nbsp;
+					<%#=link_to "Download GPIO Conf", "/downloads/gpio_conf?name=#{@conf_file_name}"%>
+					<% if File.exist?("#{RAILS_ROOT}/conf/#{cookies[:system_id]}/gpio.conf") %>
+						<%=link_to "Download GPIO Conf", "/downloads/gpio_conf?name=#{@conf_file_name}"%>  &nbsp; |
+					<% end %>
+					<%=link_to "Print", "#", :onclick=>"submit_print_form();"%>  &nbsp; |
+<!--					<%#=link_to "Truth Tables", "#", :onclick=>"submit_tt_form();"%>  &nbsp; |-->
+					<%=link_to "Truth Tables", "/gpis/draw_tt"%>  &nbsp; |
+				</td>
+			</tr>
+		</table>
+
+		<% @exprs.each do |e| %>
+			<input type="hidden" id="expr<%=e.intnummer%>" value="<%=e.boolean_expr%>, <%=e.intnummer%>" >
+		<% end %>
+
+	<% elsif !@exprs.blank? %>
+		<table border="1" width="70%" cellspacing="0px" cellpadding="3px">
+			<tr>
+				<td width="15%" valign="top" > <b>File Name</b> </td>
+				<td width="85%" > <%=@file_name%> </td>
+			</tr>
+
+			<tr>
+				<td width="15%" valign="top" > <b>System</b> </td>
+				<td width="85%" > <%=@system.name%> </td>
+			</tr>
+
+			<tr>
+				<td valign="top"> <b>Options</b> </td>
+				<td>
+					<%=link_to "Download Original File", "/downloads/gpio_file?name=#{@file_name}" %> &nbsp; | &nbsp;
+					<% if File.exist?("#{RAILS_ROOT}/conf/#{cookies[:system_id]}/gpio.conf") %>
+						<%=link_to "Download GPIO Conf", "/downloads/gpio_conf?name=#{@conf_file_name}"%>  &nbsp; |
+					<% end %>
+					<%=link_to "Print", "#", :onclick=>"submit_print_form();"%>  &nbsp; |
+<!--					<%#=link_to "Truth Tables", "#", :onclick=>"submit_tt_form();"%>  &nbsp; |-->
+					<%=link_to "Truth Tables", "/gpis/draw_tt"%>  &nbsp; |
+
+				</td>
+			</tr>
+		</table>
+		<% else%>
+  		<% if !(@file_name.nil? && @conf_file_name.nil?) %>
+			<table border="1" width="70%" cellspacing="0px" cellpadding="3px">
+			<tr>
+				<td width="15%" valign="top" > <b>File Name</b> </td>
+				<td width="85%" > <%=@file_name%> </td>
+			</tr>
+
+			<tr>
+				<td width="15%" valign="top" > <b>System</b> </td>
+				<td width="85%" > <%=@system.name%> </td>
+			</tr>
+
+			<tr>
+				<td valign="top"> <b>Options</b> </td>
+				<td>
+				<% if !@file_name.nil? %>
+					<%=link_to "Download Original File", "/downloads/gpio_file?name=#{@file_name}" %> &nbsp; | &nbsp;
+				<% end %>
+				<% if !@conf_file_name.nil? %>
+					<%=link_to "Download GPIO Conf", "/downloads/gpio_conf?name=#{@conf_file_name}"%>  &nbsp; |
+				<% end %>
+					<%=link_to "Print", "#", :onclick=>"submit_print_form();"%>  &nbsp; |
+<!--					<%#=link_to "Truth Tables", "#", :onclick=>"submit_tt_form();"%>  &nbsp; |-->
+					<%=link_to "Truth Tables", "/gpis/draw_tt"%>  &nbsp; |
+				</td>
+			</tr>
+		  </table>
+		  <% end %>
+	<% end %>
+
+
+
+
+	<% form_tag "/gpis/gpio_result_print", :id => "frm_print", :target=>"_blank" do %>
+		<%= hidden_field_tag :file_name, @file_name %>
+		<%= hidden_field_tag :system_name, @system.name %>
+		<%= hidden_field_tag :message, @message %>
+		<%= hidden_field_tag :tt_count, @tt_count %>
+		<%= hidden_field_tag :singles, (@singles.nil?) ? nil : @singles.size %>
+	<% end %>
+
+	<% form_tag "/gpis/list_tables", :id => "frm_tt", :target=>"_blank" do %>
+		<%= hidden_field_tag :file_name, @file_name %>
+		<%= hidden_field_tag :system_name, @system.name %>
+		<%= hidden_field_tag :message, @message %>
+		<%= hidden_field_tag :tt_count, @tt_count %>
+		<%= hidden_field_tag :singles, (@singles.nil?) ? nil : @singles.size %>
+	<% end %>
+
+	<SCRIPT LANGUAGE="javascript">
+		<!--
+
+		data2=new String();
+		data3=new String();
+		data4=new String();
+		vars=new Array();
+		values=new Array();
+		bracket=new Array();
+		//-->
+
+		function submit_print_form(){
+			document.forms["frm_print"].submit();
+		}
+
+		function submit_tt_form(){
+			document.forms["frm_tt"].submit();
+		}
+
+		function generate_truth_table(expr, id)
+		{
+
+            var tt_val = evaluateMe(expr);
+			new Ajax.Request("/gpis/save_truth_table", {evalScripts: true, synchronous:true, method:'post', parameters:{tt_val:tt_val, id:id} } );
+		}
+
+		// --------- Generate Truth Tables -----------
+		var cnt = <%=@exprs.size%>;
+
+		for (ex_cnt=1; ex_cnt<=cnt; ex_cnt++) {
+
+			if ($('expr'+ex_cnt)!=null) {
+
+				var main_val = $('expr'+ex_cnt).value.split(",");
+
+				if (main_val[0]!="") {
+					generate_truth_table(main_val[0], main_val[1])
+				}
+			}
+		}
+		// ---------- ---------- ---------- ----------
+	</script>
+
+<% end %>
+
+<!-- ___________________ Logic : End ___________________ -->
+

@@ -1,0 +1,40 @@
+<legend><b>Protokolle</b></legend>
+<div id="msg"> &nbsp; </div>
+<table>
+	<tr>
+		<th width="80" align="center">Nummer</th>
+		<th width="80" align="center">Name</th>
+		<th width="100" align="center">Restriction</th>
+		<th width="70">&nbsp;</th>
+	<tr>
+</table>
+<% @protocols.each do |@protocol| %>
+	<% form_remote_tag :url => {:controller=>'protocols', :action =>'update', :id => @protocol} do %>
+		<table>
+			<tr>
+				<td width="80">
+					<%= text_field :protocol, :nummer, :size=>10, :onchange => "$('submit#{@protocol.id.to_s}').click();" %></td>
+				<td width="80"><%= text_field :protocol, :name, :size=>10, :onchange => "$('submit#{@protocol.id.to_s}').click();" %></td>
+				<td width="100"><%= select :protocol, :protocol_type_id, @type_of_protocol, {:include_blank => true, :seleceted => @protocol.protocol_type_id}, {:onchange => "$('submit#{@protocol.id.to_s}').click();"} %>
+
+				<input type="image" src="/images/blank.png" width="0" height="0" id="submit<%= @protocol.id %>" /> </td>
+				<td width="70"><%= button_to "Save changes", "/protocols/update/#{@protocol.id}"%></td>
+				<td width="70"><%= button_to "loschen", "/protocols/delete_protocol/#{@protocol.id}", :confirm => "Sind Sie sicher, dass Sie Protokoll entfernen ?" %></td>
+			<tr>
+		</table>
+	 <%end%>
+<% end %>
+
+</table>
+<hr />
+Neu:<br/>
+<table>
+  <tr>
+	<td><% form_tag :controller=>'protocols', :action =>'create_protocol' do %>  
+		<%= text_field :new_protocol, :nummer, :size=>5 %>
+	</td>
+	<td><%= text_field :new_protocol, :name, :size=>20 %></td>
+	<td><%= submit_tag %><% end %></td>
+  </tr>
+</table>
+

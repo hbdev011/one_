@@ -1,0 +1,25 @@
+<%
+if !@source.par_matrix.blank? && !@source.par_matrix.nil?
+	@kreuzschiene = Kreuzschiene.getMatrix(@source.par_matrix.to_i, @system.id)
+	@senke = @kreuzschiene.getSourceQuelle
+end
+%>
+
+<% if @senke %>
+	<select title="<%=@source.matrix.to_s%>" onchange="fetchQuelle('<%= @source.par_matrix.to_s %>',this.value,<%= @kreuzschiene.id %>, <%= @source.id%>)" name="source[par_quelle]" id="source_par_quelle" class="ibtTableSelectBox">
+		<option selected="selected" value=""></option>
+		<%if session[:display]=='id'%>
+			<% @senke.each do |q| %>
+				<option value="<%=q.intnummer%>" <%= @source.par_quelle.to_s == q.intnummer.to_s ? "selected='selected'" : nil%> ><%=q.intnummer%></option>
+			<% end %>
+		<%else%>
+			<% @senke.each do |q| %>
+				<option value="<%=q.intnummer%>" <%= @source.par_quelle.to_s == q.intnummer.to_s ? "selected='selected'" : nil%> ><%=q.char6%></option>
+			<% end %>
+		<%end%>
+	</select>
+<%else%>
+	<select id="source_par_quelle" name="source[par_quelle]" class="ibtTableSelectBox">
+		<option selected="selected" value="">&nbsp;</option>
+	</select>
+<% end %>

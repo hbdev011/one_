@@ -1,0 +1,73 @@
+  <table cellspacing="0">
+
+    <tr>
+
+      <td width="100" align="center"><%= @umd.umdnummer.to_s %></td>
+      <td width="100" align="center">
+
+        <div id="kv_select_<%=@umd.id%>"> 
+          <% form_remote_tag :url => {:controller=>'umds', :action =>'update', :id => @umd} do %>
+              <%= select('umd', 'kreuzschiene_id', @kv, { :include_blank => true,:selected=>@umd.kreuzschiene_id}, :onchange=>"document.getElementById('submitkv" + @umd.id.to_s + "').click();" ) %>
+              <input type="hidden" name="refresh" value="1">
+              <input type="image" src="/images/blank.png" id="submitkv<%= @umd.id.to_s %>" width="0" height=0>
+          <%  end %>
+        </div>
+
+      </td>
+      <td width="100" align="center">
+
+          <% form_remote_tag :url => url_for(:controller=>'umds', :action =>'update', :id => @umd) do %>
+            <%= select('umd', 'target_id', @targets, { :include_blank => true,:selected=>@umd.target_id}, :onchange=>"document.getElementById('submits" + @umd.id.to_s + "').click();" ) %>
+            <input type="image" src="/images/blank.png" id="submits<%= @umd.id.to_s %>" width="0" height=0>
+          <%  end %>
+
+      </td>
+
+      <td width="100" align="center">
+
+        <% form_remote_tag :url => url_for( :controller=>'umds', :action =>'update', :id => @umd) do %>
+            <%= text_field 'umd', :festtext, {:size=>6, :onchange=>"document.getElementById('s_festtext_" + @umd.id.to_s + "').click();"} %>
+            <input type="image" src="/images/blank.png" id="s_festtext_<%= @umd.id.to_s %>" />
+        <% end %>
+
+      </td>
+      <td width="100" align="center">
+        <% form_remote_tag :url => url_for( :controller=>'umds', :action =>'update', :id => @umd) do %>
+            <%= text_field 'umd', :monitor, {:size=>6, :onchange=>"document.getElementById('s_mon_" + @umd.id.to_s + "').click();"} %>
+            <input type="image" src="/images/blank.png" id="s_mon_<%= @umd.id.to_s %>" />
+        <% end %>
+      </td>
+      <td width="100" align="center">
+        <% form_remote_tag :url => url_for( :controller=>'umds', :action =>'update', :id => @umd) do %>
+            <%= text_field 'umd', :gpi, {:size=>6, :onchange=>"document.getElementById('s_gpi_" + @umd.id.to_s + "').click();"} %>
+            <input type="image" src="/images/blank.png" id="s_gpi_<%= @umd.id.to_s %>" />
+        <% end %>
+      </td>
+      <td width="100" align="center">
+
+        <% form_remote_tag :url => url_for( :controller=>'umds', :action =>'update', :id => @umd) do %>
+            <%= text_field 'umd', :bme, {:size=>6, :onchange=>"document.getElementById('s_bme_" + @umd.id.to_s + "').click();"} %>
+            <input type="image" src="/images/blank.png" id="s_bme_<%= @umd.id.to_s %>" /> 
+        <% end %>
+
+      </td>
+      <td width="100" align="center">
+
+        <% form_remote_tag :url => url_for( :controller=>'umds', :action =>'update', :id => @umd) do %>
+            <%= text_field 'umd', :mon_havarie, {:size=>6, :onchange=>"document.getElementById('s_mh_" + @umd.id.to_s + "').click();"} %>
+            <input type="image" src="/images/blank.png" id="s_mh_<%= @umd.id.to_s %>" /> 
+        <% end %>
+
+      </td>
+      <td width="100" align="center">
+
+        <% form_remote_tag :url => url_for( :controller=>'umds', :action =>'update', :id => @umd) do %>
+            <%= text_field 'umd', :konfiguration, {:size=>6, :onchange=>"document.getElementById('s_kon_" + @umd.id.to_s + "').click();"} %>
+            <input type="image" src="/images/blank.png" id="s_kon_<%= @umd.id.to_s %>" /> 
+        <% end %>
+
+      </td>
+
+    </tr>
+
+  </table>

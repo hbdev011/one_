@@ -1,0 +1,1 @@
+<%= select('umd', 'kreuzschiene_id', @kv, { :include_blank => true,:selected=>@umd.kreuzschiene_id}, :onchange => remote_function(:update => 'mon_havarie_' + @umd.id.to_s, :url =>{:controller=>:umds, :action => :show_5stelling, :id => @umd.id}, :with => "'kid='+this.value")) %><input type="image" src="/images/blank.png" id="submitkv<%= @umd.id.to_s %>" width="0" height=0>

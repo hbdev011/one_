@@ -1,0 +1,89 @@
+<div id="bd_usernotice"> &nbsp; </div>
+<div style="display:none;" id="div-loader" class="relative">
+    <div class="loader-home" style="height:1000px;">
+        <img alt="Loading..." src="/images/ajax-loader.gif">
+    </div>
+</div>
+
+<h2>Bediengeräte</h2>
+<table border=0 cellspacing="0">
+  <tr bgcolor="white">
+    <th width="100">Nr
+    <th width="100">8Stellig</th>
+    <th width="100">4Stellig</th>
+    <th width="100">Unit</th>
+    <th width="100">Port</th>
+    <th width="130">IP</th>
+    <th width="90">Upside down</th>
+    <th width="120">Vertical</th>
+    <th width="110">TypNr/Bezeichnung</th>
+  <tr>
+</table>
+
+<% @bediengeraete.each do |@bediengeraet| %>  
+  <% form_remote_tag :url => url_for(:controller=>'bediengeraets', :action =>'update', :id => @bediengeraet), :html => {:id => @bediengeraet.id } do %>  
+	<table cellspacing="0">
+	  <tr>
+		<td width="100" align="center">
+			<%= @bediengeraet.nummer %>
+		</td>
+		<td width="100" align="center">
+			<%= text_field 'bediengeraet', :name8stellig, {:size=>10, :maxlength=>8, :onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click();"} %>
+		</td>
+		<td width="100" align="center">
+			<%= text_field 'bediengeraet', :name4stellig, {:size=>5, :maxlength=>5, :onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click();"} %>
+		</td>
+		<td width="100" align="center">
+			<%= select('bediengeraet', :unit, @units, { :include_blank => true}, :onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click(); new Ajax.Request('/systems/get_ports?curr_port=#{nil}&curr_unit='+this.value+'&s_id=#{@bediengeraet.id}&opt=4', {asynchronous:true, evalScripts:true}); return false;" ) %>
+			<%#= text_field 'bediengeraet', :unit, {:size=>3, :onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click();"} %>
+		</td>
+		<td width="100" align="center">
+			<div class="cloneinput_bg" id="port4_<%=@bediengeraet.id%>">
+			  <% if @bediengeraet.unit %>
+				<%= link_to_remote (@bediengeraet.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @bediengeraet.unit, :curr_port => @bediengeraet.port, :s_id => @bediengeraet.id, :opt => 4 } %>
+			  <% end %>
+			</div>
+			<%#= text_field 'bediengeraet', :port, {:size=>3, :onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click();"} %>
+		</td>
+		<td width="100" align="center">
+			<%= text_field 'bediengeraet', :ip, {:size=>16, :onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click();"} %>
+		</td>
+		<td width="100" align="center">
+			<%=check_box :bediengeraet, :upside_down, {:onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click();"}, '1', '0'%>
+		</td>
+		<td width="100" align="center">
+			<%=check_box :bediengeraet, :vertical, {:onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click();"}, '1', '0'%>
+		</td>
+		<td width="100" align="center">
+		  <%= select('bediengeraet',  :bdtype_id, @bdtypes, { :include_blank => true, :selected => @bediengeraet.bdtype_id.to_i}, {:onchange=>"document.getElementById('submitchangeitem" + @bediengeraet.id.to_s + "').click();" }) %>
+		  <input type="image" src="/images/blank.png" id="submitchangeitem<%= @bediengeraet.id.to_s %>" width="0" height=0>
+		</td>
+		<td>
+		  <%# if !@bediengeraet.bdtype_id.nil? and @bediengeraet.bdtype_id>0 then %> 
+			<%= link_to image_tag("edit.png",:style=>"border:none", :title => "editieren"), :action=>'typeshow', :id=>@bediengeraet.intnummer %> 
+		  <%# end %> 
+		</td>
+	  <tr>
+	</table>
+  <% end %>
+<% end %>
+<br/><br/>
+
+<h2>Bediengeräte kopieren</h2>
+<% form_tag :controller=>"bediengeraets", :action=>"copy" do%>
+    Von BD  <input type="text" name="von"  id="von"  size="1" onkeypress="return numbersOnly(event);" onchange="chkBDTypNr(this.value);"> &nbsp;
+    nach BD <input type="text" name="nach" id="nach" size="1" onkeypress="return numbersOnly(event);"> <br />
+    <div id="grp_options" name="grp_options" style="float:left; width:100%; height:30px;">
+        <% bdtype_id = nil %>
+        <%=render :partial => "kopieren_options", :locals => {:bdtype_id => bdtype_id}%>
+    </div><br />
+    &nbsp;<%= submit_tag "kopieren", :onclick => "$('div-loader').show();", :disable_with => "kopiert" %>
+<% end %>
+
+<script type="text/javascript">
+    //<![CDATA[
+    function chkBDTypNr(val){
+        new Ajax.Request('/bediengeraets/getKopierenOptions', {asynchronous:true, evalScripts:true, method:'post', parameters: {bd_nr: val}});
+    }
+    //]]>
+</script>

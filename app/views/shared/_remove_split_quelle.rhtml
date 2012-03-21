@@ -1,0 +1,4 @@
+<% form_tag :controller => "typesources", :action => "remove_split_quelle", :id => @panel.id do %>
+	<%= submit_tag "Remove Button on Pos.", :class => 'panel-button', :onclick => "if (confirm('Sind Sie sicher, die Sie loschen mochten')){$('div-loader').show();}else{return false;}"%>
+	<%= text_field :typesource, "remove_field", :size => "3" %> &nbsp;
+<% end %>

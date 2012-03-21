@@ -1,0 +1,28 @@
+
+Version: 196
+#Frames: 9
+#Kreuzschienen: 9
+#Devices: 10
+#Bediengeraete: 32
+#UMDs: 64
+Kreuzschienen: 9
+Kreuzschiene Xten
+Kreuzschiene 
+Kreuzschiene 
+Kreuzschiene 
+Kreuzschiene 
+Kreuzschiene 
+Kreuzschiene 
+Kreuzschiene 
+Kreuzschiene 
+#Mixer: 72
+Kreuzschienen: 9
+Mixer type Kreuzschiene Xten
+Mixer type Kreuzschiene 
+Mixer type Kreuzschiene 
+Mixer type Kreuzschiene 
+Mixer type Kreuzschiene 
+Mixer type Kreuzschiene 
+Mixer type Kreuzschiene 
+Mixer type Kreuzschiene 
+Mixer type Kreuzschiene 

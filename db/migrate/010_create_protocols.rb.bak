@@ -1,0 +1,31 @@
+class CreateProtocols < ActiveRecord::Migration
+  def self.up
+    create_table :protocols do |t|
+      t.column :nummer, :integer
+      t.column :name, :string
+      t.timestamps
+    end
+    
+    Protocol.new(:nummer=>1, :name=>"pro-bel").save
+    Protocol.new(:nummer=>2, :name=>"ibt").save
+    Protocol.new(:nummer=>3, :name=>"Nils3").save
+    Protocol.new(:nummer=>4, :name=>"Prot4").save
+    Protocol.new(:nummer=>5, :name=>"Prot5").save
+    Protocol.new(:nummer=>6, :name=>"Prot6").save
+    Protocol.new(:nummer=>6, :name=>"Prot7").save
+    Protocol.new(:nummer=>6, :name=>"Prot8").save
+    Protocol.new(:nummer=>6, :name=>"Prot9").save
+    Protocol.new(:nummer=>6, :name=>"Prot10").save
+    Protocol.new(:nummer=>6, :name=>"Prot11").save
+    Protocol.new(:nummer=>6, :name=>"Prot12").save
+    Protocol.new(:nummer=>6, :name=>"Prot13").save
+    Protocol.new(:nummer=>6, :name=>"Prot14").save
+    Protocol.new(:nummer=>6, :name=>"Prot15").save
+    Protocol.new(:nummer=>6, :name=>"Prot16").save
+    
+  end
+
+  def self.down
+    drop_table :protocols
+  end
+end

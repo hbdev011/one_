@@ -1,0 +1,7 @@
+.git
+doc/
+*.*~
+*/*.*~
+*.rvmrc
+log/*.log
+tmp/

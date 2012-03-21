@@ -1,0 +1,78 @@
+<% form_remote_tag :url => {:controller=>'gpis', :action =>'update_output', :id => @output}, :html => {:id => @output.id} do %>
+	<div class="ibtSourceTableHeader">
+		<div class="ibtSourceTableCol1" class="clean" id="output<%= @output.intnummer %>">
+			<%= @output.intnummer %>
+		</div>
+		<div class="ibtSourceTableCol7">
+			<%= text_field :output, :name, {:onchange=>"$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;", :class => "left", :onkeypress => "return nospace(event)"} %>
+		</div>
+		<div class="ibtSourceTableCol3">
+			<%= text_field :output, :active_name, {:onchange=>"$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;", :class => "left"} %>
+		</div>
+		<div class="ibtSourceTableCol3">
+			<%= text_field :output, :inactive_name, {:onchange=>"$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;", :class => "left"} %>
+		</div>
+		<div class="ibtSourceTableCol4">
+			<%= select :output, :mode, @mode.sort_on, {:include_blank => true}, {:onchange => "$('submitchangeoutput#{@output.id}').click();", :style => "width:95%;"} %>
+		</div>
+		<div class="ibtSourceTableCol4">
+			<%= select :output, :o_type, @in_type.sort_on("value"), {:include_blank => true}, {:onchange => "$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;"} %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<% if @output.o_type == 1 %>
+				<%= select :output, :unit, @units, {:include_blank => true, :selected => @output.unit}, {:style => "width:95%;", :onchange => "new Ajax.Request('/systems/get_ports?curr_port=#{@output.port}&curr_unit='+this.value+'&s_id=#{@output.id}&opt=7', {asynchronous:true, evalScripts:true}); return false;"} %>
+			<% else %>
+				<%= select :output, :unit, @panels, {:include_blank => true, :selected => @output.unit}, {:onchange=>"$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;"} %>
+			<% end %>
+		</div>
+		<div class="ibtSourceTableCol2 cloneinput_bg" id="port7_<%=@output.id%>">
+			<% if @output.o_type == 1 %>
+				<center>
+				<% if @output.unit %>
+					<%= link_to_remote (@output.port || '--'), :url => {:controller => "systems", :action => "get_ports", :curr_unit => @output.unit, :curr_port => @output.port, :s_id => @output.id, :opt => 7 }, :style => "width:95%;" %>
+				<% end %>
+				<center>
+			<%else%>
+				<%= text_field :output, :port, :value => @output.port, :style => "width:95%;", :readonly => true %>
+			<%end%>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<% if @output.o_type == 1 %>
+				<%= select :output, :byte, @byte, {:include_blank => true, :selected => @output.byte}, {:onchange=>"$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;"} %>
+			<% else %>
+				<% if @output.byte.nil? || @output.byte.blank? %>
+					<%= select :output, :byte, @blank, {:selected => @output.byte}, {:style => "width:95%;"} %>
+				<% else %>
+					<%= select :output, :byte, @single, {:selected => @output.byte}, {:style => "width:95%;"} %>
+				<% end %>
+			<% end %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<% if @output.o_type == 1 %>
+				<%= select :output, :bit, @bit, {:include_blank => true, :selected => @output.bit}, {:onchange=>"$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;"} %>
+			<% else %>
+				<% if @output.bit.nil? || @output.bit.blank? %>
+					<%= select :output, :bit, @blank, {:selected => @output.bit}, {:style => "width:95%;"} %>
+				<% else %>
+					<%= select :output, :bit, @single, {:selected => @output.bit}, {:style => "width:95%;"} %>
+				<% end %>
+			<% end %>
+		</div>
+		<div class="ibtSourceTableCol2">
+			<%= select :output, :invert, @invert.sort_on("value"), {:include_blank => true}, {:onchange=>"$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;"} %>
+		</div>
+
+		<div class="ibtSourceTableCol6">
+			<%= text_field :output, :comment, {:onchange=>"$('submitchangeoutput#{@output.id}').click();",  :style => "width:95%;", :maxlength => 16, :class => "left"} %>
+
+			<input type="image" src="/images/blank.png" width="0" height="0" id="submitchangeoutput<%=@output.id%>" />
+		</div>
+
+		<div style="width:7%; float:left;">&nbsp;
+			<%=link_to image_tag("cross.png",:style=>"border:none", :title => "Entfernen"), '/gpis/delete_output/'+@output.intnummer.to_s, :onclick => "if (confirm('Sie sind sicher, dass Sie Zeile entfernen ?')){$('div-loader-out').show();}else{return false;}" %>
+		</div>
+	</div>
+<% end %>
+
+<div class="clear"></div>
+

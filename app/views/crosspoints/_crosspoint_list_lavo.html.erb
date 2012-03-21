@@ -1,0 +1,13 @@
+<% @setups.each do |f|;setup(f);%>
+        <div id="div_<%= f.id.to_s %>">
+          <% form_remote_tag :url => { :controller=>'crosspoints', :action=>'update_kv',  :id => f }, :html => {:onsubmit => "$('spin_#{f.id}').show();", :id =>"form_#{f.id}" ,:name => "form_#{f.id}"} do %>
+            <table width="100%" border="0" cellpadding="1" cellspacing="1">
+              <tr id="row_<%= f.id %>" class="lawo">
+                <%= render :partial => "lawo_fields",:locals => {:kv => nil, :f => f } %>
+              </tr>
+            </table>
+            <input type="image" src="/images/blank.png" id="s<%= f.id.to_s %>" width="0" height=0>
+          <%end%>
+        </div>
+  <% end %>
+

@@ -1,0 +1,124 @@
+<% @targets=@kreuzschiene.getTargets %>
+<% height = (@targets.size*20)+30 %>
+<div style="display:none;" id="div-loader" class="relative">
+	<div class="loader-home" style="height:<%=height%>px;">
+		<img alt="Loading..." src="/images/ajax-loader.gif">
+	</div>
+</div>
+<center><h3>Senken</h3></center>
+<div class="ibtSourceTableMain">
+	<div class="ibtSourceTableSubTitle1" style="width:29%;">HLSD</div>
+	<div class="ibtSourceTableSubTitle1" style="width:28%;">Texte</div>
+	<% kv_nr = @kreuzschiene.id %>
+	<div class="ibtSourceTableSubTitle4" style="width:20%;">&nbsp;</div>
+</div>
+<div class="clear"></div>
+
+<div class="ibtSourceTableMain">
+	<div class="ibtSourceTableCol1 clean" style="width:3%;">&nbsp;</div>
+	<div class="ibtSourceTableCol3" style="width:6%;margin-left:7px;">Signal Class</div>
+	<div class="ibtSourceTableCol3" style="width:4%;margin-left:25px;">Subclass</div>
+	<div class="ibtSourceTableCol3" style="width:6%;margin-left:21px;">Component</div>
+	<div class="ibtSourceTableCol3" style="width:7%;">Subcomponent</div>
+
+	<div class="ibtSourceTableCol3">Char 4</div>
+	<div class="ibtSourceTableCol3">Char 5</div>
+	<div class="ibtSourceTableCol4">Char 6</div>
+	<div class="ibtSourceTableCol5">Char 10</div>
+	<div class="ibtSourceTableCol2">Family</div>
+
+	<div class="ibtSourceTableCol6">Comment</div>
+	<div style="width:5%; float:left;">&nbsp; </div>
+</div>
+<div class="clear"></div>
+<% kr_type = @kreuzschiene.kr_type %>
+<% @targets.each do |@target| %>
+	<% form_remote_tag :url => {:controller=>'targets', :action =>'update', :id => @target}, :html => {:id => @target.id} do %>
+	<div class="ibtSourceTableHeader">
+		<div class="ibtSourceTableCol1" class="clean">
+			<%= @target.nummer %>
+		</div>
+
+		<div class="ibtSourceTableCol3 cloneinput_bg" style="width:6%;" id="target_signal<%=@target.id%>">
+			<center>
+				<%=link_to (!@target.signal.nil? && !@target.signal.blank? && @target.signal!=0) ? @target.signal_senken.title : "____", "Javascript:void(0)", :onclick => "new Ajax.Request('/targets/get_hlsd', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@target.id}, field:'signal', page:'senken' } } ); " %>
+			</center>
+		</div>
+		<div class="ibtSourceTableCol3 cloneinput_bg" style="width:6%;" id="target_subclass<%=@target.id%>">
+			<center>
+			<%=link_to (@target.subclass.nil? || @target.subclass.blank?) ? "____" : @target.subclass, "Javascript:void(0)", :onclick => "new Ajax.Request('/targets/get_hlsd', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@target.id}, field:'subclass', page:'senken' } } ); " %>
+			</center>
+		</div>
+		<div class="ibtSourceTableCol3 cloneinput_bg" style="width:6%;" id="target_component<%=@target.id%>">
+			<center>
+			<%=link_to (@target.component.nil? || @target.component.blank?) ? "____" : @target.component, "Javascript:void(0)", :onclick => "new Ajax.Request('/targets/get_hlsd', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@target.id}, field:'component', page:'senken' } } ); " %>
+			</center>
+		</div>
+		<div class="ibtSourceTableCol3 cloneinput_bg" style="width:6%;" id="target_subcomponent<%=@target.id%>">
+			<center>
+			<%=link_to (@target.subcomponent.nil? || @target.subcomponent.blank?) ? "____" : @target.subcomponent, "Javascript:void(0)", :onclick => "new Ajax.Request('/targets/get_hlsd', {evalScripts: true, synchronous:true, method:'post', parameters:{row:#{@target.id}, field:'subcomponent', page:'senken'  } } ); " %>
+			</center>
+		</div>
+
+		<div class="ibtSourceTableCol3">
+			<input type="hidden" name="id" value="<%= @target.nummer %>">
+			<input type="hidden" name="kreuzschiene_id" value="<%= @target.kreuzschiene_id %>">
+			<%= text_field 'target', :name4stellig, {:maxlength=>4, :onchange=>"$('submitchangeitemt" + @target.id.to_s + "').click();", :title => @target.name4stellig, :style => "width:95%;"} %>
+		</div>
+		<div class="ibtSourceTableCol3">
+			<%= text_field 'target', :name5stellig, {:maxlength=>5, :onchange=>"$('submitchangeitemt" + @target.id.to_s + "').click();", :title => @target.name5stellig, :style => "width:95%;"} %>
+		</div>
+		<div class="ibtSourceTableCol4">
+			<%= text_field 'target', :char6, {:maxlength=>6, :onchange=>"$('submitchangeitemt" + @target.id.to_s + "').click();", :title => @target.char6, :style => "width:95%;"} %>
+		</div>
+		<div class="ibtSourceTableCol5">
+			<%= text_field 'target', :char10, {:maxlength=>10, :onchange=>"$('submitchangeitemt" + @target.id.to_s + "').click();", :title => @target.char10, :style => "width:94%;"} %>
+		</div>
+
+		<div class="ibtSourceTableCol2 cloneinput_bg" id="target_family_<%=@target.id%>" style="padding-right:0px;" >
+	            <center>
+			<% if session[:display]=='id'%>
+		                <%= link_to (@target.family_id.nil? || @target.family_id.blank? || @target.family_id.to_i==0) ? "____" : @target.family_id, "Javascript:void(0)", :onclick => "new Ajax.Request('/targets/get_family_senken', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@target.id} } } ); " %>
+			<%else%>
+				<%= link_to (@target.family_id.nil? || @target.family_id.blank? || @target.family_id.to_i==0) ? "____" : Family.get_family(@target.family_id), "Javascript:void(0)", :onclick => "new Ajax.Request('/targets/get_family_senken', {evalScripts: true, synchronous:true, method:'post', parameters:{id:#{@target.id} } } ); " %>
+			<%end%>
+	            </center>			                    				
+		</div>
+
+
+		<div class="ibtSourceTableCol6">
+			<%= text_field 'target', :comment, {:maxlength=>16, :onchange=>"$('submitchangeitemt" + @target.id.to_s + "').click();", :title => @target.comment, :style => "width:95%;"} %>
+
+			<input type="hidden" id="kr_id" name="kr_id" value="<%=kv_nr%>"/>
+			<input type="image" src="/images/blank.png" width="0" height="0" id="submitchangeitemt<%= @target.id.to_s %>" />
+		</div>
+		<div style="width:7%; float:left;">&nbsp;
+			<%=link_to "Entfernen", "Javascript:void(0)", :onclick => "delete_row(#{@target.intnummer}, '#{@page}', #{@kreuzschiene.input}, #{@kreuzschiene.output}, #{kv_nr} );" %>
+		</div>
+	</div>
+	<% end %>
+
+<div class="clear"></div>
+<% end %>
+
+<script type="text/javascript">
+	//<![CDATA[
+
+	function delete_row(row_nr, page, inputs, outputs, kv_id) {
+		if (confirm('Sie sind sicher, dass Sie Zeile entfernen ?')) {
+			$('div-loader').show();
+			new Ajax.Request('/kreuzschienes/remove_row?inputs='+inputs+'&kv_id='+kv_id+'&outputs='+outputs+'&page='+page+'&row_nr='+row_nr, {asynchronous:true, evalScripts:true});
+		};
+		return false;
+	}
+
+	//]]>
+</script>
+<style type="text/css" media="screen">
+/* <![CDATA[ */
+  .cloneinput_bg{
+    margin: 2px 6px 0 0;
+  }
+/* ]]> */
+</style>
+

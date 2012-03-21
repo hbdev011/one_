@@ -1,0 +1,98 @@
+<%=javascript_include_tag 'colorpicker.js'%>
+<%=stylesheet_link_tag 'colorpicker.css'%>
+<legend><b>System Color</b></legend>
+<%if !@system_colors.nil? && !@system_colors.blank?%>
+<table width="50%">
+<tr>
+	<th width="10%">Nummer</th>
+	<th width="28%">Name</th>
+	<th width="12%">Select color</th>
+	<th width="10%">Red</th>
+	<th width="10%">Green</th>
+	<th width="10%">Blue</th>
+	<th width="10%"></th>
+<tr>
+<% @system_colors.each_with_index do |sc, index| %>
+<tr>
+	<td style="border:0px;" colspan="7">
+		<%form_remote_tag :url => {:controller=>'systems', :action =>'system_color', :id => sc} do %>
+		<table width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td width="10%">
+			<%= text_field :system_color, :nummer, :size=>5, :value => sc.nummer , :onchange=>"$('submit#{sc.id.to_s}').click();"%></td>
+			</td>
+			<td width="30%"><%= text_field :system_color, :name, :size=>20, :value => sc.name, :onchange=>"$('submit#{sc.id.to_s}').click();"%></td>
+			<td width="15%" align="center"><%= text_field_tag :color, "", :style=>"width:20px; background-color:rgb(#{sc.red},#{sc.green},#{sc.blue});", :id => "color_#{index}", :onfocus => "jQuery('#color_#{index}').click();", :onblur => "$('submit#{sc.id.to_s}').click();"%></td>
+			<td width="10%"><%= text_field :system_color, :red, :size=>5, :value => sc.red, :id => "system_color_red_#{index}", :onchange=>"updatecolor(#{index}); $('submit#{sc.id.to_s}').click();"%></td>
+			<td width="10%"><%= text_field :system_color, :green, :size=>5, :value => sc.green, :id => "system_color_green_#{index}", :onchange=>"updatecolor(#{index}); $('submit#{sc.id.to_s}').click();"%></td>
+			<td width="12%"><%= text_field :system_color, :blue, :size=>5, :value => sc.blue, :id => "system_color_blue_#{index}", :onchange=>"updatecolor(#{index}); $('submit#{sc.id.to_s}').click();" %></td>
+			<td valign="top"><input type="image" src="/images/blank.png" width="0" height="0" id="submit<%= sc.id.to_s %>" /><input type="image" src="/images/blank.png" width="0" height="0" id="submit_<%=index%>" /><%= button_to "loschen", "/systems/delete_system_color/#{sc.id}", :confirm => "Sie sind sicher, dass Sie loschen Vorlage ?" %></td>
+		<tr>
+		</table>
+		<%end%>
+	</td>			
+</tr>		
+  <script>
+
+  jQuery('#color_<%=index%>').ColorPicker({
+          onSubmit: function(hsb, hex, rgb, el) {
+	          jQuery('#system_color_red_<%=index%>').val(rgb.r);
+	          jQuery('#system_color_green_<%=index%>').val(rgb.g);
+	          jQuery('#system_color_blue_<%=index%>').val(rgb.b);
+		  color = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+     		  jQuery('#color_<%=index%>').css('background-color', color);
+		  jQuery('#submit_<%=index%>').submit();
+		  jQuery('#color_<%=index%>').ColorPickerHide(); 
+          }
+	});
+	
+	jQuery('#color_<%=index%>').ColorPickerSetColor({r:<%=sc.red%>, g:<%=sc.green%>, b:<%=sc.blue%>});
+</script>
+<%end%>
+</table>
+<%end%>
+
+Neu:<br/>
+<% form_tag :controller=>'systems', :action =>'create_system_color' do %>
+<table>
+<tr>
+	<th>Nummer</th>
+	<th>Name</th>
+	<th>Select color</th>	
+	<th>Red</th>
+	<th>Green</th>
+	<th>Blue</th>
+<tr>
+<tr>
+	<td><%= text_field :system_color, :nummer, :size=>5%></td>
+	<td><%= text_field :system_color, :name, :size=>20 %></td>
+	<td align="center"><%= text_field_tag :color, "", :style=>"width:20px;", :onfocus => "jQuery('#color').click();"%></td>	
+	<td><%= text_field :system_color, :red, :size=>5, :class => 'color', :onblur => "changeval(this.value, 'r');"  %></td>
+	<td><%= text_field :system_color, :green, :size=>5 , :onchange => "changeval(this.value, 'g');"  %></td>
+	<td><%= text_field :system_color, :blue, :size=>5 , :onchange => "changeval(this.value, 'b');"  %></td>
+	<td><%= submit_tag %></td>
+</tr>
+</table>
+<% end %>
+<script>
+	jQuery('#color').ColorPicker({
+		onSubmit: function(hsb, hex, rgb, el) {		  
+			jQuery('#system_color_red').val(rgb.r);
+			jQuery('#system_color_green').val(rgb.g);
+			jQuery('#system_color_blue').val(rgb.b);
+			jQuery(el).ColorPickerHide();
+		}
+	});
+
+	function updatecolor(id)
+	{
+		var r = jQuery('#system_color_red_'+id).val();
+		var g = jQuery('#system_color_green_'+id).val();
+		var b = jQuery('#system_color_blue_'+id).val();
+		color = 'rgb('+r+','+g+','+b+')';
+		jQuery('#color_'+id).css('background-color', color);
+		jQuery('#color_'+id).ColorPickerSetColor({r:r, g:g, b:b});
+		jQuery('#colorpicker_new_color').css('background-color', color);
+	}
+</script>
+

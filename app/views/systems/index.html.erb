@@ -1,0 +1,98 @@
+<script>
+  
+  function _deletomat(elem) {
+      $('div-loader').show();
+      var str = confirm('Wollen Sie wirklich löschen?\n\nDer Löschvorgang dauert einen Moment, bitte warten Sie während des Löschvorgangs...');
+      if(str == false) {
+        $('div-loader').hide();
+        return false;
+      } else {
+        $(elem).remove($(elem).innerHTML);
+        $('div-loader').hide();
+        return true;
+      }
+      return false;
+   }
+  
+</script>
+
+<div style="display:none;" id="div-loader" class="relative">
+    <div class="loader-home" style="height:1000px;">
+        <img alt="Loading..." src="/images/ajax-loader.gif">
+    </div>
+</div>
+
+<h1>Konfigurationscenter</h1>
+<br/>
+
+<table cellspacing="0" cellpadding="0">
+  <tr bgcolor="white">
+    <th>Nr</th>
+    <th>Name</th>
+    <th>Version</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+<% 
+    
+    System.find(:all).each_with_index do |@system,index|
+        version =  @system.version.to_s
+        index+=1
+%>
+  <tr valign="center">
+    <td>      
+      <%#= link_to "Konfiguration <b>" + @system.id.to_s + "</b>", :controller=>'systems', :action=>'show_clean', :id=>@system %>
+      <%= link_to "Konfiguration <b>" + index.to_s + "</b>", :controller=>'systems', :action=>'show_clean', :id=>@system %>
+    </td>
+    <td>     
+      <% form_remote_tag :url => {:controller=>'systems', :action =>'update', :id => @system} do %>
+          <%= text_field('system', :name, {:size=>10, :onchange=>"document.getElementById('submitchangeitem" + @system.id.to_s + "').click();"}) %>
+          <input type="image" src="/images/blank.png" id="submitchangeitem<%= @system.id.to_s %>" width="0" height=0><% end  %>        
+    </td>
+    <td align="center"><b><%= version %></b></td>
+    <td>
+      <% form_tag(:controller=>'systems', :action=>'ftp_get_from_system', :id=>@system.id) do %>
+          <%= submit_tag "System auslesen (FTP)", :disable_with=>"Übertragung...", :onclick => "if(confirm('Sind Sie sicher, dass Sie System gelesen (FTP)?')){$('div-loader').show()}else{this.value = this.getAttribute('originalValue');this.disabled=false;return false}" %>
+      <% end %> 
+    </td>
+    <td>
+      <% form_tag(:controller=>'systems', :action=>'write', :id=>@system.id) do %>
+            <%= submit_tag("lokale Datei schreiben", :disable_with=>"Schreibt...", :onclick => "if(confirm('Sind Sie sicher, dass Sie auf lokale Datei schreiben?')){$('div-loader').show()}else{this.value = this.getAttribute('originalValue');this.disabled=false;return false};") %>
+        <% end %> 
+    </td>  
+    <td>
+      <% form_tag(:controller=>'systems', :action=>'import', :id=>@system.id) do %>
+          <%= submit_tag "lokale Datei einlesen (kein ftp)", :disable_with=>"Übertragung...", :onclick => "if(confirm('Sind Sie sicher, dass Sie Lokale Datei (kein ftp) lesen?')){$('div-loader').show()}else{this.value = this.getAttribute('originalValue');this.disabled=false;return false};" %>
+      <% end %>
+    </td>
+    <td>
+          &nbsp;&nbsp;
+          <a href="/systems/delete_configuration/<%=  @system.id %>" onClick="return _deletomat(this)"><%=image_tag("cross.png",:style=>"border:none", :title => "Löschen?")%></a>
+    </td>
+  </tr>
+<% end %>
+
+</table>
+
+<br/>
+
+<h2>Neu anlegen:</h2>
+<table>
+  <tr bgcolor="white">
+    <th>Name</th>
+    <th>IP-Adresse</th>
+  </tr>
+  <tr>
+    <td><% form_tag :controller=>'systems', :action =>'create' do %>  
+        <%= text_field :system, :name, :size=>10, :value=>"..." %></td>
+    <td><input type="text" name="start_ip", size="10" value="192.168.0.10"></td>
+    <td><%= submit_tag "anlegen"%><% end %></td>
+  </tr>
+</table>
+<br />
+
+
+<b>Menue-Modus setzen:</b><br/> 
+<%= link_to "User", :action=>"setuser" %> | <%= link_to "Admin", :action=>"setadmin" %> | <%= link_to "Ibt Admin", :action=>"setibt_admin" %>

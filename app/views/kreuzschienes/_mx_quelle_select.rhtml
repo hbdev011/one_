@@ -1,0 +1,27 @@
+	<% if !@target.mx_matrix.blank? && !@target.mx_matrix.nil?%>
+		<% @kr = Kreuzschiene.getMatrix(@target.mx_matrix.to_i, @system.id) 
+			@mx_quelle = @kr.getSourceQuelle %>
+
+		<% if @mx_quelle %>
+			<select title="<%=@target.mx_quelle.to_s%>" onchange="document.getElementById('submitchangeitemt<%=@target.id.to_s%>').click();" name="target[mx_quelle]" id="target_mx_quelle" class="ibtTableSelectBox">
+				<option selected="selected" value=""></option>
+                                        <%if session[:display]=='id'%>
+					<% @mx_quelle.each do |q| %>
+						<option value="<%=q.intnummer%>" <%=@target.mx_quelle.to_s == q.intnummer.to_s ? "selected='selected'" : nil%> ><%=q.intnummer%></option>
+					<%end%>
+				<%else%>
+					<% @mx_quelle.each do |q| %>
+						<option value="<%=q.intnummer%>" <%=@target.mx_quelle.to_s == q.intnummer.to_s ? "selected='selected'" : nil%> ><%=q.char6%></option>
+					<% end %>
+				<%end%>
+			</select>
+		<%else%>
+			<select id="target_mx_quelle" name="target[mx_quelle]" class="ibtTableSelectBox">
+				<option selected="selected" value="">&nbsp;</option>
+			</select>
+		<% end %>
+	<%else%>
+		<select id="target_mx_quelle" class="ibtTableSelectBox">
+			<option selected="selected" value="">&nbsp;</option>
+		</select>
+	<% end %>

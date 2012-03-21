@@ -1,0 +1,1 @@
+<%= select('source', :tallybit, @tally, {:selected=>@source.tallybit.to_i}, {:class => "ibtTableSelectBox", :onchange => "document.getElementById('submitchangeitem#{@source.id.to_s}').click();", :title => @source.tallybit.to_s}) %> 

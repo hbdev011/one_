@@ -1,0 +1,55 @@
+<table width="100%" cellpadding="3" cellspacing="0">
+<tr>
+	<td><%= link_to "Download", :controller => "downloads", :action => "index" %> ibt.conf <br />&nbsp;</td>
+</tr>
+<tr>
+	<td><%= link_to "Upload", :controller => "uploads", :action => "index" %> ibt.conf <br />&nbsp;</td>
+</tr>
+<tr>
+	<td><%=select 'option', :opt_nr, @opt, {:selected => @vs_nr.value.to_i}, {:onchange => "new Ajax.Request('/options/update/2', {asychronous: true, evalscript: true, parameters: {val: this.value}}); return false;"} %>
+		Versionsnummer ibt.conf <br />&nbsp;</td>
+</tr>
+<tr>
+	<td>
+		<% opt = ["N+1","ASCII+1","Disable"] %>
+		<%=select 'option', :next_value, opt, {:selected => @next.value}, {:onchange => "new Ajax.Request('/options/update/4', {asychronous: true, evalscript: true, parameters: {val: this.value}}); return false;"} %>
+		N + 1 functionality <br />&nbsp;
+	</td>
+</tr>
+<tr>
+	<td><%= select 'option', :multiviewer, @multiviewer_opt, {:include_blank => true, :selected => @multiviewer.value.to_i}, {:onchange => "new Ajax.Request('/options/update/6', {asychronous: true, evalscript: true, parameters: {val: this.value}}); return false;"} %> Text for Multiviewer <br />&nbsp;</td>
+</tr>
+<tr>
+	<td>
+		<% if @s_matrix.value=="true"%>
+			<input type="checkbox" checked="checked" onchange="new Ajax.Request('/options/update/5?val='+this.checked, {evalScript:true, asynchronous: true}); " />
+		<% else %>
+			<input type="checkbox" onchange="new Ajax.Request('/options/update/5?val='+this.checked, {evalScript:true, asynchronous: true}); " />
+		<% end %>
+		&nbsp;Demo system simulate Matrix <br />&nbsp;
+	</td>
+</tr>
+
+<tr>
+	<td>
+		Add more to <i>ibt.conf</i> file <br />
+		<% form_remote_tag :url => {:controller => "options", :action => "update_ibt_content"}, :html => {:id => "content" } do %>
+			<p> 
+				<%= text_area :option, "content", :rows => 15, :cols => 100, :style => "overflow: scroll; overflow-y: scroll; overflow-x: scroll;  ", :value => @content.nil? ? nil : @content.value, :onchange => "document.getElementById('submit_content').click();" %> 
+				<input type="image" src="/images/blank.png" width="0" height="0" id="submit_content" /> 
+			</p>
+		<% end %>
+	</td>
+</tr>
+</table>
+<script>
+function add_row()
+{
+	var tbl = document.getElementById('tblmain');	
+	var len = tbl.rows.length-1;
+	var html = '<%=file_field_tag "firmware[]"%>';
+	var row = tbl.insertRow(len);
+	var cell = row.insertCell(0);		
+	cell.innerHTML = html;
+}
+</script>

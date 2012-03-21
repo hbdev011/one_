@@ -1,0 +1,17 @@
+<% form_remote_tag :url => {:controller=>'gpis', :action =>'update_out_signal', :id => @output}, :html => {:id => @output.id} do %>
+	<div class="ibtSourceTableHeader">
+		<div class="ibtSourceTableCol1 clean" id="out_signal<%= @output.intnummer %>">
+			<%= @output.intnummer %>
+		</div>
+		<div class="ibtSourceTableCol7">
+			<%= text_field :gp_out_signal, :name, {:onchange=>"$('submit_o_signal#{@output.id}').click();",  :style => "width:95%;", :class => "left", :value => @output.name, :onkeypress => "return nospace(event)"} %>
+
+			<input type="image" src="/images/blank.png" width="0" height="0" id="submit_o_signal<%=@output.id%>" />
+		</div>
+
+		<div style="width:7%; float:left;">&nbsp;
+			<%=link_to image_tag("cross.png",:style=>"border:none", :title => "Entfernen"), '/gpis/delete_o_signal/'+@output.intnummer.to_s, :onclick => "if (confirm('Sie sind sicher, dass Sie Zeile entfernen ?')){$('div-loader-out').show();}else{return false;}" %>
+		</div>
+	</div>
+<% end %>
+<div class="clear"></div>

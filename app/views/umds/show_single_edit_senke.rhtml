@@ -1,0 +1,8 @@
+<%#= render_partial("line_kv.rhtml", :locals=>{:umd=>@umd}) %>
+<%if params[:choice]=='1'%>
+<%= select('umd', 'target_id', @targets, { :include_blank => true,:selected=>@umd.target_id}, :onchange=>"document.getElementById('submits" + @umd.id.to_s + "').click();" ) %>
+<%else%>
+<%= select('umd', 'target_id', @sources, { :include_blank => true,:selected=>@umd.target_id}, :onchange=>"document.getElementById('submits" + @umd.id.to_s + "').click();" ) %>
+<%end%>
+<input type="image" src="/images/blank.png" id="submits<%= @umd.id.to_s %>" width="0" height=0>
+

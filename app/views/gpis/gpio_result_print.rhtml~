@@ -1,0 +1,58 @@
+<html> 
+
+<head> 
+  <title>CONFIG : Compile Summary</title>
+  <script>
+		window.print();
+  </script> 
+</head>
+
+<body> 
+	<br /><hr />
+	<h3> 
+		Compile Summary &nbsp; 
+		<span style="font-size:14px; font-weight:normal;"> [<%=Date.today%>] </span> 
+	</h3>  <hr /> <br />
+	
+	<%if !params[:message].blank? %>
+	<table border="1" width="70%" cellspacing="0px" cellpadding="3px">
+		<tr>
+			<td width="15%" valign="top" > <b>File Name</b> </td>
+			<td width="85%" > <%=params[:file_name]%> </td>	
+		</tr>
+	
+		<tr>
+			<td width="15%" valign="top" > <b>System</b> </td>
+			<td width="85%" > <%=params[:system_name]%> </td>	
+		</tr>
+		
+		<tr>
+			<td valign="top"> <b>Message</b> </td>
+			<td> <%=params[:message]%> </td>	
+		</tr>
+		
+		<tr>
+			<td width="15%" valign="top" > <b>Truth Tables</b> </td>
+			<td width="85%" > <%=params[:tt_count]%> </td>	
+		</tr>
+		
+		<tr>
+			<td width="15%" valign="top" > <b>Direct Logic</b> </td>
+			<td width="85%" > <%=params[:singles]%> </td>	
+		</tr>
+		
+	</table>
+	<%end%>
+	
+	<br /> &nbsp; <br /> <hr />
+	<h3> Original file content </h3> <hr />
+	
+	<% @f.each_line do |line| %>
+		<%=line%> <br />
+	<% end %>
+
+</body>
+
+
+
+</html>

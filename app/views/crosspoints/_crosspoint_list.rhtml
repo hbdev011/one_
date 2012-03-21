@@ -1,0 +1,82 @@
+	<% @setups.each do |f|
+		if session[:display].nil? || session[:display]=='name' then
+
+		  if f.source_id then
+			begin
+			  sourcename = f.sourcename
+			rescue
+			  sourcename = "___"
+			end
+		  end
+
+		  if f.target_id then
+			begin
+			  targetname = f.targetname
+			rescue
+			  targetname = "___"
+			end
+		  end
+
+		else
+
+		  if f.source_id>0 then
+			begin
+			  sourcename = f.source.intnummer
+			rescue
+			  sourcename = "___"
+			end
+		  end
+
+		  if f.target_id>0 then
+			begin
+			  targetname = f.target.intnummer
+			rescue
+			   targetname = "___"
+			end
+		  end
+		end
+
+		sourcename = "___" if sourcename.nil? or sourcename==""
+		targetname = "___" if targetname.nil? or targetname==""
+
+		kid = 0
+		kid = f.kreuzschiene.id unless f.kreuzschiene.nil?
+	  %>
+
+		<div id="div_<%= f.id.to_s %>">
+
+		  <table width="600" border="0" cellpadding="0" cellspacing="0">
+
+			<tr>
+			  <td align="center" width="120"><%= f.nummer %></td>
+			  <td align="center" width="120">
+				  <% form_remote_tag :url => { :controller=>'crosspoints', :action=>'update_kv',  :id => f }, :html => {:onsubmit => "$('spin_#{f.id}').show();"} do %>
+					  <%= select('crosspoint', 'kreuzschiene_id', @kv ,{:include_blank => true,   :selected => kid}, {"class" => "clsDropDownP", :onchange => "document.getElementById('s" + f.id.to_s + "').click();"}) %>
+					  <input type="image" src="/images/blank.png" id="s<%= f.id.to_s %>" width="0" height=0>
+				  <% end %>
+			  </td>
+
+			  <% if kid > 0 then %>
+				  <td align="center" width="120">
+				    <%= link_to_remote(sourcename,:update => "div_" + f.id.to_s,:url =>{ :controller=>:crosspoints, :action => :show_single_edit, :id=>f, :display=>session[:display] }) %>
+				  </td>
+				  <td align="center" width="120">
+				     <%= link_to_remote(targetname,:update => "div_" + f.id.to_s,:url =>{ :controller=>:crosspoints, :action => :show_single_edit, :id=>f, :display=>session[:display]}) %>
+				  </td>
+			  <% else %>
+				  <td align="center" width="120"> * </td>
+				  <td align="center" width="120"> * </td>
+			  <% end %>
+
+				<td align="left" width="120" style="border-bottom:none;">
+					<div id="spin_<%=f.id%>" style="display:none;">
+						<%=image_tag "/images/spinner.gif" %>
+					</div>
+				<td>
+			</tr>
+
+		  </table>
+
+		</div>
+	  <% end %>
+

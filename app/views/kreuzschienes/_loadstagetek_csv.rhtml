@@ -1,0 +1,6 @@
+<label for="upload_file">Upload csv File</label> :
+<% form_tag('/kreuzschienes/importCSV_stagetek', :multipart => true, :id => "frm_upload") do -%>
+	<%= file_field 'upload', 'datafile', :onchange => "CheckValidFile(this.value,this.id,this.name,'txt');" %>
+	<%= hidden_field_tag "kv_id", @kv_id %>
+	<%= submit_tag "Upload", :onclick => "$('div-loader').show();"%>
+<% end %>

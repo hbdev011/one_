@@ -1,0 +1,112 @@
+@charset "utf-8";
+
+body {
+	background-color: #c0c0c0;
+        font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #f0f0f0;
+
+}
+
+.clean {
+	border-bottom-width: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.ibtHeaderTable {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.ibtDropShadow {
+	float:left;
+  	background: url(/images/DropShadow.png) no-repeat bottom right !important;
+  	background: url(/images/DropShadow.gif) no-repeat bottom right;
+  	margin: 10px 0 0 10px !important;
+  	margin: 10px 0 0 5px;
+}
+
+.ibtDropShadow table {
+	display: block;
+	position: relative;
+	background-color: #ffffff;
+	border: 1px solid #000000;
+	margin: -6px 6px 6px -6px;
+	padding: 4px;
+} 
+
+h1 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+}
+.ibtAssignmentTable {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	clear: both;
+	text-align: center;
+}
+.ibtAssignmentTable td {
+	padding: 3px;
+	width: 50px;
+	font-weight: bold;
+	background-color: #BFD5FF;
+	color: #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+.ibtAssignmentBlockTable td {
+	padding: 3px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+.ibtAssignmentBlockTable .ibtTitle {
+	font-size: 16px;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.ibtButton {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #BFD5FF;
+	border: 1px solid #0066CC;
+	font-weight: bold;
+	padding: 2px;
+}
+
+
+.ibtHeaderTable td {
+	padding: 5px;
+}
+
+.ibtAssignmentBlockTable {
+	background-color: #6699FF;
+	color: #000000;
+	border: 1px solid #0066CC;
+}
+
+.ibtSeparator {
+	border-top-width: 3px;
+	border-top-style: solid;
+	border-top-color: #6699FF;
+	border-right-color: #6699FF;
+	border-bottom-color: #6699FF;
+	border-left-color: #6699FF;
+	border-left-width: 1px;
+	border-left-style: solid;
+}
+.ibtAssignmentTable .ibtKey {
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #6699FF;
+        vertical-align: top;
+}

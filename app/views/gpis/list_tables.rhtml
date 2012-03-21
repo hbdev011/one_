@@ -1,0 +1,68 @@
+<html> 
+
+<head> 
+  <title>CONFIG : Truth Tables</title>
+  <script>
+		window.print();
+  </script> 
+</head>
+
+<body> 
+	<%if !params[:message].blank? %>	
+	<br /><hr />
+	<h3> 
+		Compile Summary &nbsp; 
+		<span style="font-size:14px; font-weight:normal;"> [<%=Date.today%>] </span> 
+	</h3>  <hr /> <br />
+	
+	<table border="1" width="70%" cellspacing="0px" cellpadding="3px">
+		<tr>
+			<td width="15%" valign="top" > <b>File Name</b> </td>
+			<td width="85%" > <%=params[:file_name]%> </td>	
+		</tr>
+	
+		<tr>
+			<td width="15%" valign="top" > <b>System</b> </td>
+			<td width="85%" > <%=params[:system_name]%> </td>	
+		</tr>
+		
+		<tr>
+			<td valign="top"> <b>Message</b> </td>
+			<td> <%=params[:message]%> </td>	
+		</tr>
+		
+		<tr>
+			<td width="15%" valign="top" > <b>Truth Tables</b> </td>
+			<td width="85%" > <%=params[:tt_count]%> </td>	
+		</tr>
+		
+		<tr>
+			<td width="15%" valign="top" > <b>Direct Logic</b> </td>
+			<td width="85%" > <%=params[:singles]%> </td>	
+		</tr>
+		
+	</table>
+	<br /> &nbsp;
+	<%end%>
+	
+	<br /> <hr />
+	<h3> Truth Tables </h3> <hr />
+	
+	<% @tables.each do |t| %>
+		<b><%= t.intnummer %> : <%= t.function %> </b> <br/><br/>
+		
+		<% if !t.tt_val.nil? && !t.tt_val.blank? %>	
+			<% t.tt_val.split(",").each do |l| %>
+				<%=l%> <br />
+			<% end %>
+			<br /><br />
+		<% end %>
+	<% end %>
+
+</body>
+
+
+
+</html>
+
+

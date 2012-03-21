@@ -1,0 +1,5 @@
+<%if @target.mx_matrix.nil?%>
+	<%= select('target', :mx_matrix, @kv, {:include_blank => true}, {:class => "ibtTableSelectBox", :onchange => "document.getElementById('submitchangeitemt#{@target.id.to_s}').click();", :title => @target.mx_matrix.to_s}) %> 
+<%else%>
+	<%= select('target', :mx_matrix, @kv, {:selected=>@target.mx_matrix.to_i, :include_blank => true}, {:class => "ibtTableSelectBox", :onchange => "document.getElementById('submitchangeitemt#{@target.id.to_s}').click();", :title => @target.mx_matrix.to_s}) %> 
+<%end%>

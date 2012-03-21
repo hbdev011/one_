@@ -1,0 +1,4 @@
+<% form_tag :controller => "typesources", :action => "add_normal_quelle", :id => @panel.id do %>
+	<%= submit_tag "Add new Button on Pos.", :class => 'panel-button', :onclick => "$('div-loader').show();"%>
+	<%= text_field :typesource, "add_field", :size => "3" %> &nbsp;
+<% end %>

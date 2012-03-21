@@ -1,0 +1,64 @@
+//Node definition section better here than in GUI because you can change on demand without changing GUI and textfile
+Node	SUM_RED_TALLYS;
+
+//Generate group value 0-3
+//Group Kanal_1_Zuteilung=PK1Z1,PK1Z2;
+
+
+// Kamera Matching
+Matching_Set_1_OCP_1=OCP-1;
+Matching_Set_1_OCP_2=OCP-2;
+Matching_Set_1_OCP_3=OCP-3;
+Matching_Set_1_OCP_4=OCP-4;
+
+
+// BME Tally
+RED_GPI_TALLY_01=BME-1-CCU-1;
+RED_GPI_TALLY_02=BME-2-CCU-2;
+RED_GPI_TALLY_03=BME-3-CCU-3;
+RED_GPI_TALLY_04=BME-4-XDS-1;
+RED_GPI_TALLY_05=BME-5-XDS-2;
+RED_GPI_TALLY_06=BME-6-AVID;
+RED_GPI_TALLY_07=BME-7-EXT-1;
+RED_GPI_TALLY_08=BME-8-EXT-2;
+RED_GPI_TALLY_09=BME-9-IRD;
+RED_GPI_TALLY_10=BME-10-DVK-5;
+RED_GPI_TALLY_11=BME-11-DVK-6;
+
+
+// Havarie
+HAV_00=HAV;
+frei16=HAV_00;
+frei15=SUM_RED_TALLYS;
+
+// CCU Tally ROT
+CCU-ROT-1=Red_Tally_Out_01;
+CCU-ROT-2=Red_Tally_Out_02;
+CCU-ROT-3=Red_Tally_Out_03;
+CCU-ROT-4=Red_Tally_Out_04;
+
+// CCU Tally GELB
+CCU-GELB-1=AAF-GELB-1-IN;
+CCU-GELB-2=AAF-GELB-2-IN;
+CCU-GELB-3=AAF-GELB-3-IN;
+CCU-GELB-4=AAF-GELB-4-IN;
+   
+
+SUM_RED_TALLYS=(NOT(Red_Tally_Out_01 OR Red_Tally_Out_02 OR Red_Tally_Out_03));   
+   
+// Stagetec
+TO-STAGETEC-01=Red_Tally_Out_01;
+TO-STAGETEC-02=Red_Tally_Out_02;
+TO-STAGETEC-03=Red_Tally_Out_03;
+TO-STAGETEC-04=SUM_RED_TALLYS;
+TO-STAGETEC-05=Red_Tally_Out_04;
+TO-STAGETEC-06=Red_Tally_Out_05;
+TO-STAGETEC-07=Red_Tally_Out_06;
+TO-STAGETEC-08=Red_Tally_Out_07;
+TO-STAGETEC-09=Red_Tally_Out_08;
+TO-STAGETEC-10=FROM-STAGETEC-10;
+TO-STAGETEC-11=FROM-STAGETEC-11;
+TO-STAGETEC-12=FROM-STAGETEC-12;
+
+
+

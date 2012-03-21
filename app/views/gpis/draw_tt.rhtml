@@ -1,0 +1,13 @@
+<% @exprs_results.each_with_index do |x,index| %>
+<h3>Function <%= index + 1%></h3>
+  <p><b>Main Function : </b><%= x[0].function%></p>
+  <p><b>Boolean Expr : </b><%= x[0].boolean_expr%></p>
+  <b>a b c d e f g h  | </b><br/>
+  <b>-------------------------</b><br/>
+  <% x[1].each do |res| %>
+    <%= res[:values].join(" ")%> | <%= res[:result]%><br/>
+  <% end %>
+  <br/>
+  <br/>
+<% end %>
+

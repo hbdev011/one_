@@ -1,0 +1,61 @@
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+  function changeFields(fId){
+    new Ajax.Request("/crosspoints/change_fields",{parameters : {f_id : fId } })
+  }
+  function updateCrosspoint(id){
+  $('spin_'+id).show();
+  new Ajax.Request('/crosspoints/update_crosspoint/'+id, {asynchronous:true, evalScripts:true, parameters:$('form_'+id).serialize()}); return false;
+  }
+
+// ]]>
+</script>
+
+<h1>Lawo : <%=@salvo.name.capitalize%></h1>
+<br/>
+<table width="80%" border="0" cellpadding="1" cellspacing="1">
+<tr>
+  <th width="10%" colspan="2">&nbsp;</th>
+  <th bgcolor="white" align="center" width="40%" colspan="4">HLSD Source</th>
+  <th bgcolor="white" align="center" valign="top" width="6%" rowspan="2">Delay <br/> ms</th>
+  <th bgcolor="white" align="center" width="40%" colspan="4">HLSD Destination</th>
+  <th width="5%">&nbsp;</th>
+</tr>
+<tr>
+  <td bgcolor="white" align="center" width="3%">Num</td>
+  <td bgcolor="white" align="center" width="10%">KV</td>
+  <td bgcolor="white" align="center" width="8%">Signal Class</td>
+  <td bgcolor="white" align="center" width="8%">Subclass</td>
+  <td bgcolor="white" align="center" width="10%">Component</td>
+  <td bgcolor="white" align="center" width="10%">Subcomponent</td>
+
+  <td bgcolor="white" align="center" width="10%">Signal Class</td>
+  <td bgcolor="white" align="center" width="10%">Subclass</td>
+  <td bgcolor="white" align="center" width="10%">Component</td>
+  <td bgcolor="white" align="center" width="10%">Subcomponent</td>
+  <td style="border-bottom:none"width="5%">&nbsp;</td>
+</tr>
+<tr>
+  <td id="crosspoint_container" colspan="13" >
+    <%=render :partial => "crosspoint_list_lavo"%>
+  </td>
+</tr>
+</table>
+
+* Bitte zunächst die KV w&auml;hlen
+
+<style type="text/css" media="screen">
+/* <![CDATA[ */
+  tr.lawo td{
+    cursor:pointer;
+  }
+
+  tr.lawo td a{
+    text-decoration:  none !important;
+  }
+  tr.lawo td a :hover{
+    text-decoration:  none !important;
+  }
+/* ]]> */
+</style>
+

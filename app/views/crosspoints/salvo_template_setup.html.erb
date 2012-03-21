@@ -1,0 +1,25 @@
+<h1>Matrix : <%=@salvo.name.capitalize%></h1>
+<br/>
+<table width="600" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+      <table width="600" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th bgcolor="white" align="center" width="120">Nummer</th>
+          <th bgcolor="white" align="center" width="120">KV</th>
+          <th bgcolor="white" align="center" width="120">Quelle</th>
+          <th bgcolor="white" align="center" width="120">Senke</th>
+          <th align="left" width="120">&nbsp;</th>
+        </tr>
+      </table>
+
+      <div id="crosspoint_container">
+        <%=render :partial => "crosspoint_list"%>
+      </div>
+
+     </td>
+</tr>
+</table>
+
+* Bitte zunächst die KV w&auml;hlen
+

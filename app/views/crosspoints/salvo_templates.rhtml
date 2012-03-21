@@ -1,0 +1,50 @@
+<legend><b>Salvo Templates</b></legend>
+
+<table>
+<tr>
+<th>Nummer</th>
+<th>Name</th>
+<th>Salvo Type</th>
+<tr>
+
+<% @salvos.each do |salvo| %>
+<tr>
+  <td>
+	<% form_tag :controller=>'crosspoints', :action =>'update_salvo_template', :id => salvo do %>
+		<%= text_field :salvo, :intnummer, :size=>5, :value => salvo.intnummer %>
+  </td>
+
+  <td><%= text_field :salvo, :name, :size=>20, :maxlength => 10, :value => salvo.name %></td>
+  <td><%= select_tag('salvo_type',options_for_select([["Matrix",0],["Lynx",1],["Lawo",2]],salvo.salvo_type) ) %> </td>
+  <td><%= submit_tag %><% end %></td>
+  <td><%= link_to image_tag("cross.png", :border => "0"), "/crosspoints/delete_salvo_template/#{salvo.intnummer}", :confirm => "Sie sind sicher, dass Sie Salve Vorlage beseitigen ?" %></td>
+  <td>
+  <%#= link_to "editieren", "/crosspoints/salvo_template_setup/#{salvo.intnummer}" %>
+
+	<% if salvo.salvo_type == 0 %>
+		<%= link_to image_tag("edit.png",:style=>"border:none", :title => "editieren"), "/crosspoints/salvo_template_setup/#{salvo.intnummer}" %>
+	<% elsif salvo.salvo_type == 1 %>
+		<%= link_to image_tag("edit.png",:style=>"border:none", :title => "editieren"), "/crosspoints/salvo_template_setup/lynx/#{salvo.intnummer}" %>
+	<% elsif salvo.salvo_type == 2 %>
+		<%= link_to image_tag("edit.png",:style=>"border:none", :title => "editieren"), "/crosspoints/salvo_template_setup/lavo/#{salvo.intnummer}" %>
+	<% else %>
+	  <%= link_to image_tag("edit.png",:style=>"border:none", :title => "editieren"), "/crosspoints/salvo_template_setup/#{salvo.intnummer}" %>
+	<% end %>
+  </td>
+
+<tr>
+<% end %>
+</table>
+
+Neu:<br/>
+<table>
+	<tr>
+		<td><% form_tag :controller=>'crosspoints', :action =>'create_salvo_template', :id => "frm_salvo" do %>
+			<%= text_field :new_salvo, :intnummer, :size=>5 %>
+			<%= hidden_field :new_salvo, :system_id, :value => @system_id %>
+		</td>
+		<td><%= text_field :new_salvo, :name, :size=>20 %></td>
+		<td><%= submit_tag %><% end %></td>
+	</tr>
+</table>
+

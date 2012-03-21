@@ -1,0 +1,8 @@
+<% form_remote_tag :url => {:controller => "gpis", :action => "update_truth_table", :table => table } do %>
+	<% if ele == "input" %>
+		<%= select :truth_table, "#{field}", @tt_input, {}, {:style => "width:60%;", :onchange => "$('save').click();"} %>
+	<% elsif ele == "output" %>
+		<%= select :truth_table, "#{field}", @tt_output, {}, {:style => "width:60%;", :onchange => "$('save').click();"} %>
+	<% end %>
+	<input type="image" src="/images/blank.png" width="0" height="0" id="save" /> 
+<% end %>

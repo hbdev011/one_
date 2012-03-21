@@ -1,0 +1,73 @@
+<legend><b>Familys</b></legend>
+<div id="msg"> &nbsp; </div>
+
+<table width="35%">
+<tr>
+	<td>
+		<strong>Label: </strong>
+		<%= select_tag :label_quellen, options_for_select((1..4).to_a.map{|x| ["Label #{x}",x]}, @label.value	), {:onchange=>"updateLabel(this.value)"}%>
+	</td>
+	<td style="width:200px;">
+		<strong>Font: </strong>
+		<%= select_tag :font_quellen, options_for_select(@quellen_font, @font.value	), {:onchange=>"updateFont(this.value)"}%>
+	</td>
+	<input type="image" src="/images/blank.png" id="submit" width="0" height=0>
+</tr>
+</table>
+
+
+<%if !@families.nil? && !@families.blank?%>
+<table width="35%">
+	<tr class="ibtSourceTableMain">
+		<th width="32%" align="center">Priority</th>
+		<th width="25%" align="center">Family Name</th>
+		<th width="33%" align="center">System color</th>
+	<tr>
+</table>
+<ul id="family">
+	<%=render :partial => 'family_list'%>
+</ul>
+<%end%>
+<hr />
+Neu:<br/>
+<% form_tag :controller=>'family', :action =>'create_family' do %>
+<table>
+<tr>
+	<td><%= text_field :family, :name, {:size=>20, :maxlength => 10} %></td>
+	<td><%= submit_tag %></td>
+</tr>
+</table>
+<% end %>
+<script>
+jQuery('#family_system_color_id > option').mouseover(function(){
+	sendData = jQuery(this).val();
+	family_id = jQuery('#family_id').val();
+	if(sendData != '')
+	{
+		jQuery.ajax({
+			type: "POST",
+			url: "/family/get_color/"+sendData,
+			success: function(data) {
+				jQuery("#color_"+family_id).css({"background-color":data});
+			}
+		});
+	}
+	else
+	{
+		jQuery("#color_"+family_id).css({"background-color": "#fff"});
+	}
+});
+
+</script>
+<br/>
+<legend><b>Family Panels</b></legend>
+<%form_for :family_panel, :url => {} do |f|%>
+<table width="100%">
+<tr>
+	<td style="border-bottom:0px;">
+		<%=submit_tag "Update family Lists", :class => "button"%>
+	</td>
+</tr>
+</table>
+<%end%>
+<%=@html if !@html.nil?%>

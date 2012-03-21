@@ -1,0 +1,29 @@
+System 1
+----==============----
+Frame #1 192.168.0.10
+>>FTP: 192.168.0.10 user:root pass: dir:hd
+>>FTP: trying to connect to 192.168.0.10
+>>FTP connect FAILED 192.168.0.10 by No route to host - connect(2)
+----==============----
+Frame #2 192.168.0.11
+>>FTP: 192.168.0.11 user:root pass: dir:hd
+>>FTP: trying to connect to 192.168.0.11
+>>FTP connect FAILED 192.168.0.11 by No route to host - connect(2)
+----==============----
+Frame #3 
+----==============----
+Frame #4 
+----==============----
+Frame #5 
+----==============----
+Frame #6 
+----==============----
+Frame #7 
+----==============----
+Frame #8 
+----==============----
+Frame #9 192.168.0.30
+>>FTP: 192.168.0.30 user:root pass: dir:hd
+>>FTP: trying to connect to 192.168.0.30
+>>FTP connect FAILED 192.168.0.30 by No route to host - connect(2)
+>>No TRANSFER, finish!=true

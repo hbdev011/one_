@@ -1,0 +1,382 @@
+@charset "utf-8";
+
+body {
+	background-color: #c0c0c0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+a {
+	text-decoration: none;
+	color: blue;
+}
+
+a:hover {text-decoration:underline;}
+a.tooltip span {display:none; padding:2px 3px; margin-left:8px; width:300px;}
+a.tooltip:hover span {display:inline; position:absolute; background:#ffffff; border:1px solid #777; color:#444;}
+
+form
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+input, select, div{
+	margin:0px;
+	padding:0px;
+}
+select, input {
+	text-align:center;
+}
+select{ height:22px; }
+td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #f0f0f0;
+}
+
+.clean {
+	border-bottom-width: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.ibtHeaderTable {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.ibtDropShadow {
+	float:left;
+	margin: 10px 0 0 10px !important;
+	margin: 10px 0 0 5px;
+}
+
+.ibtDropShadow table {
+	display: block;
+	position: relative;
+
+	margin: -6px 6px 6px -6px;
+	padding: 4px;
+}
+
+h1 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+}
+.ibtAssignmentTable {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	clear: both;
+	text-align: center;
+}
+.ibtAssignmentTable td {
+	padding: 3px;
+	width: 80px;
+	font-weight: bold;
+	background-color: #FFFFFF;
+	color: #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+.ibtAssignmentBlockTable td {
+	padding: 2px;
+	width: 50px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+.ibtAssignmentBlockCell {
+	padding: 3px;
+	width: 100px;
+	background-color: #6699FF;
+	color: #000000;
+	border: 1px solid #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.ibtAssignmentBlockTable .ibtTitle {
+	font-size: 16px;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.ibtAssignmentBlockTable .grey {
+	background:#ccc;
+}
+
+.ibtSubTitle {
+	font-size: 14px;
+	text-align: center;
+	padding-top: 5px;
+	margin-top: 7px;
+	background:#000;
+	text-align:center;
+	color:#fff;
+}
+
+.ibtTableSelectBox {
+	width:100%;
+	height:22px;
+}
+
+.ibtButton {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #BFD5FF;
+	border: 1px solid #0066CC;
+	font-weight: bold;
+	padding: 2px;
+}
+
+.ibtHeaderTable td {
+	padding: 5px;
+}
+
+.ibtAssignmentBlockTable {
+	background-color: #000000;
+	color: #FFFFFF;
+	border: 1px solid #000000;
+}
+
+.ibtSeparator {
+	border-top-width: 3px;
+	border-top-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+	border-left-width: 1px;
+	border-left-style: solid;
+	min-width: 80px;
+}
+.ibtAssignmentTable .ibtKey {
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #000000;
+	vertical-align: top;
+	min-width: 80px;
+}
+
+.ibtAssignmentTable .ibtSubTitle{
+	font-size: 14px;
+	text-align: center;
+	padding-top: 5px;
+	margin-top: 7px;
+	background:#000;
+	text-align:center;
+	color:#fff;
+}
+
+.clear{clear: both;}
+.left {text-align:left;}
+.ibtTableMain{
+	width:100%; background:#000; color:#fff;
+	border-bottom:1px solid #fff;
+}
+.ibtTableMain th {
+	font-weight:normal;
+	font: 12px normal Arial,Helvetica,sans-serif;
+	padding: 3px 0;
+}
+.ibtTableSub{
+	font: 12px normal Arial,Helvetica,sans-serif;
+}
+.ibtTableSub td {
+	padding-left:5px;
+	color:#000;
+}
+.ibtSourceTableMain{
+	width:100%; float:left; background:#000; color:#fff;
+	border-bottom:1px solid #fff;
+}
+.ibtSourceTableMain div{
+	text-align:center;
+	font: 12px normal Arial, Helvetica, sans-serif;
+	padding:3px 0;
+}
+.ibtSourceTableHeader{
+	width:100%; float:left;
+}
+.ibtSourceTableSubTitle1{
+	width:35%; float:left;
+	border-right:1px solid #fff;
+}
+.ibtSourceTableSubTitle2{
+	width:35%; float:left;
+	border-right:1px solid #fff;
+}
+.ibtSourceTableSubTitle3{
+	width:40%; float:left;
+}
+
+.ibtSourceTableSubTitle31{
+	width:54%; float:left;
+}
+
+.ibtSourceTableSubTitle4{
+	width:14%; float:left;
+}
+
+.ibtSourceTableSubTitle45{
+	width:6%; float:left;
+}
+
+.ibtSourceTableSubTitle5{
+	width:30%; float:left;
+	border-left:1px solid #fff;
+}
+
+.ibtBorderRight {
+	border-right:1px solid #fff;
+}
+.ibtSourceTableCol1{
+	width:3%; float:left;
+	text-align:center;
+}
+.ibtSourceTableCol10{
+	width:4%; float:left;
+	text-align:center;
+}
+.ibtSourceTableCol11{
+	width:5%; float:left;
+	text-align:center;
+}
+.ibtSourceTableCol2{
+	width:6%; float:left;
+
+}
+.ibtSourceTableCol3{
+	width:6%; float:left;
+
+}
+.ibtSourceTableCol4{
+	width:7%; float:left;
+
+}
+.ibtSourceTableCol5{
+	width:9%; float:left;
+}
+.ibtSourceTableCol6{
+	width:10%; float:left;
+}
+
+.ibtSourceTableCol7{
+	width:15%; float:left;
+}
+
+.cloneinput_bg {
+	background-color: #fff;
+	height: 21px;
+	margin: 1px 1px 0 0;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 12px;
+}
+
+.cloneinput_bg a{
+	text-decoration: none;
+	color: #000;
+}
+
+.bdr-bott-white {border-bottom: 1px solid #fff; height:22px; }
+
+.relative {
+	position: relative;
+}
+
+.loader-home {
+	background-color: #ffffff;
+	height: 100%;
+	margin-bottom: 0;
+	opacity: 0.8;
+	padding-top: 100px;
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}
+
+.loader-ion {
+	background-color: #ffffff;
+	height: 100%;
+	margin-bottom: 0;
+	opacity: 0.8;
+	padding-top: 30px;
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}
+
+.loader-home img{
+	position: absolute;
+	top: 0%;
+	left: 50%;
+}
+
+.small-lable {
+	font: 10px Arial, Helvetica, sans-serif;
+}
+
+.ibtTitleborder{
+	border-top: 3px solid #000000;
+	border-bottom: 1px solid #000000;
+}
+
+.btn-space{padding-left:200px; }
+
+.panel-button{height:30px; padding:3px;}
+
+.main-block {width:99%; border:1px solid #000; padding:5px;}
+
+.menu {width:100%; height:30px; float:left; }
+.menu-item {
+	width:100px; height:29px; float:left; border:1px solid #000;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	text-align:center; line-height:25px;
+}
+
+/*
+ul {
+	font-family: Arial, Verdana;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+ul li {
+	display: block;
+	position: relative;
+	float: left;
+}
+li ul { display: none; }
+ul li a {
+	display: block;
+	text-decoration: none;
+	color: #ffffff;
+	border-top: 1px solid #ffffff;
+	padding: 5px 15px 5px 15px;
+	background: #2C5463;
+	margin-left: 1px;
+	white-space: nowrap;
+}
+
+ul li a:hover { background: #617F8A; }
+li:hover ul {
+	display: block;
+	position: absolute;
+}
+li:hover li {
+	float: none;
+	font-size: 11px;
+}
+li:hover a { background: #617F8A; }
+li:hover li a:hover { background: #95A9B1; }
+*/
+
+/* New Added CSS Dr.10/01/2012 */
+ul#family {margin:0; padding:0;}
+ul#family li {list-style-type:none; width:460px; border:1px solid #8b8b8b; background:#dedede; margin-bottom:5px; }
+ul#family li td{border-bottom:none;}
+
+

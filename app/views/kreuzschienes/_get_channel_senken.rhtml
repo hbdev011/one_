@@ -1,0 +1,1 @@
+<%= select_tag("target[channel]",options_for_select([1,2,4,8,16].map{|x| ["#{x} chan.",x] }, @target.channel),:class=>"ibtTableSelectBox", :onchange=>"document.getElementById('submitchangeitemt#{@target.id.to_s}').click();")%>

@@ -1,0 +1,16 @@
+<% form_tag('/gpis/ion_entry?tab=logic', :multipart => true, :id => "frm_upload") do -%>
+	Upload txt File :
+	<%= file_field 'upload', 'datafile', :onchange => " CheckValidFile(this.value,this.id,this.name,'txt');" %>
+	<%#= submit_tag "Compile GPIO File" %>
+	<input type="button" value="Compile GPIO File" onclick="chk_form();">
+<% end %>
+
+<script>
+	function chk_form(){
+		if ($('upload_datafile').value == null || $('upload_datafile').value == "" ){		
+			alert("Please select file to upload");
+		} else {
+			document.forms["frm_upload"].submit();		
+		}		
+	}
+</script>

@@ -1,0 +1,3 @@
+<%= select('umd', 'target_id', @targets, { :include_blank => true,:selected=>@umd.target_id}, :onchange=>"document.getElementById('submits" + @umd.id.to_s + "').click();" ) %>
+<input type="image" src="/images/blank.png" id="submits<%= @umd.id.to_s %>" width="0" height=0>
+

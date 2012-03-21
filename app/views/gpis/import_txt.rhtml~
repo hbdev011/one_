@@ -1,0 +1,98 @@
+<SCRIPT LANGUAGE="javascript">
+<!--
+
+data2=new String();
+data3=new String();
+data4=new String();
+vars=new Array();
+values=new Array();
+bracket=new Array();
+//-->
+</SCRIPT>
+
+<table border="1" width="70%" cellspacing="0px" cellpadding="3px">
+	<tr>
+		<td width="15%" valign="top" > <b>File Name</b> </td>
+		<td width="85%" > <%=@file_name%> </td>	
+	</tr>
+
+	<tr>
+		<td width="15%" valign="top" > <b>System</b> </td>
+		<td width="85%" > <%=@system.name%> </td>	
+	</tr>
+	
+	<tr>
+		<td valign="top"> <b>Message</b> </td>
+		<td> <%=@message%> </td>	
+	</tr>
+	
+	<tr>
+		<td width="15%" valign="top" > <b>Truth Tables</b> </td>
+		<td width="85%" > <%=@tt_count%> </td>	
+	</tr>
+	
+	<tr>
+		<td width="15%" valign="top" > <b>Direct Logic</b> </td>
+		<td width="85%" > <%=@singles.size%> </td>	
+	</tr>
+	
+	<tr>
+		<td valign="top"> <b>Options</b> </td>
+		<td> 
+			<%=link_to "Upload", "/gpis/ion_entry?tab=logic" %> &nbsp; | &nbsp;
+			<%=link_to "Download Original File", "/downloads/gpio_file?name=#{@file_name}" %> &nbsp; | &nbsp;
+			<%=link_to "Print", "#", :onclick=>"submit_print_form();"%>  &nbsp; |
+			<%=link_to "Truth Tables", "#", :onclick=>"submit_form();"%>  &nbsp; | 
+		</td>	
+	</tr>	
+</table>
+
+<% form_tag "/gpis/gpio_result_print", :id => "frm_print", :target=>"_blank" do %>
+	<%= hidden_field_tag :file_name, @file_name %>
+	<%= hidden_field_tag :system_name, @system.name %>
+	<%= hidden_field_tag :message, @message %>
+	<%= hidden_field_tag :tt_count, @tt_count %>
+	<%= hidden_field_tag :singles, @singles.size %>
+<% end %>
+
+<% form_tag "/gpis/list_tables", :id => "frm_tt", :target=>"_blank" do %>
+	<%= hidden_field_tag :file_name, @file_name %>
+	<%= hidden_field_tag :system_name, @system.name %>
+	<%= hidden_field_tag :message, @message %>
+	<%= hidden_field_tag :tt_count, @tt_count %>
+	<%= hidden_field_tag :singles, @singles.size %>
+<% end %>
+
+
+<% @exprs.each do |e| %>
+	<input type="hidden" id="expr<%=e.intnummer%>" value="<%=e.boolean_expr%>, <%=e.intnummer%>)" >
+<% end %>
+
+<script>
+
+	function submit_print_form(){	
+		document.forms["frm_print"].submit();
+	}
+	
+	function submit_tt_form(){
+		document.forms["frm_tt"].submit();
+	}
+	
+	function generate_truth_table(expr, id)
+	{
+		var tt_val = evaluateMe(expr);	
+		new Ajax.Request("/gpis/save_truth_table", {evalScripts: true, synchronous:true, method:'post', parameters:{tt_val:tt_val, id:id} } );  	
+	}
+	
+	// --------- Generate Truth Tables ---------	
+	var cnt = <%=@exprs.size%>;
+
+	for (ex_cnt=1; ex_cnt<=cnt; ex_cnt++) {
+		var main_val = $('expr'+ex_cnt).value.split(",");
+		 
+		if (main_val[0]!="") {		
+			generate_truth_table(main_val[0], main_val[1])
+		}
+	}
+	//  --------- --------- --------- ---------
+</script>	

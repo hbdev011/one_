@@ -1,0 +1,40 @@
+8
+
+dir
+833
+http://192.168.178.3/svn/admin/config/app/views/bdtypes
+http://192.168.178.3/svn/admin
+
+
+
+2008-12-21T22:30:02.046875Z
+768
+macki
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+ffa424f4-693c-8b4c-b2cf-4de7c9389369
+
+show.html.erb
+file
+
+
+
+
+2008-12-21T22:10:54.000000Z
+589dd5051b3b3692cd1aa50e44986e1e
+2008-12-21T22:30:02.046875Z
+768
+macki
+

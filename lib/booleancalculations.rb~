@@ -1,0 +1,55 @@
+
+# Class to perform calculation for terms with Function 
+#
+class Expression
+	
+	def initialize(expr)
+		@expr = expr
+	end
+
+	def compute
+
+		data4=@expr 
+	
+		j=0;
+		while j<=data4.size
+		
+	      if !data4[j+1].nil?
+				if data4[j+1].chr=='`' || data4[j+1].chr=="'"
+					(data4[j].chr=='1') ? k="0" : k="1"
+					data4=data4.slice(0,j).to_s+k+data4.slice(j+2..-1).to_s
+					#j=j-1
+				end
+	      end
+			j+=1
+		end
+	
+		j=0
+	   while(j<=data4.size)
+	      if !data4[j+1].nil?
+				if (data4[j].chr=='0' || data4[j].chr=='1') && (data4[j+1].chr=='0' || data4[j+1].chr=='1')
+					(data4[j].chr=='1' && data4[j+1].chr=='1') ? k="1" : k="0"
+					data4=data4.slice(0,j).to_s+k+data4.slice(j+2..-1).to_s
+					#j=j-1;
+				elsif (data4[j].chr=='0' || data4[j].chr=='1') && data4[j+1].chr=='^'
+					(data4[j].chr==data4.charAt(j+2)) ? k="0" : k="1"
+					data4=data4.slice(0,j).to_s+k+data4.slice(j+3..-1).to_s
+					#j=j-1;
+				end
+	      end
+			j+=1
+		end
+		k=0
+		
+		j=0
+		while(j<data4.size) 	
+			if data4[j].chr=='1'
+				k=1
+				return k
+			end 
+			j+=1
+		end
+		return k
+	
+	end
+end

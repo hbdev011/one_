@@ -1,0 +1,7 @@
+<label for="upload_file">Upload csv File</label> : 
+<% form_tag('/kreuzschienes/importCSV', :multipart => true, :id => "frm_upload") do -%>
+	<%= file_field 'upload', 'datafile', :onchange => "CheckValidFile(this.value,this.id,this.name,'csv');" %>
+	<%= hidden_field_tag "kv_id", @kv_id %>
+	<%= hidden_field_tag "page", @page %>
+	<%= submit_tag "Upload", :onclick => "$('div-loader').show();"%>
+<% end %>

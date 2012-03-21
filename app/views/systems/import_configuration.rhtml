@@ -1,0 +1,11 @@
+<h3>Import to USB Stick</h3>
+<b style="color:green;"> <%=flash[:msg]%> </b>
+
+<% form_tag("/systems/import_configuration/#{params[:id]}", :multipart => true) do -%>
+	<p>
+		<label for="upload_file">Upload File</label> : 
+		<%= file_field_tag 'upload' %>
+		<%= submit_tag "Upload", :onclick => "$('div-loader').show();" %>
+	</p>
+<% end -%>
+

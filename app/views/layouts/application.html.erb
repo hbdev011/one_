@@ -1,0 +1,533 @@
+<%
+@bediengeraete_menu = Bediengeraet.find_all_by_system_id(cookies[:system_id], :conditions => ["name8stellig IS NOT NULL and name8stellig!=''"], :select => "name8stellig, intnummer")
+@frames_menu = Frame.find(:all, :conditions => ["ipadresse != '' and system_id = ?", cookies[:system_id]], :select => "id, intnummer, ipadresse")
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<style>
+
+</style>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>CONFIG</title>
+  <%#= stylesheet_link_tag 'scaffold' %>
+  <%= stylesheet_link_tag 'ibt' %>
+  <%#= stylesheet_link_tag 'menu'%>
+  <%= stylesheet_link_tag 'menu_black.css'%>
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag "jquery.min.js" %>
+<script type="text/javascript" language="javascript" charset="utf-8">
+	// <![CDATA[
+	jQuery.noConflict();
+	// ]]>
+
+jQuery(document).ready(function() {
+	jQuery("input[type=text]").keypress(function(event) {
+		if (event.which == '95' || event.which == '124')
+		{
+				return false;
+		}
+	})
+});
+
+</script>
+  <%= javascript_include_tag "jquery.metadata.js" %>
+  <%= javascript_include_tag "jquery.hoverIntent.js" %>
+  <%= javascript_include_tag "mbMenu.js" %>
+  <%= javascript_include_tag "application" %>
+
+
+
+
+<style type="text/css">
+  body  a.style{
+    color:#AF3002;
+    font-family:sans-serif;
+    font-size:13px;
+    text-decoration:none;
+  }
+
+
+  .wrapper{
+    font-family:Arial, Helvetica, sans-serif;
+    margin-top:50px;
+    margin-left:50px;
+  }
+
+  .wrapper h1{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:26px;
+  }
+  button{
+    padding:4px;
+    display:inline-block;
+    cursor:pointer;
+    font:12px/14px Arial, Helvetica, sans-serif;
+    color:#666;
+    border:1px solid #999;
+    background-color:#eee;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;
+    margin-bottom:4px;
+  }
+  button:hover{
+    color:#aaa;
+    background-color:#000;
+  }
+  :focus {
+    outline: 0;
+  }
+
+  span.btn{
+    padding:10px;
+    display:inline-block;
+    cursor:pointer;
+    font:12px/14px Arial, Helvetica, sans-serif;
+    color:#aaa;
+    background-color:#eee;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;
+  }
+  span.btn:hover{
+    background-color:#000;
+  }
+
+  .msgBox{
+    position:absolute;
+    width:250px;
+    height:60px;
+    background:black;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    padding:10px;
+    padding-top:30px;
+    top:10px;
+    right:10px;
+    font:20px/24px Arial, Helvetica, sans-serif;
+  }
+
+</style>
+
+<script type="text/javascript">
+
+  jQuery(function(){
+    jQuery(".myMenu").buildMenu(
+    {
+      menuWidth:200,
+      openOnRight:false,
+      menuSelector: ".menuContainer",
+      iconPath:"ico/",
+      hasImages:true,
+      fadeInTime:100,
+      fadeOutTime:300,
+      adjustLeft:2,
+      minZindex:"auto",
+      adjustTop:10,
+      opacity:.95,
+      shadow:false,
+      shadowColor:"#ccc",
+      hoverIntent:0,
+      openOnClick:false,
+      closeOnMouseOut:false,
+      closeAfter:1000,
+      submenuHoverIntent:200
+    });
+
+  });
+
+  //this function get the id of the element that fires the context menu.
+  function testForContextMenu(el){
+    if (!el) el= jQuery.mbMenu.lastContextMenuEl;
+    alert("the ID of the element is:   "+jQuery(el).attr("id"));
+  }
+
+  function recallcMenu(el){
+    if (!el) el= jQuery.mbMenu.lastContextMenuEl;
+    var cmenu=+jQuery(el).attr("cmenu");
+    jQuery(cmenu).remove();
+  }
+
+  function loadFlash(){
+    jQuery.ajax({
+      url:"testFlash/test.html",
+      success:function(html){
+        jQuery("#flashTest").html(html);
+      }
+    });
+  }
+
+  function showMessage(msg){
+    var msgBox=jQuery("<div>").addClass("msgBox");
+    jQuery("body").append(msgBox);
+    msgBox.append("You click on: <br>"+msg);
+    setTimeout(function(){msgBox.fadeOut(100,function(){msgBox.remove();})},100)
+  }
+
+</script>
+</head>
+
+<body>
+
+<%
+system_id = cookies[:system_id]
+begin
+	@system = System.find(system_id)
+rescue
+	@system = System.new
+end
+%>
+
+
+<fieldset>
+<table border="0" >
+<tr>
+	<td align="center" rowspan="2" width="100px;" style="border:none;"> <%= image_tag "/images/IBT_Icon_gro.png", :title => "IBT", :alt => "IBT", :size => "80x80" %> </td>
+	<td colspan="3" align="center">
+		<font size="8px;">switch...it</font>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<font size="5px;">Configurator <%=Global::SYSTEM_VERSION%></font>
+	</td>
+	<td rowspan="2" align="right"  style="border:none;">
+		<% if session[:mode]=="ibt-admin" then %>
+		<!-- TeamViewer Logo (generated at http://www.teamviewer.com)
+		<div style="position:relative; width:200px; height:125px; float:right;">
+		 <a href="http://www.teamviewer.com/link/?url=505374&id=493605345" style="text-decoration:none;">
+		   <img src="http://www.teamviewer.com/link/?url=246800&id=493605345" alt="TeamViewer – die Software für den Zugriff auf PCs über das Internet" title="TeamViewer – die Software für den Zugriff auf PCs über das Internet" border="0" width="200" height="125" />
+		   <span style="position:absolute; top:74.5px; left:5px; display:block; cursor:pointer; color:White; font-family:Arial; font-size:15px; line-height:1.2em; font-weight:bold; text-align:center; width:190px;">
+			 IBT Interfaces remote support
+		   </span>
+		 </a>
+		</div>-->
+		<!-- TeamViewer Logo (generated at http://www.teamviewer.com) -->
+			<div style="position:relative; width:120px; height:60px;">
+			  <!--<a href="/TeamViewerQS_en.exe" style="text-decoration:none;">-->
+			  <a href="/systems/run_tv_qsen" style="text-decoration:none;">
+				<img src="http://www.teamviewer.com/link/?url=742306&id=1044333162" alt="Remote support" title="Remote support" border="0" width="120" height="60" />
+				<span style="position:absolute; top:17px; left:45px; display:block; cursor:pointer; color:White; font-family:Arial; font-size:11px; line-height:1.2em; font-weight:bold; text-align:center; width:70px;">
+				  Remote support
+				</span>
+			  </a>
+			</div>
+		<%end%>
+	</td>
+</tr>
+<tr>
+	<td class="clean">
+		<% begin %>
+			Aktuell geladene Konfiguration <b><%= @system.name %> </b>
+		<% rescue %>
+			Keine Konfiguration geladen
+		<% end %>
+		| <%= link_to "Konfigurationsauswahl", :controller=>"systems" %>  |
+	</td>
+	<td class="clean">
+		<b>[ Dropdown-Anzeige:
+		<% if session[:display].nil? || session[:display]=='name' then %>
+			<%= link_to "nach ID", :controller=>request.path, :display=>'id' %>
+		<% else %>
+			<%= link_to "nach Name", :controller=>request.path, :display=>'name' %>
+		<% end %>
+		]</b>
+	</td>
+	<td class="clean">
+		<% form_tag(:controller=>'systems', :action=>'ftptransfer', :id=>system_id) do %>
+			<%= submit_tag "Daten per FTP ins System übertragen", :disable_with=>"Übertragung..." %>
+		<% end %>
+
+	</td>
+</tr>
+</table>
+
+</fieldset>
+
+<fieldset>
+<div id="menu">
+
+  <table width="100%"  border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td valign="bottom">
+        <table  border="0" cellpadding="0" cellspacing="0" class="container">
+          <tr>
+            <td class="myMenu">
+              <!-- start horizontal menu -->
+
+		<table class="rootVoices" cellspacing='0' cellpadding='0' border='0'>
+		<tr>
+		<td class="rootVoice {menu: 'menu_file'}"><%=link_to "File", "Javascript:void(0);"%></td>
+		<% if session[:mode]=="admin" || session[:mode]=="ibt-admin" then %>
+			<td class="rootVoice {menu: 'menu_system'}">
+			<%= link_to "System", :controller=>'systems', :action=>'show', :id=>system_id %>
+			</td>
+		<% end %>
+                <td class="rootVoice {menu: 'box_menu_panel'}" ><%= link_to "Panels", :controller=>'bediengeraets', :action=>'show' %></td>
+		<td class="rootVoice {menu: 'menu_2'}"><%=link_to "Matrix", "Javascript:void(0);"%></td>
+		<% if session[:mode]=="admin" || session[:mode]=="ibt-admin" then %>
+			<td class="rootVoice {menu: 'menu_1'}"><%= link_to "UMD", :controller=>'umds', :action=>'show', :id=>system_id %></td>
+			<%#= link_to "XP_Setup", :controller=>'crosspoints', :action=>'show_ajax', :system_id=>system_id %>
+			<td class="rootVoice {menu: 'menu_1'}"><%= link_to "Mixer", :controller=>'bmes', :action=>'show', :id=>system_id %></td>
+		<%end%>
+		<% if session[:mode]=="ibt-admin" then %>
+			<td class="rootVoice {menu: 'menu_1'}"><%= link_to "MIXER Template", :controller=>'bmes', :action=>'mixer_template', :id=>system_id %></td>
+		<%end%>
+		<% if session[:mode]=="ibt-admin"|| session[:mode]=="admin" then %>
+			<td class="rootVoice {menu: 'menu_1'}"><%= link_to "Options", :controller=>'options', :action=>'index', :id=>system_id %></td>
+		<% end %>
+
+		<% if session[:mode]=="ibt-admin" then %>
+			<td class="rootVoice {menu: 'menu_1'}"><%= link_to "BD Typen", :controller=>'bdtypes', :action=>'show', :id=>system_id %></td>
+			<td class="rootVoice {menu: 'menu_1'}"><%= link_to "Matrix Types", :controller=>'kreuzschienes', :action=>'matrix_types'%></td>
+		<%end%>
+		<% if session[:mode]=="ibt-admin"|| session[:mode]=="admin" then %>
+			<td class="rootVoice {menu: 'menu_1'}"><%= link_to "Salvos", :controller=>'crosspoints', :action=>'salvo_templates'%></td>
+			<td class="rootVoice {menu: 'box_menu_gpio'}"><%= link_to "GPIO", :controller=>'gpis', :action=>'ion_entry'%></td>
+		<% end %>
+
+		<% if session[:mode]=="ibt-admin" then %>
+			<td class="rootVoice {menu: 'menu_signal'}"><%= link_to "Signals", :controller=>'gpis', :action=>'io_signals'%></td>
+		<%end%>
+
+		<% if session[:mode]=="admin" || session[:mode]=="ibt-admin" then %>
+			<td class="rootVoice {menu: 'menu_1'}"><%= link_to "Family", :controller=>'family', :action=>'index' %></td>
+		<%end%>
+	</tr>
+	</table>
+
+              <!-- end horizontal menu -->
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<div id="box_menu_panel" class="mbmenu boxMenu">
+<table style="border:0;" >
+<tr>
+	<% @bediengeraete_menu.each_with_index do |bediengeraet, index| %>
+		<%if index%10==0 %>
+		<td width="130" style="border-bottom:none;">
+		<%end%>
+			<%= link_to bediengeraet.name8stellig, :controller=>'bediengeraets', :action=>'typeshow', :id=>bediengeraet.intnummer %>
+		<%if index%10==9 %>
+		</td>
+		<%end%>
+	<%end%>
+</tr>
+</table>
+</div>
+
+<div id="menu_1" class="mbmenu" style="display:none;">
+</div>
+
+<div id="menu_2" class="mbmenu">
+	<%if cookies[:system_id]%>
+		<%
+			@system.kreuzschienes.each_with_index do |@kreuzschiene, index|
+			if @kreuzschiene.name!=""
+		%>
+			<%= link_to @kreuzschiene.name, {:controller=>'kreuzschienes', :action=>'edit', :id=>@kreuzschiene.id}, :class=>"{menu:'menu_matrix_#{index}', img: '24-book-blue-check.png'}"%>
+		<%end%>
+		<%end%>
+	<%end%>
+</div>
+
+<div id="menu_file" class="mbmenu">
+	<%= link_to "Load","#", :class=>"{menu:'menu_file_load', img: '24-book-blue-check.png'}"%>
+	<%= link_to "Save","#", :class=>"{menu:'menu_file_save', img: '24-book-blue-check.png'}"%>
+	<%= link_to "Delete","#", :class=>"{menu:'menu_file_delete', img: '24-book-blue-check.png'}"%>
+	<%= link_to "Create New","#", :class=>"{menu:'menu_file_create', img: '24-book-blue-check.png'}"%>
+	<%= link_to "Mode","#", :class=>"{menu:'menu_file_mode', img: '24-book-blue-check.png'}"%>
+	<%#= link_to "Save as","#", :class=>"{menu:'menu_file_load', img: '24-book-blue-check.png'}"%>
+</div>
+
+<div id="menu_file_load" class="mbmenu">
+	<%System.find(:all).each_with_index do |load, index|%>
+		<%= link_to "Konfig. #{(index.to_i+1)} #{load.name}", {:controller=>'systems', :action=>'show_clean', :id=>load}, :class=>"{menu:'menu_file_load_#{index}', img: '24-book-blue-check.png'}"%>
+	<%end%>
+</div>
+
+<div id="menu_system" class="mbmenu">
+
+	<%= link_to "System color", :controller=>'systems', :action=>'system_color', :id=>system_id %>
+	<% if session[:mode]=="ibt-admin" then %>
+	<%= link_to "Protokolle", :controller=>'protocols', :action=>'show', :id=>system_id %>
+	<%= link_to_function "GUI","#", :class=>"{menu:'menu_system_gui', img: '24-book-blue-check.png'}"%>
+	<%= link_to_function "Unit","#", :class=>"{menu:'menu_system_unit', img: '24-book-blue-check.png'}"%>
+	<%= link_to_function "Panel","#", :class=>"{menu:'menu_system_panel', img: '24-book-blue-check.png'}"%>
+	<%= link_to_function "Clear Logs", "$('div-loader').show();if(confirm('Are you sure you want to clear logs?')){window.location = '/systems/clear_logs'}else{$('div-loader').hide()}" %>
+	<%end%>
+
+</div>
+
+<div id="menu_file_save" class="mbmenu">
+	<%System.find(:all).each_with_index do |save, index|%>
+		<%= link_to "Konfig. #{(index.to_i+1)} #{save.name}", "#", :class=>"{menu:'menu_file_save_#{index}', img: '24-book-blue-check.png'}"%>
+	<%end%>
+</div>
+
+<div id="menu_file_delete" class="mbmenu">
+	<%System.find(:all).each_with_index do |delete, index|%>
+		<%= link_to_function "Konfig. #{(index.to_i+1)} #{delete.name}", "$('div-loader').show();if(confirm('Are you sure you want to delete?')){window.location = '/systems/delete_configuration/#{delete.id}'}else{$('div-loader').hide()}", :class=>"', img: '24-book-blue-check.png'"%>
+	<%end%>
+</div>
+
+<div id="menu_file_create" class="mbmenu boxMenu">
+<% form_tag :controller=>'systems', :action =>'create' do %>
+<table>
+  <tr bgcolor="white">
+    <th>Name</th>
+    <th>IP-Adresse</th>
+  </tr>
+  <tr>
+    <td style="border-bottom:none;">
+        <%= text_field :system, :name, :size=>10, :value=>"..." %></td>
+    <td style="border-bottom:none;"><input type="text" name="start_ip", size="10" value="192.168.0.10"></td>
+    <td style="border-bottom:none;"><%= submit_tag "anlegen"%></td>
+  </tr>
+</table>
+<% end %>
+</div>
+<div id="menu_file_mode" class="mbmenu">
+	<%= link_to "User", {:controller => 'systems', :action => 'setuser'}, :class=>"', img: '24-book-blue-check.png'}"%>
+	<%= link_to "Admin", {:controller => 'systems', :action => 'setadmin'}, :class=>"', img: '24-book-blue-check.png'}"%>
+	<%= link_to "Ibt Admin", {:controller => 'systems', :action => 'setibt_admin'}, :class=>"', img: '24-book-blue-check.png'}"%>
+</div>
+
+<%if cookies[:system_id]%>
+<%@system.kreuzschienes.each_with_index do |kr, index|%>
+ <div id="menu_matrix_<%=index%>" class="mbmenu">
+	<a href="/kreuzschienes/edit/<%=kr.id%>?page=quellen">Quellen</a>
+	<a href="/kreuzschienes/edit/<%=kr.id%>?page=senken">Senken</a>
+ </div>
+<%end%>
+<%end%>
+
+<%System.find(:all).each_with_index do |sy, index|%>
+<div id="menu_file_load_<%=index%>" class="mbmenu">
+	<%=link_to "Import From System (FTP)", {:controller=>'systems', :action=>'ftp_get_from_system', :id=>sy.id},  {:onclick => "$('div-loader').show();"} %>
+	<%=link_to "Import From TEMP Buffer", {:controller=>'systems', :action=>'import', :id=>sy.id},  {:onclick => "$('div-loader').show();"} %>%>
+	<%=link_to "Import from USB Stick", {:controller=>'systems', :action=>'import_configuration', :id=>sy.id},  {:onclick => "$('div-loader').show();"} %>%>
+</div>
+<%end%>
+
+<%System.find(:all).each_with_index do |sy_save, index|%>
+<div id="menu_file_save_<%=index%>" class="mbmenu">
+	<%=link_to "Transmit into system (FTP)", :controller=>'systems', :action=>'ftptransfer', :id=>sy_save.id %>
+	<%=link_to "Save into Temp Bufer", :controller=>'systems', :action=>'write', :id=>sy_save.id %>
+	<%=link_to "Save To USB Stick", {:controller=>'systems', :action=>'download', :id=>sy_save.id}, {:onclick => "$('div-loader').show();"} %>
+</div>
+<%end%>
+
+<div id="menu_system_gui" class="mbmenu">
+	<%= link_to_function "GUI update", "$('div-loader').show();if(confirm('Are you sure want to update GUI?')){window.location = '/systems/software_update?id=#{system_id}'}else{$('div-loader').hide()}"%>
+	<%= link_to_function "Undo GUI update","$('div-loader').show();if(confirm('Are you sure want to undo GUI update?')){window.location= '/systems/undo_software_update?id=#{system_id}'}else{$('div-loader').hide()}"%>
+	<%= link_to "Reimport All Configuration", "/systems/reimport_all_configuration", :id => "reimport" %>
+	<%= link_to "Destroy", "http://www.example.com", :confirm => "Are you sure?"%>
+</div>
+
+<div id="menu_system_unit" class="mbmenu">
+	<%= link_to_function "Backup Unit", "$('div-loader').show();if(confirm('Are you sure want to backup Unit?')){window.location='/systems/backup_unit?id=#{system_id}'}else{$('div-loader').hide()}" %>
+	<%= link_to_function "Restore Unit","$('div-loader').show();if(confirm('Are you sure want to restore Unit?')){window.location = '/systems/restore_unit?id=#{system_id}'}else{$('div-loader').hide()}"%>
+	<%= link_to "Firmware Update Unit", "/systems/firmware_update?id=#{system_id}"%>
+	<%= link_to_function "Unmount and reboot", "$('div-loader').show();if(confirm('Are you sure want to reboot unit?')){window.location = '/systems/unmount_and_reboot?id=#{system_id}'}else{$('div-loader').hide()}"%>
+</div>
+
+<div id="menu_system_panel" class="mbmenu">
+	<%= link_to "Firmwareupdate all panels", "/systems/panel_firmware_update?id=#{system_id}" %>
+	<%= link_to "Firwareupdate one Panel", "/systems/panel_firmware_update_one?id=#{system_id}" %>
+	<%= link_to_function "Reboot all Panels", "$('div-loader').show();if(confirm('Are you sure want to Panel Firmware update?')){window.location='/systems/panel_reboot?id=#{system_id}'}else{$('div-loader').hide()}" %>
+	<%= link_to "Reboot one panel", "/systems/panel_reboot_one?id=#{system_id}" %>
+</div>
+
+
+<div id="menu_signal" class="mbmenu">
+	<%= link_to "Input Signals", :controller=>'gpis', :action=>'io_signals', :tab => 'in_signal'%>
+	<%= link_to "Output Signals", :controller=>'gpis', :action=>'io_signals', :tab => 'out_signal'%>
+</div>
+
+<div id="box_menu_gpio" class="mbmenu">
+<table style="border:0;" >
+<tr>
+	<td width="130" style="border-bottom:none;">
+		<%= link_to "GPI Monitor","#", :class=>"{menu:'menu_gpio_monitor', img: '24-book-blue-check.png'}"%>
+		<%= link_to "Inputs", "/gpis/ion_entry?tab=input" %>
+		<%= link_to "Input Signals", "/gpis/ion_entry?tab=in_signal" %>
+		<%= link_to "Outputs", "/gpis/ion_entry?tab=output" %>
+		<%= link_to "Output Signals", "/gpis/ion_entry?tab=out_signal" %>
+		<%= link_to "Nodes", "/gpis/ion_entry?tab=node" %>
+		<%= link_to "Logic", "/gpis/ion_entry?tab=logic" %>
+	</td>
+</tr>
+</table>
+</div>
+
+<div id="menu_gpio_monitor" class="mbmenu">
+	<% @frames_menu.each do |frame| %>
+		<%= link_to "Unit #{frame.intnummer}", "/gpis/gpio_monitor/#{frame.id}"%>
+	<%end%>
+</div>
+
+</fieldset>
+
+<% if flash[:notice] %>
+	<div id="usernotice"><div class="usernotice"><font color="green"><i><%= flash[:notice] %></i></font></div></div>
+<% elsif flash[:error]%>
+	<div id="usernotice"><div class="usernotice"><font color="red"><i><%= flash[:error] %></i></font></div></div>
+<% else %>
+	<div id="usernotice"><div class="usernotice">&nbsp;</div></div>
+<% end %>
+
+
+<fieldset>
+<div style="display:none;" id="div-loader" class="relative">
+	<div class="loader-home" style="height:1024px;">
+		<img alt="Loading..." src="/images/ajax-loader.gif">
+	</div>
+</div>
+
+<%= yield  %>
+</fieldset>
+
+<br/><br/>
+<% if ENV["RAILS_ENV"] == "development" then %>
+    <hr />
+    <i>Erscheint nur im Developmentmodus</i>
+    <div id="debug">
+        <a href="#" onclick="Element.toggle('params_debug_info');return false">params</a> |
+        <a href="#" onclick="Element.toggle('session_debug_info');return false">session</a>
+        <fieldset id="params_debug_info" class="debug_info" style="display:none">
+            <legend>params</legend>
+            <%#= debug(params) %>
+        </fieldset>
+        <fieldset id="session_debug_info" class="debug_info" style="display:none">
+            <legend>session</legend>
+            <%#= debug(session) %>
+        </fieldset>
+    </div>
+<% end %>
+<script type="text/javascript">
+jQuery("#reimport").click(function(event){
+  event.preventDefault();
+  jQuery("#div-loader").show();
+  if( confirm("Are you sure ? ") == true ){
+    return true;
+  } else {
+    jQuery("#div-loader").hide();
+    return false;
+  };
+
+})
+</script>
+
+<%#= debug(session[:admin])%>
+</body>
+</html>
+

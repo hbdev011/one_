@@ -1,0 +1,87 @@
+<td align="center" width="3%"><%= f.nummer %><%= hidden_field_tag 'kv_id',f.id %></td>
+
+<% if kv.nil? %>
+<td align="center" width="10%" onclick="changeFields('<%= f.id %>')" style="cursor:pointer">
+  <a><%= f.kreuzschiene_id.nil? ? "----" : f.kreuzschiene.name %></a>
+</td>
+
+<td align="center" width="8%" onclick="changeFields('<%= f.id %>')">
+  <a><%= (f.source_single_class.nil? || f.source_single_class.strip.blank?) ? "----" : f.signal_quellen.title %></a>
+</td>
+
+<td align="center" width="8%" onclick="changeFields('<%= f.id %>')">
+  <a><%= f.source_subclass.nil? ? "----" : f.source_subclass %></a>
+</td>
+<td align="center" width="10%" onclick="changeFields('<%= f.id %>')">
+  <a><%= f.source_component.nil? ? "----" : f.source_component %></a>
+</td>
+<td align="center" width="10%" onclick="changeFields('<%= f.id %>')">
+  <a><%= f.source_subcomponent.nil? ? "----" : f.source_subcomponent %></a>
+</td>
+
+<td align="center" width="6%" onclick="changeFields('<%#= f.id %>')">
+  <%= text_field("crosspoint","delay",:value => f.delay ,:maxlength => 4,:onchange => "updateCrosspoint(#{f.id})", :style=>"width:60px;") %>
+</td>
+
+<td align="center" width="10%" onclick="changeFields('<%= f.id %>')">
+	<a><%= (f.dest_single_class.nil? || f.dest_single_class.strip.blank?) ? "----" : f.signal_quellen.title %></a>	
+</td>
+<td align="center" width="10%" onclick="changeFields('<%= f.id %>')">
+  <a><%= f.dest_subclass.nil? ? "----" : f.dest_subclass %></a>
+</td>
+<td align="center" width="10%" onclick="changeFields('<%= f.id %>')">
+  <a><%= f.dest_component.nil? ? "----" : f.dest_component %></a>
+</td>
+<td align="center" width="10%" onclick="changeFields('<%= f.id %>')">
+  <a><%= f.dest_subcomponent.nil? ? "----" : f.dest_subcomponent %></a>
+</td>
+<%- else -%>
+
+<td align="center" width="10%">
+  <%= select('crosspoint','kreuzschiene_id',kv,{:include_blank => true,:selected => f.kreuzschiene_id },{:onchange => "updateCrosspoint(#{f.id})"})%>
+</td>
+<td align="center" width="8%">
+	<%= select('crosspoint','source_single_class', @signal_quellen.to_a.map{|x| [x.title, x.intnummer]},{:include_blank => true, :selected => f.source_single_class.to_i},{:onchange => "updateCrosspoint(#{f.id})"}  ) %>
+  <%#= text_field("crosspoint","source_single_class",:value => '', :maxlength => 7, :onchange => "updateCrosspoint(#{f.id})" , :style=>"width:80px;")%>
+</td>
+<td align="center" width="8%">
+  <%= select('crosspoint','source_subclass', (0..256).to_a.map{|x| [x,x]},{:include_blank => true, :selected => f.source_subclass.to_i},{:onchange => "updateCrosspoint(#{f.id})"} ) %>
+  <%#= text_field("crosspoint","source_subclass",:value => f.source_subclass,:maxlength => 3,:onchange => "document.getElementById('s" + f.id.to_s + "').click();")%>
+</td>
+<td align="center" width="10%">
+  <%= select('crosspoint','source_component', (0..256).to_a.map{|x| [x,x]},{:include_blank => true, :selected => f.source_component.to_i},{:onchange => "updateCrosspoint(#{f.id})"}  ) %>
+  <%#= text_field("crosspoint","source_component",:value => f.source_component,:maxlength => 3,:onchange => "document.getElementById('s" + f.id.to_s + "').click();")%>
+</td>
+<td align="center" width="10%">
+  <%= select('crosspoint','source_subcomponent', (0..256).to_a.map{|x| [x,x]},{:include_blank => true, :selected => f.source_subcomponent.to_i},{:onchange => "updateCrosspoint(#{f.id})"}  ) %>
+  <%#= text_field("crosspoint","source_subcomponent",:value => f.source_subcomponent,:maxlength => 3,:onchange => "document.getElementById('s" + f.id.to_s + "').click();")%>
+</td>
+
+<td align="center" width="6%">
+  <%= text_field("crosspoint","delay",:value => '',:maxlength => 4,:onchange => "updateCrosspoint(#{f.id})", :style=>"width:60px;") %>
+</td>
+
+<td align="center" width="10%">
+	<%= select('crosspoint','dest_single_class', @signal_quellen.to_a.map{|x| [x.title, x.intnummer]},{:include_blank => true, :selected => f.dest_single_class.to_i},{:onchange => "updateCrosspoint(#{f.id})"}  ) %>
+  <%#= text_field("crosspoint","dest_single_class",:value => '',:maxlength => 7,:onchange => "updateCrosspoint(#{f.id})",:style=>'width:80px;' )%>
+</td>
+<td align="center" width="10%">
+  <%= select('crosspoint','dest_subclass', (0..256).to_a.map{|x| [x,x]},{:include_blank => true, :selected => f.dest_subclass.to_i},{:onchange => "updateCrosspoint(#{f.id})"}  ) %>
+  <%#= text_field("crosspoint","dest_subclass",:value => f.dest_subclass,:maxlength => 3,:onchange => "document.getElementById('s" + f.id.to_s + "').click();")%>
+</td>
+<td align="center" width="10%">
+  <%= select('crosspoint','dest_component',(0..256).to_a.map{|x| [x,x]},{:include_blank => true, :selected => f.dest_component.to_i},{:onchange => "updateCrosspoint(#{f.id})"} ) %>
+  <%#= text_field("crosspoint","dest_component",:value => f.dest_component,:maxlength => 3,:onchange => "document.getElementById('s" + f.id.to_s + "').click();")%>
+</td>
+<td align="center" width="10%">
+  <%= select('crosspoint','dest_subcomponent',(0..256).to_a.map{|x| [x,x]},{:include_blank => true, :selected => f.dest_subcomponent.to_i},{:onchange => "updateCrosspoint(#{f.id})"}  ) %>
+  <%#= text_field("crosspoint","dest_subcomponent",:value => f.dest_subcomponent,:maxlength => 3,:onchange => "document.getElementById('s" + f.id.to_s + "').click();")%>
+</td>
+<%- end -%>
+
+<td align="left" width="5%" style="border-bottom:none;">
+  <div id="spin_<%=f.id%>" style="display:none;">
+    <%=image_tag "/images/spinner.gif" %>
+  </div>
+</td>
+

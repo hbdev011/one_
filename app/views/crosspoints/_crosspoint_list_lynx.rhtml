@@ -1,0 +1,50 @@
+<% @setups.each do |f|
+		        if session[:display].nil? || session[:display]=='name' then
+
+		          if f.source_id then
+			        begin
+			          sourcename = f.sourcename
+			        rescue
+			          sourcename = "___"
+			        end
+		          end
+
+		          if f.target_id then
+			        begin
+			          targetname = f.targetname
+			        rescue
+			          targetname = "___"
+			        end
+		          end
+
+		        else
+
+		          if f.source_id>0 then
+			        begin
+			          sourcename = f.source.intnummer
+			        rescue
+			          sourcename = "___"
+			        end
+		          end
+
+		          if f.target_id>0 then
+			        begin
+			          targetname = f.target.intnummer
+			        rescue
+			           targetname = "___"
+			        end
+		          end
+		        end
+
+		        sourcename = "___" if sourcename.nil? or sourcename==""
+		        targetname = "___" if targetname.nil? or targetname==""
+
+		        kid = 0
+		        kid = f.kreuzschiene.id unless f.kreuzschiene.nil?
+	          %>
+
+		        <div id="div_<%= f.id.to_s %>">
+              <%= render :partial => "lynx_fields",:locals => {:f => f} %>
+		        </div>
+	          <% end %>
+

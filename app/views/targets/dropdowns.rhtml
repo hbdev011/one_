@@ -1,0 +1,37 @@
+<%
+if params[:display]=='name' or session[:display]=='name' or session[:display].nil? then
+  @display="name"
+  if @kv.nil? || @kv_val.nil?
+    @t = nil
+  else
+    @t = Target.find_all_by_kreuzschiene_id(@kv_val.to_i, :order=>"nummer", :limit=>@kv.output).map {|u| [u.name5stellig, u.nummer]}
+  end
+else
+  @display="id"
+  if @kv.nil? || @kv_val.nil?
+    @t = nil
+  else
+    @t = Target.find_all_by_kreuzschiene_id(@kv_val.to_i, :order=>"nummer", :limit=>@kv.output).map {|u| [u.nummer, u.nummer]}
+  end
+end
+form_remote_tag :url=>{:controller=>'typetargets', :action =>'update', :id => @id} do 
+%>
+
+	<% if !@t.nil? %>
+	  <%= select(:typetarget, :target_id, @t , {:include_blank => true, :selected=>@typetarget.target_id } , {"class"=>"clsDropDownP", :onchange=>"document.getElementById('submitchangeitemt" + @typetarget.id.to_s + "').click();"} ) %>
+	<% else %>
+	  Blank
+	<% end %>
+	<input type="hidden" name="bdtype_id" value="<%=  params[:bdtype_id] %>">
+	 <input type="hidden" name="display" value="<%=  @display %>">
+	 <input type="hidden" name="matrix" value="<%=  @kv.intnummer %>">
+	 <input type="image" src="/images/blank.png" id="submitchangeitemt<%= @typetarget.id.to_s %>" width="0" height=0>
+<% end %>
+
+<%if @typetarget.bediengeraet.bdtype_id == 3 && @update_matrix == 1%>
+<script type="text/javascript">
+	//<![CDATA[
+	$("kv_"+<%=@id%>).innerHTML = "<a onclick=\"new Ajax.Updater('kv_'+<%=@id%>, '/targets/kv_dropdowns/'+<%=@id%>+'?bdtype_id='+<%=@typetarget.bediengeraet.bdtype_id%>+'&amp;display=name&amp;kv='+<%=@kvlink.intnummer%>, {asynchronous:true, evalScripts:true}); return false;\" href=\"#\"><%=@kvtitle%></a>"
+	//]]>
+</script>
+<%end%>

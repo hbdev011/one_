@@ -1,0 +1,34 @@
+<% form_for '', :url => {:controller => 'systems', :action => 'panel_firmware_update'}, :html => {:multipart => 'true', :onsubmit => "$('div-loader').show();" } do%>
+<table width="100%">
+	<tr>
+		<td><h2>Panel Firmware Update</h2></td>
+	</tr>
+	<tr>
+		<td><%=file_field_tag :panel_firmware, :onchange=>"CheckValidFile(this.value,this.name)"%> (Upload Zip File here.)</td>
+	</tr>
+	<tr>
+		<td><%=submit_tag 'Panel Firmware Update', :onclick=>"return checkfile('panel_firmware');"%></td>
+	</tr>
+</table>
+<%end%>
+<script>
+function checkfile(name)
+{
+	if(document.getElementById(name).value=='')
+	{
+		alert("Please select file");
+		return false;
+	}
+}
+
+function CheckValidFile(val,name)
+{	
+	var a = val.substring(val.lastIndexOf('.') + 1).toLowerCase();
+	if(a == 'zip')
+	return true;
+	alert('The extension ' + a.toUpperCase() + ' is not valid. Please Upload only Zip File!!!');
+	document.getElementById(name).value = "";
+	return false; 
+}
+</script>
+

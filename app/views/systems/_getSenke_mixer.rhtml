@@ -1,0 +1,13 @@
+<% if !kv_tally.nil? %>
+	<% @kv_id = Kreuzschiene.getMatrix(kv_tally, @system.id) %>
+	<% if session[:display].nil? || session[:display]=='name' then %>
+		<% @targets = Target.find(:all, :conditions=>["kreuzschiene_id=?", @kv_id.id], :order=>"intnummer").map {|u| [u.name5stellig, u.intnummer]} %>
+	<% else %>
+		<% @targets = Target.find(:all, :conditions=>["kreuzschiene_id=?", @kv_id.id], :order=>"intnummer").map {|u| [u.intnummer, u.intnummer]} %>
+	<% end %>
+
+	<%= select('mixer_tally', 'senke_id', @targets, { :include_blank => true,:selected=>@mixer_tally.senke_id}, {:style => "width:100%;",:onchange=>"document.getElementById('s_mixer" + @mixer_tally.id.to_s + "').click(); "} ) %>
+	<input type="image" src="/images/blank.png" id="s_mixer<%=@mixer_tally.id.to_s %>" />
+<% else %>
+	___
+<% end %>
